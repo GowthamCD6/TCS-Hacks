@@ -1,0 +1,52 @@
+{
+  "data": {
+    "as_of": "2026-10-14T00:00:00.000Z",
+    "processed_feedback": 0,
+    "signals": [
+      {
+        "id": 53,
+        "category": "payment",
+        "status": "open",
+        "triage_reason": null,
+        "severity_score": 0.0968
+      },
+      {
+        "id": 54,
+        "category": "delivery",
+        "status": "explained",
+        "triage_reason": "65% of complaints are from cities under a weather alert (Chennai, Mumbai)",
+        "severity_score": 0.0659
+      }
+    ],
+    "suppressed": [
+      {
+        "category": "all",
+        "raw_volume_ratio": 2.123,
+        "order_volume_ratio": 1.086,
+        "rate_ratio": 1.955,
+        "reason": "Overall volume is compared per order, so traffic growth alone cannot raise a signal"
+      },
+      {
+        "category": "pricing",
+        "count": 28,
+        "rate_ratio": 1.332,
+        "reason": "Below sample, rate-ratio or significance threshold"
+      },
+      {
+        "category": "food_quality",
+        "count": 10,
+        "rate_ratio": 0.865,
+        "reason": "Below sample, rate-ratio or significance threshold"
+      },
+      {
+        "category": "app_ux",
+        "count": 11,
+        "rate_ratio": 1.035,
+        "reason": "Below sample, rate-ratio or significance threshold"
+      }
+    ],
+    "incidents_created": [
+      "RIQ-2026-0027"
+    ]
+  }
+}

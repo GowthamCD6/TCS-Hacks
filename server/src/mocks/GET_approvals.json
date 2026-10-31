@@ -1,0 +1,240 @@
+{
+  "data": [
+    {
+      "id": 131,
+      "incident_id": 27,
+      "recommendation_id": 218,
+      "requested_by": "investigator-agent",
+      "reviewed_by": null,
+      "decision": "pending",
+      "comments": null,
+      "reviewed_at": null,
+      "created_at": "2026-10-31T10:46:05.732Z",
+      "incident_number": "RIQ-2026-0027",
+      "title": "Disable the affected feature with a flag for the segment",
+      "action_key": "disable_feature_flag",
+      "action_type": "simulate_feature_flag_change",
+      "risk_level": "medium",
+      "priority": 1,
+      "estimated_cost": 0,
+      "rationale": {
+        "weights": {
+          "speed": 0.1,
+          "urgency": 0.2,
+          "low_cost": 0.05,
+          "low_risk": 0.05,
+          "confidence": 0.2,
+          "reversibility": 0.1,
+          "customer_benefit": 0.3
+        },
+        "target_count": 90,
+        "score_breakdown": {
+          "speed": 0.875,
+          "urgency": 0.9,
+          "low_cost": 1,
+          "low_risk": 0.6,
+          "confidence": 0.95,
+          "reversibility": 0.95,
+          "customer_benefit": 0.85
+        },
+        "evidence_references": [
+          {
+            "path": "$.confidence_score",
+            "tool": "run_root_cause_court",
+            "value": 0.95
+          }
+        ]
+      }
+    },
+    {
+      "id": 132,
+      "incident_id": 27,
+      "recommendation_id": 219,
+      "requested_by": "investigator-agent",
+      "reviewed_by": null,
+      "decision": "pending",
+      "comments": null,
+      "reviewed_at": null,
+      "created_at": "2026-10-31T10:46:05.733Z",
+      "incident_number": "RIQ-2026-0027",
+      "title": "Roll back the suspected release",
+      "action_key": "rollback_release",
+      "action_type": "simulate_feature_flag_change",
+      "risk_level": "high",
+      "priority": 2,
+      "estimated_cost": 0,
+      "rationale": {
+        "weights": {
+          "speed": 0.1,
+          "urgency": 0.2,
+          "low_cost": 0.05,
+          "low_risk": 0.05,
+          "confidence": 0.2,
+          "reversibility": 0.1,
+          "customer_benefit": 0.3
+        },
+        "target_count": 90,
+        "score_breakdown": {
+          "speed": 0.625,
+          "urgency": 0.95,
+          "low_cost": 1,
+          "low_risk": 0.25,
+          "confidence": 0.95,
+          "reversibility": 0.8,
+          "customer_benefit": 0.95
+        },
+        "evidence_references": [
+          {
+            "path": "$.confidence_score",
+            "tool": "run_root_cause_court",
+            "value": 0.95
+          }
+        ]
+      }
+    },
+    {
+      "id": 133,
+      "incident_id": 27,
+      "recommendation_id": 221,
+      "requested_by": "investigator-agent",
+      "reviewed_by": null,
+      "decision": "pending",
+      "comments": null,
+      "reviewed_at": null,
+      "created_at": "2026-10-31T10:46:05.734Z",
+      "incident_number": "RIQ-2026-0027",
+      "title": "Refund verified captured payments without orders",
+      "action_key": "issue_eligible_refunds",
+      "action_type": "simulate_refund",
+      "risk_level": "medium",
+      "priority": 4,
+      "estimated_cost": 35373.98,
+      "rationale": {
+        "weights": {
+          "speed": 0.1,
+          "urgency": 0.2,
+          "low_cost": 0.05,
+          "low_risk": 0.05,
+          "confidence": 0.2,
+          "reversibility": 0.1,
+          "customer_benefit": 0.3
+        },
+        "target_count": 100,
+        "score_breakdown": {
+          "speed": 0.5,
+          "urgency": 0.8,
+          "low_cost": 0.646,
+          "low_risk": 0.6,
+          "confidence": 0.95,
+          "reversibility": 0.3,
+          "customer_benefit": 0.8
+        },
+        "evidence_references": [
+          {
+            "path": "$.confidence_score",
+            "tool": "run_root_cause_court",
+            "value": 0.95
+          }
+        ]
+      }
+    },
+    {
+      "id": 134,
+      "incident_id": 27,
+      "recommendation_id": 224,
+      "requested_by": "investigator-agent",
+      "reviewed_by": null,
+      "decision": "pending",
+      "comments": null,
+      "reviewed_at": null,
+      "created_at": "2026-10-31T10:46:05.736Z",
+      "incident_number": "RIQ-2026-0027",
+      "title": "Notify verified affected customers",
+      "action_key": "notify_customers",
+      "action_type": "simulate_customer_notification",
+      "risk_level": "low",
+      "priority": 7,
+      "estimated_cost": 0,
+      "rationale": {
+        "weights": {
+          "speed": 0.1,
+          "urgency": 0.2,
+          "low_cost": 0.05,
+          "low_risk": 0.05,
+          "confidence": 0.2,
+          "reversibility": 0.1,
+          "customer_benefit": 0.3
+        },
+        "target_count": 90,
+        "score_breakdown": {
+          "speed": 0.833,
+          "urgency": 0.6,
+          "low_cost": 1,
+          "low_risk": 1,
+          "confidence": 0.95,
+          "reversibility": 0.2,
+          "customer_benefit": 0.5
+        },
+        "evidence_references": [
+          {
+            "path": "$.confidence_score",
+            "tool": "run_root_cause_court",
+            "value": 0.95
+          }
+        ]
+      }
+    },
+    {
+      "id": 135,
+      "incident_id": 27,
+      "recommendation_id": 225,
+      "requested_by": "investigator-agent",
+      "reviewed_by": null,
+      "decision": "pending",
+      "comments": null,
+      "reviewed_at": null,
+      "created_at": "2026-10-31T10:46:05.737Z",
+      "incident_number": "RIQ-2026-0027",
+      "title": "Offer a goodwill coupon to verified affected customers",
+      "action_key": "goodwill_coupon",
+      "action_type": "simulate_coupon",
+      "risk_level": "low",
+      "priority": 8,
+      "estimated_cost": 9000,
+      "rationale": {
+        "weights": {
+          "speed": 0.1,
+          "urgency": 0.2,
+          "low_cost": 0.05,
+          "low_risk": 0.05,
+          "confidence": 0.2,
+          "reversibility": 0.1,
+          "customer_benefit": 0.3
+        },
+        "target_count": 90,
+        "score_breakdown": {
+          "speed": 0.833,
+          "urgency": 0.3,
+          "low_cost": 0.91,
+          "low_risk": 1,
+          "confidence": 0.95,
+          "reversibility": 0.2,
+          "customer_benefit": 0.35
+        },
+        "evidence_references": [
+          {
+            "path": "$.confidence_score",
+            "tool": "run_root_cause_court",
+            "value": 0.95
+          }
+        ]
+      }
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "page_size": 20,
+    "total": 5,
+    "total_pages": 1
+  }
+}

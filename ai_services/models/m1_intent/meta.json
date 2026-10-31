@@ -1,0 +1,33 @@
+{
+  "name": "m1_intent",
+  "version": "202610310636",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "classes": [
+    "debited_not_fulfilled",
+    "payment_pending",
+    "payment_failed_or_declined",
+    "refund_or_reversal_status",
+    "double_or_unrecognised_charge",
+    "delivery_delay",
+    "price_complaint",
+    "food_quality",
+    "app_bug_other",
+    "praise_or_neutral"
+  ],
+  "coarse_map": {
+    "debited_not_fulfilled": "payment",
+    "payment_pending": "payment",
+    "payment_failed_or_declined": "payment",
+    "refund_or_reversal_status": "payment",
+    "double_or_unrecognised_charge": "payment",
+    "delivery_delay": "delivery",
+    "price_complaint": "pricing",
+    "food_quality": "food_quality",
+    "app_bug_other": "app_ux",
+    "praise_or_neutral": "praise"
+  },
+  "confidence_threshold": 0.55,
+  "training_data_sha256": "c873a33c2c5f6789c951f3080e43b6ec8eb18c8253ca0ba951ea7f5e8565f612",
+  "training_rows": 3750,
+  "synthetic_rows": 0
+}

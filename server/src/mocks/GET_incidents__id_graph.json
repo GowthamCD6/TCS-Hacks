@@ -1,0 +1,646 @@
+{
+  "data": {
+    "nodes": [
+      {
+        "id": "incident-27",
+        "type": "incident",
+        "position": {
+          "x": 320,
+          "y": 0
+        },
+        "data": {
+          "label": "RIQ-2026-0027",
+          "title": "Payment failures: money debited without an order",
+          "status": "resolved",
+          "severity": 0.092,
+          "confidence": 0.95
+        }
+      },
+      {
+        "id": "signal-53",
+        "type": "signal",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "data": {
+          "label": "payment signal",
+          "anomaly_score": 14.265,
+          "current_count": 54
+        }
+      },
+      {
+        "id": "cluster-411",
+        "type": "cluster",
+        "position": {
+          "x": 640,
+          "y": 0
+        },
+        "data": {
+          "label": "Complaints about synthetic, call, upi, returned",
+          "feedback_count": 25
+        }
+      },
+      {
+        "id": "cluster-412",
+        "type": "cluster",
+        "position": {
+          "x": 640,
+          "y": 120
+        },
+        "data": {
+          "label": "Complaints about upi, money, deducted, created",
+          "feedback_count": 10
+        }
+      },
+      {
+        "id": "cluster-413",
+        "type": "cluster",
+        "position": {
+          "x": 640,
+          "y": 240
+        },
+        "data": {
+          "label": "Complaints about account, debited, yet, there",
+          "feedback_count": 7
+        }
+      },
+      {
+        "id": "cluster-414",
+        "type": "cluster",
+        "position": {
+          "x": 640,
+          "y": 360
+        },
+        "data": {
+          "label": "Complaints about paisa, kat, gaya, nahi",
+          "feedback_count": 6
+        }
+      },
+      {
+        "id": "cluster-415",
+        "type": "cluster",
+        "position": {
+          "x": 640,
+          "y": 480
+        },
+        "data": {
+          "label": "Complaints about payment, confirmation, screen, hangs",
+          "feedback_count": 6
+        }
+      },
+      {
+        "id": "cluster-416",
+        "type": "cluster",
+        "position": {
+          "x": 640,
+          "y": 600
+        },
+        "data": {
+          "label": "Complaints about charged, upi, debit, shows",
+          "feedback_count": 6
+        }
+      },
+      {
+        "id": "cluster-417",
+        "type": "cluster",
+        "position": {
+          "x": 640,
+          "y": 720
+        },
+        "data": {
+          "label": "Complaints about card, payment, declined, had",
+          "feedback_count": 5
+        }
+      },
+      {
+        "id": "cluster-418",
+        "type": "cluster",
+        "position": {
+          "x": 640,
+          "y": 840
+        },
+        "data": {
+          "label": "Complaints about latest, update, upi, payment",
+          "feedback_count": 5
+        }
+      },
+      {
+        "id": "segment-1376",
+        "type": "segment",
+        "position": {
+          "x": 640,
+          "y": 960
+        },
+        "data": {
+          "label": "Android 14 | v2.3 | upi",
+          "lift_ratio": 22.133,
+          "issue_rate": 0.2,
+          "dimension": "device_os__app_version__payment"
+        }
+      },
+      {
+        "id": "segment-1377",
+        "type": "segment",
+        "position": {
+          "x": 640,
+          "y": 1080
+        },
+        "data": {
+          "label": "Android 14 | v2.3",
+          "lift_ratio": 15.277,
+          "issue_rate": 0.115813,
+          "dimension": "device_os__app_version"
+        }
+      },
+      {
+        "id": "segment-1378",
+        "type": "segment",
+        "position": {
+          "x": 640,
+          "y": 1200
+        },
+        "data": {
+          "label": "Android 14",
+          "lift_ratio": 14.222,
+          "issue_rate": 0.109705,
+          "dimension": "device_os"
+        }
+      },
+      {
+        "id": "segment-1379",
+        "type": "segment",
+        "position": {
+          "x": 640,
+          "y": 1320
+        },
+        "data": {
+          "label": "2.3",
+          "lift_ratio": 11.02,
+          "issue_rate": 0.04898,
+          "dimension": "app_version"
+        }
+      },
+      {
+        "id": "hypothesis-261",
+        "type": "hypothesis",
+        "position": {
+          "x": 960,
+          "y": 0
+        },
+        "data": {
+          "label": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+          "key": "release_2.3_android",
+          "status": "supported",
+          "confidence": 0.95
+        }
+      },
+      {
+        "id": "hypothesis-262",
+        "type": "hypothesis",
+        "position": {
+          "x": 960,
+          "y": 120
+        },
+        "data": {
+          "label": "The menu price change drove the complaints",
+          "key": "menu_price_change",
+          "status": "rejected",
+          "confidence": 0.158
+        }
+      },
+      {
+        "id": "hypothesis-263",
+        "type": "hypothesis",
+        "position": {
+          "x": 960,
+          "y": 240
+        },
+        "data": {
+          "label": "Seasonal or campaign traffic explains the rise",
+          "key": "seasonal_traffic",
+          "status": "rejected",
+          "confidence": 0.158
+        }
+      },
+      {
+        "id": "hypothesis-264",
+        "type": "hypothesis",
+        "position": {
+          "x": 960,
+          "y": 360
+        },
+        "data": {
+          "label": "Heavy rain in Chennai, Mumbai caused the issue",
+          "key": "weather_rain",
+          "status": "rejected",
+          "confidence": 0.15
+        }
+      },
+      {
+        "id": "hypothesis-265",
+        "type": "hypothesis",
+        "position": {
+          "x": 960,
+          "y": 480
+        },
+        "data": {
+          "label": "A shared UPI gateway or backend regression, independent of the app release, caused the issue",
+          "key": "payment_gateway_regression",
+          "status": "rejected",
+          "confidence": 0
+        }
+      },
+      {
+        "id": "recommendation-218",
+        "type": "recommendation",
+        "position": {
+          "x": 1280,
+          "y": 0
+        },
+        "data": {
+          "label": "Disable the affected feature with a flag for the segment",
+          "priority": 1,
+          "status": "executed",
+          "risk_level": "medium"
+        }
+      },
+      {
+        "id": "recommendation-220",
+        "type": "recommendation",
+        "position": {
+          "x": 1280,
+          "y": 120
+        },
+        "data": {
+          "label": "Reconcile captured payments that have no order",
+          "priority": 2,
+          "status": "proposed",
+          "risk_level": "low"
+        }
+      },
+      {
+        "id": "recommendation-219",
+        "type": "recommendation",
+        "position": {
+          "x": 1280,
+          "y": 240
+        },
+        "data": {
+          "label": "Roll back the suspected release",
+          "priority": 2,
+          "status": "rejected",
+          "risk_level": "high"
+        }
+      },
+      {
+        "id": "recommendation-221",
+        "type": "recommendation",
+        "position": {
+          "x": 1280,
+          "y": 360
+        },
+        "data": {
+          "label": "Refund verified captured payments without orders",
+          "priority": 3,
+          "status": "proposed",
+          "risk_level": "medium"
+        }
+      },
+      {
+        "id": "recommendation-222",
+        "type": "recommendation",
+        "position": {
+          "x": 1280,
+          "y": 480
+        },
+        "data": {
+          "label": "Open a coordinated support incident",
+          "priority": 4,
+          "status": "proposed",
+          "risk_level": "low"
+        }
+      },
+      {
+        "id": "recommendation-223",
+        "type": "recommendation",
+        "position": {
+          "x": 1280,
+          "y": 600
+        },
+        "data": {
+          "label": "Update support scripts with the verified failure",
+          "priority": 5,
+          "status": "proposed",
+          "risk_level": "low"
+        }
+      },
+      {
+        "id": "recommendation-224",
+        "type": "recommendation",
+        "position": {
+          "x": 1280,
+          "y": 720
+        },
+        "data": {
+          "label": "Notify verified affected customers",
+          "priority": 6,
+          "status": "proposed",
+          "risk_level": "low"
+        }
+      },
+      {
+        "id": "recommendation-225",
+        "type": "recommendation",
+        "position": {
+          "x": 1280,
+          "y": 840
+        },
+        "data": {
+          "label": "Offer a goodwill coupon to verified affected customers",
+          "priority": 7,
+          "status": "proposed",
+          "risk_level": "low"
+        }
+      },
+      {
+        "id": "action-16",
+        "type": "action",
+        "position": {
+          "x": 1600,
+          "y": 0
+        },
+        "data": {
+          "label": "disable_feature_flag",
+          "action_type": "simulate_feature_flag_change",
+          "status": "completed",
+          "simulated": true
+        }
+      },
+      {
+        "id": "kpi-payment_without_order_rate",
+        "type": "kpi",
+        "position": {
+          "x": 1920,
+          "y": 0
+        },
+        "data": {
+          "label": "payment_without_order_rate",
+          "latest_value": 0.1842,
+          "target_value": 0.5,
+          "unit": "percent"
+        }
+      },
+      {
+        "id": "kpi-complaint_volume",
+        "type": "kpi",
+        "position": {
+          "x": 1920,
+          "y": 120
+        },
+        "data": {
+          "label": "complaint_volume",
+          "latest_value": 0.999,
+          "target_value": 3,
+          "unit": "per_hour"
+        }
+      },
+      {
+        "id": "kpi-successful_order_completion_rate",
+        "type": "kpi",
+        "position": {
+          "x": 1920,
+          "y": 240
+        },
+        "data": {
+          "label": "successful_order_completion_rate",
+          "latest_value": 96.0376,
+          "target_value": 93,
+          "unit": "percent"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "signal-53->incident-27",
+        "source": "signal-53",
+        "target": "incident-27",
+        "label": "raised",
+        "data": {}
+      },
+      {
+        "id": "incident-27->cluster-411",
+        "source": "incident-27",
+        "target": "cluster-411",
+        "label": "groups",
+        "data": {}
+      },
+      {
+        "id": "incident-27->cluster-412",
+        "source": "incident-27",
+        "target": "cluster-412",
+        "label": "groups",
+        "data": {}
+      },
+      {
+        "id": "incident-27->cluster-413",
+        "source": "incident-27",
+        "target": "cluster-413",
+        "label": "groups",
+        "data": {}
+      },
+      {
+        "id": "incident-27->cluster-414",
+        "source": "incident-27",
+        "target": "cluster-414",
+        "label": "groups",
+        "data": {}
+      },
+      {
+        "id": "incident-27->cluster-415",
+        "source": "incident-27",
+        "target": "cluster-415",
+        "label": "groups",
+        "data": {}
+      },
+      {
+        "id": "incident-27->cluster-416",
+        "source": "incident-27",
+        "target": "cluster-416",
+        "label": "groups",
+        "data": {}
+      },
+      {
+        "id": "incident-27->cluster-417",
+        "source": "incident-27",
+        "target": "cluster-417",
+        "label": "groups",
+        "data": {}
+      },
+      {
+        "id": "incident-27->cluster-418",
+        "source": "incident-27",
+        "target": "cluster-418",
+        "label": "groups",
+        "data": {}
+      },
+      {
+        "id": "incident-27->segment-1376",
+        "source": "incident-27",
+        "target": "segment-1376",
+        "label": "concentrated in",
+        "data": {}
+      },
+      {
+        "id": "incident-27->segment-1377",
+        "source": "incident-27",
+        "target": "segment-1377",
+        "label": "concentrated in",
+        "data": {}
+      },
+      {
+        "id": "incident-27->segment-1378",
+        "source": "incident-27",
+        "target": "segment-1378",
+        "label": "concentrated in",
+        "data": {}
+      },
+      {
+        "id": "incident-27->segment-1379",
+        "source": "incident-27",
+        "target": "segment-1379",
+        "label": "concentrated in",
+        "data": {}
+      },
+      {
+        "id": "incident-27->hypothesis-261",
+        "source": "incident-27",
+        "target": "hypothesis-261",
+        "label": "tested",
+        "data": {
+          "status": "supported"
+        }
+      },
+      {
+        "id": "incident-27->hypothesis-262",
+        "source": "incident-27",
+        "target": "hypothesis-262",
+        "label": "tested",
+        "data": {
+          "status": "rejected"
+        }
+      },
+      {
+        "id": "incident-27->hypothesis-263",
+        "source": "incident-27",
+        "target": "hypothesis-263",
+        "label": "tested",
+        "data": {
+          "status": "rejected"
+        }
+      },
+      {
+        "id": "incident-27->hypothesis-264",
+        "source": "incident-27",
+        "target": "hypothesis-264",
+        "label": "tested",
+        "data": {
+          "status": "rejected"
+        }
+      },
+      {
+        "id": "incident-27->hypothesis-265",
+        "source": "incident-27",
+        "target": "hypothesis-265",
+        "label": "tested",
+        "data": {
+          "status": "rejected"
+        }
+      },
+      {
+        "id": "hypothesis-261->recommendation-218",
+        "source": "hypothesis-261",
+        "target": "recommendation-218",
+        "label": "justifies",
+        "data": {}
+      },
+      {
+        "id": "hypothesis-261->recommendation-220",
+        "source": "hypothesis-261",
+        "target": "recommendation-220",
+        "label": "justifies",
+        "data": {}
+      },
+      {
+        "id": "hypothesis-261->recommendation-219",
+        "source": "hypothesis-261",
+        "target": "recommendation-219",
+        "label": "justifies",
+        "data": {}
+      },
+      {
+        "id": "hypothesis-261->recommendation-221",
+        "source": "hypothesis-261",
+        "target": "recommendation-221",
+        "label": "justifies",
+        "data": {}
+      },
+      {
+        "id": "hypothesis-261->recommendation-222",
+        "source": "hypothesis-261",
+        "target": "recommendation-222",
+        "label": "justifies",
+        "data": {}
+      },
+      {
+        "id": "hypothesis-261->recommendation-223",
+        "source": "hypothesis-261",
+        "target": "recommendation-223",
+        "label": "justifies",
+        "data": {}
+      },
+      {
+        "id": "hypothesis-261->recommendation-224",
+        "source": "hypothesis-261",
+        "target": "recommendation-224",
+        "label": "justifies",
+        "data": {}
+      },
+      {
+        "id": "hypothesis-261->recommendation-225",
+        "source": "hypothesis-261",
+        "target": "recommendation-225",
+        "label": "justifies",
+        "data": {}
+      },
+      {
+        "id": "recommendation-218->action-16",
+        "source": "recommendation-218",
+        "target": "action-16",
+        "label": "executed as",
+        "data": {}
+      },
+      {
+        "id": "action-16->kpi-payment_without_order_rate",
+        "source": "action-16",
+        "target": "kpi-payment_without_order_rate",
+        "label": "measured by",
+        "data": {}
+      },
+      {
+        "id": "action-16->kpi-complaint_volume",
+        "source": "action-16",
+        "target": "kpi-complaint_volume",
+        "label": "measured by",
+        "data": {}
+      },
+      {
+        "id": "action-16->kpi-successful_order_completion_rate",
+        "source": "action-16",
+        "target": "kpi-successful_order_completion_rate",
+        "label": "measured by",
+        "data": {}
+      }
+    ]
+  }
+}

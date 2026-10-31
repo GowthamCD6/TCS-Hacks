@@ -1,0 +1,43 @@
+{
+  "data": {
+    "states": {
+      "delivery_problem": {
+        "amount": 247215.71,
+        "orders": 656
+      },
+      "captured_no_order": {
+        "amount": 44345.23,
+        "orders": 126
+      },
+      "failed_before_debit": {
+        "amount": 40939.14,
+        "orders": 112
+      },
+      "debited_then_reversed": {
+        "amount": 9613.37,
+        "orders": 26
+      }
+    },
+    "measured": {
+      "complaints": 107,
+      "affected_order_count": 152,
+      "complaining_customers": 91,
+      "captured_amount_at_risk": 44345.23,
+      "confirmed_refund_amount": 0,
+      "observed_repeat_complainers": 15,
+      "failed_or_incomplete_transactions": 264
+    },
+    "estimated": {
+      "estimated_lost_order_value": 53958.6,
+      "estimated_repeat_complaints": 39
+    },
+    "assumptions": [
+      "Repeat-complaint risk uses the larger of the observed rate and an assumed 25%.",
+      "Lost order value assumes affected orders are not re-placed."
+    ],
+    "telemetry_available": true,
+    "affected_order_count": 152,
+    "affected_customer_count": 156,
+    "estimated_business_impact": 53958.6
+  }
+}

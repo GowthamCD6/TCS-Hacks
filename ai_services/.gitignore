@@ -7,7 +7,16 @@ env/
 venv/
 .venv/
 .env
-data/
+data/*
+!data/calibration.json
+!data/labels/
 *.chroma
 .cache/
 
+
+# Generated evaluation artefacts
+eval/hidden_truth.json
+eval/hidden_truth_product.json
+eval/llm_grounding_log.jsonl
+eval/scorecard.json
+.pytest_cache/

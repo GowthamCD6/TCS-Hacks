@@ -1,0 +1,234 @@
+{
+  "data": {
+    "entries": [
+      {
+        "type": "audit",
+        "action": "incident.created",
+        "actor": "system",
+        "details": {
+          "number": "RIQ-2026-0027",
+          "category": "payment"
+        },
+        "at": "2026-10-31T10:46:03.303Z"
+      },
+      {
+        "type": "audit",
+        "action": "incident.status_changed",
+        "actor": "owner-token",
+        "details": {
+          "to": "investigating",
+          "from": "detected"
+        },
+        "at": "2026-10-31T10:46:03.318Z"
+      },
+      {
+        "type": "audit",
+        "action": "incident.status_changed",
+        "actor": "owner-token",
+        "details": {
+          "to": "awaiting_approval",
+          "from": "investigating"
+        },
+        "at": "2026-10-31T10:46:05.742Z"
+      },
+      {
+        "type": "audit",
+        "action": "agent.investigation_completed",
+        "actor": "owner-token",
+        "details": {
+          "run_id": 53,
+          "confidence": 0.95
+        },
+        "at": "2026-10-31T10:46:05.743Z"
+      },
+      {
+        "type": "audit",
+        "action": "evidence.injected",
+        "actor": "owner-token",
+        "details": {
+          "kind": "support_transcripts"
+        },
+        "at": "2026-10-31T10:46:06.337Z"
+      },
+      {
+        "type": "audit",
+        "action": "incident.status_changed",
+        "actor": "owner-token",
+        "details": {
+          "to": "investigating",
+          "from": "awaiting_approval"
+        },
+        "at": "2026-10-31T10:46:06.359Z"
+      },
+      {
+        "type": "audit",
+        "action": "incident.status_changed",
+        "actor": "owner-token",
+        "details": {
+          "to": "awaiting_approval",
+          "from": "investigating"
+        },
+        "at": "2026-10-31T10:46:13.836Z"
+      },
+      {
+        "type": "audit",
+        "action": "agent.reassessment_completed",
+        "actor": "owner-token",
+        "details": {
+          "run_id": 54,
+          "confidence": 0.95
+        },
+        "at": "2026-10-31T10:46:13.837Z"
+      },
+      {
+        "type": "audit",
+        "action": "incident.status_changed",
+        "actor": "owner-token",
+        "details": {
+          "to": "investigating",
+          "from": "awaiting_approval"
+        },
+        "at": "2026-10-31T10:46:13.871Z"
+      },
+      {
+        "type": "audit",
+        "action": "incident.status_changed",
+        "actor": "owner-token",
+        "details": {
+          "to": "awaiting_approval",
+          "from": "investigating"
+        },
+        "at": "2026-10-31T10:46:16.297Z"
+      },
+      {
+        "type": "audit",
+        "action": "agent.reassessment_completed",
+        "actor": "owner-token",
+        "details": {
+          "run_id": 55,
+          "confidence": 0.95
+        },
+        "at": "2026-10-31T10:46:16.297Z"
+      },
+      {
+        "type": "audit",
+        "action": "incident.status_changed",
+        "actor": "owner-token",
+        "details": {
+          "to": "investigating",
+          "from": "awaiting_approval"
+        },
+        "at": "2026-10-31T10:46:16.337Z"
+      },
+      {
+        "type": "audit",
+        "action": "incident.status_changed",
+        "actor": "owner-token",
+        "details": {
+          "to": "awaiting_approval",
+          "from": "investigating"
+        },
+        "at": "2026-10-31T10:46:17.827Z"
+      },
+      {
+        "type": "audit",
+        "action": "agent.reassessment_completed",
+        "actor": "owner-token",
+        "details": {
+          "run_id": 56,
+          "confidence": 0.95
+        },
+        "at": "2026-10-31T10:46:17.827Z"
+      },
+      {
+        "type": "audit",
+        "action": "incident.status_changed",
+        "actor": "owner-token",
+        "details": {
+          "to": "approved",
+          "from": "awaiting_approval"
+        },
+        "at": "2026-10-31T10:46:17.857Z"
+      },
+      {
+        "type": "audit",
+        "action": "incident.status_changed",
+        "actor": "owner-token",
+        "details": {
+          "to": "executing",
+          "from": "approved"
+        },
+        "at": "2026-10-31T10:46:17.873Z"
+      },
+      {
+        "type": "audit",
+        "action": "incident.status_changed",
+        "actor": "owner-token",
+        "details": {
+          "to": "monitoring",
+          "from": "executing"
+        },
+        "at": "2026-10-31T10:46:17.881Z"
+      },
+      {
+        "type": "audit",
+        "action": "incident.status_changed",
+        "actor": "owner-token",
+        "details": {
+          "to": "resolved",
+          "from": "monitoring",
+          "resolution_summary": "Recovery verified: all required KPIs held target for their full monitoring window."
+        },
+        "at": "2026-10-31T10:46:18.067Z"
+      },
+      {
+        "type": "action",
+        "action": "disable_feature_flag",
+        "actor": "simulated-adapter",
+        "details": {
+          "note": "No real money, message or production flag was touched.",
+          "target": "mobile-payments-config",
+          "simulated": true,
+          "flag_change": "disable_feature_flag"
+        },
+        "at": "2026-10-14T00:00:00.000Z"
+      },
+      {
+        "type": "agent_run",
+        "action": "investigation",
+        "actor": "investigator-agent",
+        "details": {
+          "status": "completed"
+        },
+        "at": "2026-10-14T00:00:00.000Z"
+      },
+      {
+        "type": "agent_run",
+        "action": "reassessment",
+        "actor": "investigator-agent",
+        "details": {
+          "status": "completed"
+        },
+        "at": "2026-10-14T00:00:00.000Z"
+      },
+      {
+        "type": "agent_run",
+        "action": "reassessment",
+        "actor": "investigator-agent",
+        "details": {
+          "status": "completed"
+        },
+        "at": "2026-10-14T00:00:00.000Z"
+      },
+      {
+        "type": "agent_run",
+        "action": "reassessment",
+        "actor": "investigator-agent",
+        "details": {
+          "status": "completed"
+        },
+        "at": "2026-10-14T00:00:00.000Z"
+      }
+    ]
+  }
+}

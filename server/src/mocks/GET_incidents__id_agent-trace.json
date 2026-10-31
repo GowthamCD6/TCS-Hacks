@@ -1,0 +1,2261 @@
+{
+  "data": {
+    "runs": [
+      {
+        "id": 53,
+        "incident_id": 27,
+        "run_type": "investigation",
+        "status": "completed",
+        "input_summary": {
+          "as_of": "2026-10-14T00:00:00.000Z",
+          "category": "payment"
+        },
+        "final_summary": {
+          "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+          "confidence": 0.95,
+          "llm_tokens": 0,
+          "duration_ms": 2169,
+          "explanation": [
+            {
+              "text": "The court's leading finding is: Release 2.3 on android for Android 14 UPI orders caused the issue, with confidence 0.95.",
+              "numbers_used": [
+                {
+                  "path": "run_root_cause_court.hypotheses[0].confidence_score",
+                  "value": 0.95
+                }
+              ]
+            },
+            {
+              "text": "Customers in Android 14 | v2.3 | upi report the issue at 16.139 times the rate of everyone else.",
+              "numbers_used": [
+                {
+                  "path": "analyze_segments.top_segment.lift_ratio",
+                  "value": 16.139
+                }
+              ]
+            },
+            {
+              "text": "Telemetry shows 152 affected orders, with 44345.23 still at risk.",
+              "numbers_used": [
+                {
+                  "path": "estimate_impact.measured.affected_order_count",
+                  "value": 152
+                },
+                {
+                  "path": "estimate_impact.measured.captured_amount_at_risk",
+                  "value": 44345.23
+                }
+              ]
+            },
+            {
+              "text": "Rejected on the evidence: menu_price_change, seasonal_traffic, weather_rain, payment_gateway_regression.",
+              "numbers_used": []
+            }
+          ],
+          "partially_analyzed": true
+        },
+        "started_at": "2026-10-14T00:00:00.000Z",
+        "completed_at": "2026-10-14T00:00:00.000Z",
+        "error_message": null,
+        "steps": [
+          {
+            "id": 521,
+            "agent_run_id": 53,
+            "step_number": 1,
+            "agent_name": "planner",
+            "tool_name": null,
+            "input_summary": {
+              "category": "payment",
+              "run_type": "investigation",
+              "window_start": "2026-10-11T00:00:00Z",
+              "evidence_kinds": []
+            },
+            "output_summary": {
+              "mode": "fixed_plan_no_llm",
+              "plan": [
+                "gather_signal_context",
+                "cluster_issues",
+                "analyze_segments",
+                "run_root_cause_court",
+                "estimate_impact",
+                "check_refund_eligibility",
+                "recommend_interventions"
+              ],
+              "tests_to_rerun": "all"
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 0,
+            "created_at": "2026-10-31T10:46:05.681Z"
+          },
+          {
+            "id": 522,
+            "agent_run_id": 53,
+            "step_number": 2,
+            "agent_name": "investigator",
+            "tool_name": "gather_signal_context",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "recent_changes": [
+                {
+                  "at": "2026-10-02T00:00:00",
+                  "city": null,
+                  "type": "menu_price_change",
+                  "event_id": 87901
+                },
+                {
+                  "at": "2026-10-08T18:00:00",
+                  "city": null,
+                  "type": "app_release_deployed",
+                  "event_id": 105691
+                },
+                {
+                  "at": "2026-10-10T00:00:00",
+                  "city": "Chennai",
+                  "type": "weather_alert",
+                  "event_id": 109463
+                },
+                {
+                  "at": "2026-10-10T00:00:00",
+                  "city": "Mumbai",
+                  "type": "weather_alert",
+                  "event_id": 109464
+                }
+              ],
+              "telemetry_available": true,
+              "complaints_in_window": 54,
+              "complaining_customers": 51
+            },
+            "evidence_references": [
+              {
+                "source_table": "operational_events",
+                "source_record_id": "87901"
+              },
+              {
+                "source_table": "operational_events",
+                "source_record_id": "105691"
+              },
+              {
+                "source_table": "operational_events",
+                "source_record_id": "109463"
+              },
+              {
+                "source_table": "operational_events",
+                "source_record_id": "109464"
+              }
+            ],
+            "status": "completed",
+            "duration_ms": 12,
+            "created_at": "2026-10-31T10:46:05.682Z"
+          },
+          {
+            "id": 523,
+            "agent_run_id": 53,
+            "step_number": 3,
+            "agent_name": "investigator",
+            "tool_name": "cluster_issues",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "method": "hdbscan",
+              "clusters": [
+                {
+                  "size": 10,
+                  "label": "Complaints about upi, money, deducted, created"
+                },
+                {
+                  "size": 7,
+                  "label": "Complaints about account, debited, yet, there"
+                },
+                {
+                  "size": 6,
+                  "label": "Complaints about paisa, kat, gaya, nahi"
+                },
+                {
+                  "size": 6,
+                  "label": "Complaints about payment, confirmation, screen, hangs"
+                },
+                {
+                  "size": 6,
+                  "label": "Complaints about charged, upi, debit, shows"
+                },
+                {
+                  "size": 5,
+                  "label": "Complaints about card, payment, declined, had"
+                }
+              ],
+              "embedding": "sentence-transformers"
+            },
+            "evidence_references": [
+              {
+                "source_table": "feedback",
+                "source_record_id": "2105"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2106"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2118"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2091"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2136"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2178"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2149"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2171"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2223"
+              }
+            ],
+            "status": "completed",
+            "duration_ms": 124,
+            "created_at": "2026-10-31T10:46:05.682Z"
+          },
+          {
+            "id": 524,
+            "agent_run_id": 53,
+            "step_number": 4,
+            "agent_name": "investigator",
+            "tool_name": "analyze_segments",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "population": 1900,
+              "top_segment": {
+                "p_value": 1.4766369657189102e-21,
+                "coverage": 0.7,
+                "dimension": "device_os__app_version__payment",
+                "issue_rate": 0.145833,
+                "lift_ratio": 16.139,
+                "limitations": "Observational comparison of complaining customers; silent victims are undercounted.",
+                "significant": true,
+                "segment_value": "Android 14 | v2.3 | upi",
+                "comparison_rate": 0.009036,
+                "total_customers": 240,
+                "affected_customers": 35
+              },
+              "total_affected": 50
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 744,
+            "created_at": "2026-10-31T10:46:05.683Z"
+          },
+          {
+            "id": 525,
+            "agent_run_id": 53,
+            "step_number": 5,
+            "agent_name": "investigator",
+            "tool_name": "run_root_cause_court",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+              "hypotheses": [
+                {
+                  "key": "release_2.3_android",
+                  "tests": {
+                    "temporal": "supported",
+                    "telemetry": "supported",
+                    "counter_check": "supported",
+                    "dose_response": "supported",
+                    "segment_specificity": "supported"
+                  },
+                  "status": "supported"
+                },
+                {
+                  "key": "menu_price_change",
+                  "tests": {
+                    "temporal": "rejected",
+                    "telemetry": "inconclusive",
+                    "counter_check": "rejected",
+                    "dose_response": "inconclusive",
+                    "segment_specificity": "rejected"
+                  },
+                  "status": "rejected"
+                },
+                {
+                  "key": "seasonal_traffic",
+                  "tests": {
+                    "temporal": "rejected",
+                    "telemetry": "inconclusive",
+                    "counter_check": "rejected",
+                    "dose_response": "inconclusive",
+                    "segment_specificity": "rejected"
+                  },
+                  "status": "rejected"
+                },
+                {
+                  "key": "weather_rain",
+                  "tests": {
+                    "temporal": "supported",
+                    "telemetry": "rejected",
+                    "counter_check": "rejected",
+                    "dose_response": "rejected",
+                    "segment_specificity": "rejected"
+                  },
+                  "status": "rejected"
+                },
+                {
+                  "key": "payment_gateway_regression",
+                  "tests": {
+                    "temporal": "untested",
+                    "telemetry": "rejected",
+                    "counter_check": "rejected",
+                    "dose_response": "rejected",
+                    "segment_specificity": "rejected"
+                  },
+                  "status": "rejected"
+                }
+              ],
+              "tests_rerun": 25,
+              "tests_reused": 0,
+              "verdict_status": "supported",
+              "confidence_score": 0.95
+            },
+            "evidence_references": [
+              {
+                "description": "New UPI intent flow and payment confirmation screen",
+                "source_table": "product_releases",
+                "source_record_id": "2.3:android"
+              },
+              {
+                "description": "menu price change",
+                "source_table": "operational_events",
+                "source_record_id": "87901"
+              },
+              {
+                "description": "marketing campaign",
+                "source_table": "operational_events",
+                "source_record_id": "72502"
+              },
+              {
+                "description": "Weather alert",
+                "source_table": "operational_events",
+                "source_record_id": "109463"
+              }
+            ],
+            "status": "completed",
+            "duration_ms": 1074,
+            "created_at": "2026-10-31T10:46:05.684Z"
+          },
+          {
+            "id": 526,
+            "agent_run_id": 53,
+            "step_number": 6,
+            "agent_name": "investigator",
+            "tool_name": "request_additional_evidence",
+            "input_summary": {
+              "reason": "Court reported untested evidence"
+            },
+            "output_summary": {
+              "requested": [
+                "temporal"
+              ]
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 0,
+            "created_at": "2026-10-31T10:46:05.684Z"
+          },
+          {
+            "id": 527,
+            "agent_run_id": 53,
+            "step_number": 7,
+            "agent_name": "investigator",
+            "tool_name": "estimate_impact",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "states": {
+                "delivery_problem": {
+                  "amount": 247215.71,
+                  "orders": 656
+                },
+                "captured_no_order": {
+                  "amount": 44345.23,
+                  "orders": 126
+                },
+                "failed_before_debit": {
+                  "amount": 40939.14,
+                  "orders": 112
+                },
+                "debited_then_reversed": {
+                  "amount": 9613.37,
+                  "orders": 26
+                }
+              },
+              "measured": {
+                "complaints": 82,
+                "affected_order_count": 152,
+                "complaining_customers": 78,
+                "captured_amount_at_risk": 44345.23,
+                "confirmed_refund_amount": 0,
+                "observed_repeat_complainers": 3,
+                "failed_or_incomplete_transactions": 264
+              },
+              "estimated": {
+                "estimated_lost_order_value": 53958.6,
+                "estimated_repeat_complaints": 39
+              },
+              "assumptions": [
+                "Repeat-complaint risk uses the larger of the observed rate and an assumed 25%.",
+                "Lost order value assumes affected orders are not re-placed."
+              ],
+              "telemetry_available": true,
+              "affected_order_count": 152,
+              "affected_customer_count": 156,
+              "estimated_business_impact": 53958.6
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 98,
+            "created_at": "2026-10-31T10:46:05.685Z"
+          },
+          {
+            "id": 528,
+            "agent_run_id": 53,
+            "step_number": 8,
+            "agent_name": "investigator",
+            "tool_name": "check_refund_eligibility",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "blocked_reason": null,
+              "eligible_amount": 35373.98,
+              "eligible_orders": 100
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 85,
+            "created_at": "2026-10-31T10:46:05.685Z"
+          },
+          {
+            "id": 529,
+            "agent_run_id": 53,
+            "step_number": 9,
+            "agent_name": "investigator",
+            "tool_name": "recommend_interventions",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "ranked": [
+                {
+                  "score": 0.8875,
+                  "action": "disable_feature_flag"
+                },
+                {
+                  "score": 0.87,
+                  "action": "rollback_release"
+                },
+                {
+                  "score": 0.805,
+                  "action": "reconcile_payments"
+                },
+                {
+                  "score": 0.7323,
+                  "action": "issue_eligible_refunds"
+                },
+                {
+                  "score": 0.7067,
+                  "action": "create_support_incident"
+                },
+                {
+                  "score": 0.6675,
+                  "action": "update_support_scripts"
+                },
+                {
+                  "score": 0.6633,
+                  "action": "notify_customers"
+                },
+                {
+                  "score": 0.5538,
+                  "action": "goodwill_coupon"
+                }
+              ],
+              "policy_checks": []
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 0,
+            "created_at": "2026-10-31T10:46:05.686Z"
+          },
+          {
+            "id": 530,
+            "agent_run_id": 53,
+            "step_number": 10,
+            "agent_name": "reporter",
+            "tool_name": null,
+            "input_summary": {
+              "llm_conclusion": false
+            },
+            "output_summary": {
+              "explanation": [
+                {
+                  "text": "The court's leading finding is: Release 2.3 on android for Android 14 UPI orders caused the issue, with confidence 0.95.",
+                  "numbers_used": [
+                    {
+                      "path": "run_root_cause_court.hypotheses[0].confidence_score",
+                      "value": 0.95
+                    }
+                  ]
+                },
+                {
+                  "text": "Customers in Android 14 | v2.3 | upi report the issue at 16.139 times the rate of everyone else.",
+                  "numbers_used": [
+                    {
+                      "path": "analyze_segments.top_segment.lift_ratio",
+                      "value": 16.139
+                    }
+                  ]
+                },
+                {
+                  "text": "Telemetry shows 152 affected orders, with 44345.23 still at risk.",
+                  "numbers_used": [
+                    {
+                      "path": "estimate_impact.measured.affected_order_count",
+                      "value": 152
+                    },
+                    {
+                      "path": "estimate_impact.measured.captured_amount_at_risk",
+                      "value": 44345.23
+                    }
+                  ]
+                },
+                {
+                  "text": "Rejected on the evidence: menu_price_change, seasonal_traffic, weather_rain, payment_gateway_regression.",
+                  "numbers_used": []
+                }
+              ]
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 0,
+            "created_at": "2026-10-31T10:46:05.686Z"
+          }
+        ]
+      },
+      {
+        "id": 54,
+        "incident_id": 27,
+        "run_type": "reassessment",
+        "status": "completed",
+        "input_summary": {
+          "as_of": "2026-10-14T00:00:00.000Z",
+          "category": "payment",
+          "evidence_kinds": [
+            "support_transcripts"
+          ]
+        },
+        "final_summary": {
+          "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+          "confidence": 0.95,
+          "llm_tokens": 0,
+          "duration_ms": 1585,
+          "explanation": [
+            {
+              "text": "The court's leading finding is: Release 2.3 on android for Android 14 UPI orders caused the issue, with confidence 0.95.",
+              "numbers_used": [
+                {
+                  "path": "run_root_cause_court.hypotheses[0].confidence_score",
+                  "value": 0.95
+                }
+              ]
+            },
+            {
+              "text": "Customers in Android 14 | v2.3 | upi report the issue at 22.133 times the rate of everyone else.",
+              "numbers_used": [
+                {
+                  "path": "analyze_segments.top_segment.lift_ratio",
+                  "value": 22.133
+                }
+              ]
+            },
+            {
+              "text": "Telemetry shows 152 affected orders, with 44345.23 still at risk.",
+              "numbers_used": [
+                {
+                  "path": "estimate_impact.measured.affected_order_count",
+                  "value": 152
+                },
+                {
+                  "path": "estimate_impact.measured.captured_amount_at_risk",
+                  "value": 44345.23
+                }
+              ]
+            },
+            {
+              "text": "Rejected on the evidence: menu_price_change, seasonal_traffic, weather_rain, payment_gateway_regression.",
+              "numbers_used": []
+            }
+          ],
+          "partially_analyzed": true
+        },
+        "started_at": "2026-10-14T00:00:00.000Z",
+        "completed_at": "2026-10-14T00:00:00.000Z",
+        "error_message": null,
+        "steps": [
+          {
+            "id": 531,
+            "agent_run_id": 54,
+            "step_number": 1,
+            "agent_name": "planner",
+            "tool_name": null,
+            "input_summary": {
+              "category": "payment",
+              "run_type": "reassessment",
+              "window_start": "2026-10-11T00:00:00Z",
+              "evidence_kinds": [
+                "support_transcripts"
+              ]
+            },
+            "output_summary": {
+              "mode": "fixed_plan_no_llm",
+              "plan": [
+                "gather_signal_context",
+                "cluster_issues",
+                "analyze_segments",
+                "run_root_cause_court",
+                "estimate_impact",
+                "check_refund_eligibility",
+                "recommend_interventions"
+              ],
+              "tests_to_rerun": [
+                "dose_response",
+                "segment_specificity"
+              ]
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 0,
+            "created_at": "2026-10-31T10:46:13.782Z"
+          },
+          {
+            "id": 532,
+            "agent_run_id": 54,
+            "step_number": 2,
+            "agent_name": "investigator",
+            "tool_name": "gather_signal_context",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "recent_changes": [
+                {
+                  "at": "2026-10-02T00:00:00",
+                  "city": null,
+                  "type": "menu_price_change",
+                  "event_id": 87901
+                },
+                {
+                  "at": "2026-10-08T18:00:00",
+                  "city": null,
+                  "type": "app_release_deployed",
+                  "event_id": 105691
+                },
+                {
+                  "at": "2026-10-10T00:00:00",
+                  "city": "Chennai",
+                  "type": "weather_alert",
+                  "event_id": 109463
+                },
+                {
+                  "at": "2026-10-10T00:00:00",
+                  "city": "Mumbai",
+                  "type": "weather_alert",
+                  "event_id": 109464
+                }
+              ],
+              "telemetry_available": true,
+              "complaints_in_window": 79,
+              "complaining_customers": 64
+            },
+            "evidence_references": [
+              {
+                "source_table": "operational_events",
+                "source_record_id": "87901"
+              },
+              {
+                "source_table": "operational_events",
+                "source_record_id": "105691"
+              },
+              {
+                "source_table": "operational_events",
+                "source_record_id": "109463"
+              },
+              {
+                "source_table": "operational_events",
+                "source_record_id": "109464"
+              }
+            ],
+            "status": "completed",
+            "duration_ms": 23,
+            "created_at": "2026-10-31T10:46:13.783Z"
+          },
+          {
+            "id": 533,
+            "agent_run_id": 54,
+            "step_number": 3,
+            "agent_name": "investigator",
+            "tool_name": "cluster_issues",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "method": "hdbscan",
+              "clusters": [
+                {
+                  "size": 25,
+                  "label": "Complaints about synthetic, call, upi, returned"
+                },
+                {
+                  "size": 10,
+                  "label": "Complaints about upi, money, deducted, created"
+                },
+                {
+                  "size": 7,
+                  "label": "Complaints about account, debited, yet, there"
+                },
+                {
+                  "size": 6,
+                  "label": "Complaints about paisa, kat, gaya, nahi"
+                },
+                {
+                  "size": 6,
+                  "label": "Complaints about payment, confirmation, screen, hangs"
+                },
+                {
+                  "size": 6,
+                  "label": "Complaints about charged, upi, debit, shows"
+                }
+              ],
+              "embedding": "sentence-transformers"
+            },
+            "evidence_references": [
+              {
+                "source_table": "feedback",
+                "source_record_id": "2758"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2757"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2756"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2105"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2106"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2118"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2091"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2136"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2178"
+              }
+            ],
+            "status": "completed",
+            "duration_ms": 296,
+            "created_at": "2026-10-31T10:46:13.783Z"
+          },
+          {
+            "id": 534,
+            "agent_run_id": 54,
+            "step_number": 4,
+            "agent_name": "investigator",
+            "tool_name": "analyze_segments",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "population": 1900,
+              "top_segment": {
+                "p_value": 2.116851610506124e-32,
+                "coverage": 0.762,
+                "dimension": "device_os__app_version__payment",
+                "issue_rate": 0.2,
+                "lift_ratio": 22.133,
+                "limitations": "Observational comparison of complaining customers; silent victims are undercounted.",
+                "significant": true,
+                "segment_value": "Android 14 | v2.3 | upi",
+                "comparison_rate": 0.009036,
+                "total_customers": 240,
+                "affected_customers": 48
+              },
+              "total_affected": 63
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 815,
+            "created_at": "2026-10-31T10:46:13.784Z"
+          },
+          {
+            "id": 535,
+            "agent_run_id": 54,
+            "step_number": 5,
+            "agent_name": "investigator",
+            "tool_name": "run_root_cause_court",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+              "hypotheses": [
+                {
+                  "key": "release_2.3_android",
+                  "tests": {
+                    "temporal": "supported",
+                    "telemetry": "supported",
+                    "counter_check": "supported",
+                    "dose_response": "supported",
+                    "segment_specificity": "supported"
+                  },
+                  "status": "supported"
+                },
+                {
+                  "key": "menu_price_change",
+                  "tests": {
+                    "temporal": "rejected",
+                    "telemetry": "inconclusive",
+                    "counter_check": "rejected",
+                    "dose_response": "inconclusive",
+                    "segment_specificity": "rejected"
+                  },
+                  "status": "rejected"
+                },
+                {
+                  "key": "seasonal_traffic",
+                  "tests": {
+                    "temporal": "rejected",
+                    "telemetry": "inconclusive",
+                    "counter_check": "rejected",
+                    "dose_response": "inconclusive",
+                    "segment_specificity": "rejected"
+                  },
+                  "status": "rejected"
+                },
+                {
+                  "key": "weather_rain",
+                  "tests": {
+                    "temporal": "supported",
+                    "telemetry": "rejected",
+                    "counter_check": "rejected",
+                    "dose_response": "rejected",
+                    "segment_specificity": "rejected"
+                  },
+                  "status": "rejected"
+                },
+                {
+                  "key": "payment_gateway_regression",
+                  "tests": {
+                    "temporal": "untested",
+                    "telemetry": "rejected",
+                    "counter_check": "rejected",
+                    "dose_response": "rejected",
+                    "segment_specificity": "rejected"
+                  },
+                  "status": "rejected"
+                }
+              ],
+              "tests_rerun": 10,
+              "tests_reused": 15,
+              "verdict_status": "supported",
+              "confidence_score": 0.95
+            },
+            "evidence_references": [
+              {
+                "description": "New UPI intent flow and payment confirmation screen",
+                "source_table": "product_releases",
+                "source_record_id": "2.3:android"
+              },
+              {
+                "description": "menu price change",
+                "source_table": "operational_events",
+                "source_record_id": "87901"
+              },
+              {
+                "description": "marketing campaign",
+                "source_table": "operational_events",
+                "source_record_id": "72502"
+              },
+              {
+                "description": "Weather alert",
+                "source_table": "operational_events",
+                "source_record_id": "109463"
+              }
+            ],
+            "status": "completed",
+            "duration_ms": 242,
+            "created_at": "2026-10-31T10:46:13.785Z"
+          },
+          {
+            "id": 536,
+            "agent_run_id": 54,
+            "step_number": 6,
+            "agent_name": "investigator",
+            "tool_name": "request_additional_evidence",
+            "input_summary": {
+              "reason": "Court reported untested evidence"
+            },
+            "output_summary": {
+              "requested": [
+                "temporal"
+              ]
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 0,
+            "created_at": "2026-10-31T10:46:13.785Z"
+          },
+          {
+            "id": 537,
+            "agent_run_id": 54,
+            "step_number": 7,
+            "agent_name": "investigator",
+            "tool_name": "estimate_impact",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "states": {
+                "delivery_problem": {
+                  "amount": 247215.71,
+                  "orders": 656
+                },
+                "captured_no_order": {
+                  "amount": 44345.23,
+                  "orders": 126
+                },
+                "failed_before_debit": {
+                  "amount": 40939.14,
+                  "orders": 112
+                },
+                "debited_then_reversed": {
+                  "amount": 9613.37,
+                  "orders": 26
+                }
+              },
+              "measured": {
+                "complaints": 107,
+                "affected_order_count": 152,
+                "complaining_customers": 91,
+                "captured_amount_at_risk": 44345.23,
+                "confirmed_refund_amount": 0,
+                "observed_repeat_complainers": 15,
+                "failed_or_incomplete_transactions": 264
+              },
+              "estimated": {
+                "estimated_lost_order_value": 53958.6,
+                "estimated_repeat_complaints": 39
+              },
+              "assumptions": [
+                "Repeat-complaint risk uses the larger of the observed rate and an assumed 25%.",
+                "Lost order value assumes affected orders are not re-placed."
+              ],
+              "telemetry_available": true,
+              "affected_order_count": 152,
+              "affected_customer_count": 156,
+              "estimated_business_impact": 53958.6
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 93,
+            "created_at": "2026-10-31T10:46:13.786Z"
+          },
+          {
+            "id": 538,
+            "agent_run_id": 54,
+            "step_number": 8,
+            "agent_name": "investigator",
+            "tool_name": "check_refund_eligibility",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "blocked_reason": null,
+              "eligible_amount": 35373.98,
+              "eligible_orders": 100
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 79,
+            "created_at": "2026-10-31T10:46:13.787Z"
+          },
+          {
+            "id": 539,
+            "agent_run_id": 54,
+            "step_number": 9,
+            "agent_name": "investigator",
+            "tool_name": "recommend_interventions",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "ranked": [
+                {
+                  "score": 0.8875,
+                  "action": "disable_feature_flag"
+                },
+                {
+                  "score": 0.87,
+                  "action": "rollback_release"
+                },
+                {
+                  "score": 0.805,
+                  "action": "reconcile_payments"
+                },
+                {
+                  "score": 0.7323,
+                  "action": "issue_eligible_refunds"
+                },
+                {
+                  "score": 0.7067,
+                  "action": "create_support_incident"
+                },
+                {
+                  "score": 0.6675,
+                  "action": "update_support_scripts"
+                },
+                {
+                  "score": 0.6633,
+                  "action": "notify_customers"
+                },
+                {
+                  "score": 0.5538,
+                  "action": "goodwill_coupon"
+                }
+              ],
+              "policy_checks": []
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 0,
+            "created_at": "2026-10-31T10:46:13.787Z"
+          },
+          {
+            "id": 540,
+            "agent_run_id": 54,
+            "step_number": 10,
+            "agent_name": "reporter",
+            "tool_name": null,
+            "input_summary": {
+              "llm_conclusion": false
+            },
+            "output_summary": {
+              "explanation": [
+                {
+                  "text": "The court's leading finding is: Release 2.3 on android for Android 14 UPI orders caused the issue, with confidence 0.95.",
+                  "numbers_used": [
+                    {
+                      "path": "run_root_cause_court.hypotheses[0].confidence_score",
+                      "value": 0.95
+                    }
+                  ]
+                },
+                {
+                  "text": "Customers in Android 14 | v2.3 | upi report the issue at 22.133 times the rate of everyone else.",
+                  "numbers_used": [
+                    {
+                      "path": "analyze_segments.top_segment.lift_ratio",
+                      "value": 22.133
+                    }
+                  ]
+                },
+                {
+                  "text": "Telemetry shows 152 affected orders, with 44345.23 still at risk.",
+                  "numbers_used": [
+                    {
+                      "path": "estimate_impact.measured.affected_order_count",
+                      "value": 152
+                    },
+                    {
+                      "path": "estimate_impact.measured.captured_amount_at_risk",
+                      "value": 44345.23
+                    }
+                  ]
+                },
+                {
+                  "text": "Rejected on the evidence: menu_price_change, seasonal_traffic, weather_rain, payment_gateway_regression.",
+                  "numbers_used": []
+                }
+              ]
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 0,
+            "created_at": "2026-10-31T10:46:13.788Z"
+          }
+        ]
+      },
+      {
+        "id": 55,
+        "incident_id": 27,
+        "run_type": "reassessment",
+        "status": "completed",
+        "input_summary": {
+          "as_of": "2026-10-14T00:00:00.000Z",
+          "category": "payment",
+          "evidence_kinds": [
+            "new_complaints"
+          ]
+        },
+        "final_summary": {
+          "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+          "confidence": 0.95,
+          "llm_tokens": 0,
+          "duration_ms": 2150,
+          "explanation": [
+            {
+              "text": "The court's leading finding is: Release 2.3 on android for Android 14 UPI orders caused the issue, with confidence 0.95.",
+              "numbers_used": [
+                {
+                  "path": "run_root_cause_court.hypotheses[0].confidence_score",
+                  "value": 0.95
+                }
+              ]
+            },
+            {
+              "text": "Customers in Android 14 | v2.3 | upi report the issue at 22.133 times the rate of everyone else.",
+              "numbers_used": [
+                {
+                  "path": "analyze_segments.top_segment.lift_ratio",
+                  "value": 22.133
+                }
+              ]
+            },
+            {
+              "text": "Telemetry shows 152 affected orders, with 44345.23 still at risk.",
+              "numbers_used": [
+                {
+                  "path": "estimate_impact.measured.affected_order_count",
+                  "value": 152
+                },
+                {
+                  "path": "estimate_impact.measured.captured_amount_at_risk",
+                  "value": 44345.23
+                }
+              ]
+            },
+            {
+              "text": "Rejected on the evidence: menu_price_change, seasonal_traffic, weather_rain, payment_gateway_regression.",
+              "numbers_used": []
+            }
+          ],
+          "partially_analyzed": true
+        },
+        "started_at": "2026-10-14T00:00:00.000Z",
+        "completed_at": "2026-10-14T00:00:00.000Z",
+        "error_message": null,
+        "steps": [
+          {
+            "id": 541,
+            "agent_run_id": 55,
+            "step_number": 1,
+            "agent_name": "planner",
+            "tool_name": null,
+            "input_summary": {
+              "category": "payment",
+              "run_type": "reassessment",
+              "window_start": "2026-10-11T00:00:00Z",
+              "evidence_kinds": [
+                "new_complaints"
+              ]
+            },
+            "output_summary": {
+              "mode": "fixed_plan_no_llm",
+              "plan": [
+                "gather_signal_context",
+                "cluster_issues",
+                "analyze_segments",
+                "run_root_cause_court",
+                "estimate_impact",
+                "check_refund_eligibility",
+                "recommend_interventions"
+              ],
+              "tests_to_rerun": [
+                "counter_check",
+                "dose_response",
+                "segment_specificity",
+                "telemetry"
+              ]
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 0,
+            "created_at": "2026-10-31T10:46:16.238Z"
+          },
+          {
+            "id": 542,
+            "agent_run_id": 55,
+            "step_number": 2,
+            "agent_name": "investigator",
+            "tool_name": "gather_signal_context",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "recent_changes": [
+                {
+                  "at": "2026-10-02T00:00:00",
+                  "city": null,
+                  "type": "menu_price_change",
+                  "event_id": 87901
+                },
+                {
+                  "at": "2026-10-08T18:00:00",
+                  "city": null,
+                  "type": "app_release_deployed",
+                  "event_id": 105691
+                },
+                {
+                  "at": "2026-10-10T00:00:00",
+                  "city": "Chennai",
+                  "type": "weather_alert",
+                  "event_id": 109463
+                },
+                {
+                  "at": "2026-10-10T00:00:00",
+                  "city": "Mumbai",
+                  "type": "weather_alert",
+                  "event_id": 109464
+                }
+              ],
+              "telemetry_available": true,
+              "complaints_in_window": 79,
+              "complaining_customers": 64
+            },
+            "evidence_references": [
+              {
+                "source_table": "operational_events",
+                "source_record_id": "87901"
+              },
+              {
+                "source_table": "operational_events",
+                "source_record_id": "105691"
+              },
+              {
+                "source_table": "operational_events",
+                "source_record_id": "109463"
+              },
+              {
+                "source_table": "operational_events",
+                "source_record_id": "109464"
+              }
+            ],
+            "status": "completed",
+            "duration_ms": 14,
+            "created_at": "2026-10-31T10:46:16.239Z"
+          },
+          {
+            "id": 543,
+            "agent_run_id": 55,
+            "step_number": 3,
+            "agent_name": "investigator",
+            "tool_name": "cluster_issues",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "method": "hdbscan",
+              "clusters": [
+                {
+                  "size": 25,
+                  "label": "Complaints about synthetic, call, upi, returned"
+                },
+                {
+                  "size": 10,
+                  "label": "Complaints about upi, money, deducted, created"
+                },
+                {
+                  "size": 7,
+                  "label": "Complaints about account, debited, yet, there"
+                },
+                {
+                  "size": 6,
+                  "label": "Complaints about paisa, kat, gaya, nahi"
+                },
+                {
+                  "size": 6,
+                  "label": "Complaints about payment, confirmation, screen, hangs"
+                },
+                {
+                  "size": 6,
+                  "label": "Complaints about charged, upi, debit, shows"
+                }
+              ],
+              "embedding": "sentence-transformers"
+            },
+            "evidence_references": [
+              {
+                "source_table": "feedback",
+                "source_record_id": "2758"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2757"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2756"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2105"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2106"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2118"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2091"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2136"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2178"
+              }
+            ],
+            "status": "completed",
+            "duration_ms": 79,
+            "created_at": "2026-10-31T10:46:16.239Z"
+          },
+          {
+            "id": 544,
+            "agent_run_id": 55,
+            "step_number": 4,
+            "agent_name": "investigator",
+            "tool_name": "analyze_segments",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "population": 1900,
+              "top_segment": {
+                "p_value": 2.116851610506124e-32,
+                "coverage": 0.762,
+                "dimension": "device_os__app_version__payment",
+                "issue_rate": 0.2,
+                "lift_ratio": 22.133,
+                "limitations": "Observational comparison of complaining customers; silent victims are undercounted.",
+                "significant": true,
+                "segment_value": "Android 14 | v2.3 | upi",
+                "comparison_rate": 0.009036,
+                "total_customers": 240,
+                "affected_customers": 48
+              },
+              "total_affected": 63
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 630,
+            "created_at": "2026-10-31T10:46:16.240Z"
+          },
+          {
+            "id": 545,
+            "agent_run_id": 55,
+            "step_number": 5,
+            "agent_name": "investigator",
+            "tool_name": "run_root_cause_court",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+              "hypotheses": [
+                {
+                  "key": "release_2.3_android",
+                  "tests": {
+                    "temporal": "supported",
+                    "telemetry": "supported",
+                    "counter_check": "supported",
+                    "dose_response": "supported",
+                    "segment_specificity": "supported"
+                  },
+                  "status": "supported"
+                },
+                {
+                  "key": "menu_price_change",
+                  "tests": {
+                    "temporal": "rejected",
+                    "telemetry": "inconclusive",
+                    "counter_check": "rejected",
+                    "dose_response": "inconclusive",
+                    "segment_specificity": "rejected"
+                  },
+                  "status": "rejected"
+                },
+                {
+                  "key": "seasonal_traffic",
+                  "tests": {
+                    "temporal": "rejected",
+                    "telemetry": "inconclusive",
+                    "counter_check": "rejected",
+                    "dose_response": "inconclusive",
+                    "segment_specificity": "rejected"
+                  },
+                  "status": "rejected"
+                },
+                {
+                  "key": "weather_rain",
+                  "tests": {
+                    "temporal": "supported",
+                    "telemetry": "rejected",
+                    "counter_check": "rejected",
+                    "dose_response": "rejected",
+                    "segment_specificity": "rejected"
+                  },
+                  "status": "rejected"
+                },
+                {
+                  "key": "payment_gateway_regression",
+                  "tests": {
+                    "temporal": "untested",
+                    "telemetry": "rejected",
+                    "counter_check": "rejected",
+                    "dose_response": "rejected",
+                    "segment_specificity": "rejected"
+                  },
+                  "status": "rejected"
+                }
+              ],
+              "tests_rerun": 20,
+              "tests_reused": 5,
+              "verdict_status": "supported",
+              "confidence_score": 0.95
+            },
+            "evidence_references": [
+              {
+                "description": "New UPI intent flow and payment confirmation screen",
+                "source_table": "product_releases",
+                "source_record_id": "2.3:android"
+              },
+              {
+                "description": "menu price change",
+                "source_table": "operational_events",
+                "source_record_id": "87901"
+              },
+              {
+                "description": "marketing campaign",
+                "source_table": "operational_events",
+                "source_record_id": "72502"
+              },
+              {
+                "description": "Weather alert",
+                "source_table": "operational_events",
+                "source_record_id": "109463"
+              }
+            ],
+            "status": "completed",
+            "duration_ms": 1210,
+            "created_at": "2026-10-31T10:46:16.241Z"
+          },
+          {
+            "id": 546,
+            "agent_run_id": 55,
+            "step_number": 6,
+            "agent_name": "investigator",
+            "tool_name": "request_additional_evidence",
+            "input_summary": {
+              "reason": "Court reported untested evidence"
+            },
+            "output_summary": {
+              "requested": [
+                "temporal"
+              ]
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 0,
+            "created_at": "2026-10-31T10:46:16.242Z"
+          },
+          {
+            "id": 547,
+            "agent_run_id": 55,
+            "step_number": 7,
+            "agent_name": "investigator",
+            "tool_name": "estimate_impact",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "states": {
+                "delivery_problem": {
+                  "amount": 247215.71,
+                  "orders": 656
+                },
+                "captured_no_order": {
+                  "amount": 44345.23,
+                  "orders": 126
+                },
+                "failed_before_debit": {
+                  "amount": 40939.14,
+                  "orders": 112
+                },
+                "debited_then_reversed": {
+                  "amount": 9613.37,
+                  "orders": 26
+                }
+              },
+              "measured": {
+                "complaints": 107,
+                "affected_order_count": 152,
+                "complaining_customers": 91,
+                "captured_amount_at_risk": 44345.23,
+                "confirmed_refund_amount": 0,
+                "observed_repeat_complainers": 15,
+                "failed_or_incomplete_transactions": 264
+              },
+              "estimated": {
+                "estimated_lost_order_value": 53958.6,
+                "estimated_repeat_complaints": 39
+              },
+              "assumptions": [
+                "Repeat-complaint risk uses the larger of the observed rate and an assumed 25%.",
+                "Lost order value assumes affected orders are not re-placed."
+              ],
+              "telemetry_available": true,
+              "affected_order_count": 152,
+              "affected_customer_count": 156,
+              "estimated_business_impact": 53958.6
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 102,
+            "created_at": "2026-10-31T10:46:16.243Z"
+          },
+          {
+            "id": 548,
+            "agent_run_id": 55,
+            "step_number": 8,
+            "agent_name": "investigator",
+            "tool_name": "check_refund_eligibility",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "blocked_reason": null,
+              "eligible_amount": 35373.98,
+              "eligible_orders": 100
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 79,
+            "created_at": "2026-10-31T10:46:16.244Z"
+          },
+          {
+            "id": 549,
+            "agent_run_id": 55,
+            "step_number": 9,
+            "agent_name": "investigator",
+            "tool_name": "recommend_interventions",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "ranked": [
+                {
+                  "score": 0.8875,
+                  "action": "disable_feature_flag"
+                },
+                {
+                  "score": 0.87,
+                  "action": "rollback_release"
+                },
+                {
+                  "score": 0.805,
+                  "action": "reconcile_payments"
+                },
+                {
+                  "score": 0.7323,
+                  "action": "issue_eligible_refunds"
+                },
+                {
+                  "score": 0.7067,
+                  "action": "create_support_incident"
+                },
+                {
+                  "score": 0.6675,
+                  "action": "update_support_scripts"
+                },
+                {
+                  "score": 0.6633,
+                  "action": "notify_customers"
+                },
+                {
+                  "score": 0.5538,
+                  "action": "goodwill_coupon"
+                }
+              ],
+              "policy_checks": []
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 0,
+            "created_at": "2026-10-31T10:46:16.245Z"
+          },
+          {
+            "id": 550,
+            "agent_run_id": 55,
+            "step_number": 10,
+            "agent_name": "reporter",
+            "tool_name": null,
+            "input_summary": {
+              "llm_conclusion": false
+            },
+            "output_summary": {
+              "explanation": [
+                {
+                  "text": "The court's leading finding is: Release 2.3 on android for Android 14 UPI orders caused the issue, with confidence 0.95.",
+                  "numbers_used": [
+                    {
+                      "path": "run_root_cause_court.hypotheses[0].confidence_score",
+                      "value": 0.95
+                    }
+                  ]
+                },
+                {
+                  "text": "Customers in Android 14 | v2.3 | upi report the issue at 22.133 times the rate of everyone else.",
+                  "numbers_used": [
+                    {
+                      "path": "analyze_segments.top_segment.lift_ratio",
+                      "value": 22.133
+                    }
+                  ]
+                },
+                {
+                  "text": "Telemetry shows 152 affected orders, with 44345.23 still at risk.",
+                  "numbers_used": [
+                    {
+                      "path": "estimate_impact.measured.affected_order_count",
+                      "value": 152
+                    },
+                    {
+                      "path": "estimate_impact.measured.captured_amount_at_risk",
+                      "value": 44345.23
+                    }
+                  ]
+                },
+                {
+                  "text": "Rejected on the evidence: menu_price_change, seasonal_traffic, weather_rain, payment_gateway_regression.",
+                  "numbers_used": []
+                }
+              ]
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 0,
+            "created_at": "2026-10-31T10:46:16.245Z"
+          }
+        ]
+      },
+      {
+        "id": 56,
+        "incident_id": 27,
+        "run_type": "reassessment",
+        "status": "completed",
+        "input_summary": {
+          "as_of": "2026-10-14T00:00:00.000Z",
+          "category": "payment",
+          "evidence_kinds": [
+            "approval_rejected"
+          ]
+        },
+        "final_summary": {
+          "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+          "confidence": 0.95,
+          "llm_tokens": 0,
+          "duration_ms": 1249,
+          "explanation": [
+            {
+              "text": "The court's leading finding is: Release 2.3 on android for Android 14 UPI orders caused the issue, with confidence 0.95.",
+              "numbers_used": [
+                {
+                  "path": "run_root_cause_court.hypotheses[0].confidence_score",
+                  "value": 0.95
+                }
+              ]
+            },
+            {
+              "text": "Customers in Android 14 | v2.3 | upi report the issue at 22.133 times the rate of everyone else.",
+              "numbers_used": [
+                {
+                  "path": "analyze_segments.top_segment.lift_ratio",
+                  "value": 22.133
+                }
+              ]
+            },
+            {
+              "text": "Telemetry shows 152 affected orders, with 44345.23 still at risk.",
+              "numbers_used": [
+                {
+                  "path": "estimate_impact.measured.affected_order_count",
+                  "value": 152
+                },
+                {
+                  "path": "estimate_impact.measured.captured_amount_at_risk",
+                  "value": 44345.23
+                }
+              ]
+            },
+            {
+              "text": "Rejected on the evidence: menu_price_change, seasonal_traffic, weather_rain, payment_gateway_regression.",
+              "numbers_used": []
+            }
+          ],
+          "partially_analyzed": true
+        },
+        "started_at": "2026-10-14T00:00:00.000Z",
+        "completed_at": "2026-10-14T00:00:00.000Z",
+        "error_message": null,
+        "steps": [
+          {
+            "id": 551,
+            "agent_run_id": 56,
+            "step_number": 1,
+            "agent_name": "planner",
+            "tool_name": null,
+            "input_summary": {
+              "category": "payment",
+              "run_type": "reassessment",
+              "window_start": "2026-10-11T00:00:00Z",
+              "evidence_kinds": [
+                "approval_rejected"
+              ]
+            },
+            "output_summary": {
+              "mode": "fixed_plan_no_llm",
+              "plan": [
+                "gather_signal_context",
+                "cluster_issues",
+                "analyze_segments",
+                "run_root_cause_court",
+                "estimate_impact",
+                "check_refund_eligibility",
+                "recommend_interventions"
+              ],
+              "tests_to_rerun": []
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 0,
+            "created_at": "2026-10-31T10:46:17.773Z"
+          },
+          {
+            "id": 552,
+            "agent_run_id": 56,
+            "step_number": 2,
+            "agent_name": "investigator",
+            "tool_name": "gather_signal_context",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "recent_changes": [
+                {
+                  "at": "2026-10-02T00:00:00",
+                  "city": null,
+                  "type": "menu_price_change",
+                  "event_id": 87901
+                },
+                {
+                  "at": "2026-10-08T18:00:00",
+                  "city": null,
+                  "type": "app_release_deployed",
+                  "event_id": 105691
+                },
+                {
+                  "at": "2026-10-10T00:00:00",
+                  "city": "Chennai",
+                  "type": "weather_alert",
+                  "event_id": 109463
+                },
+                {
+                  "at": "2026-10-10T00:00:00",
+                  "city": "Mumbai",
+                  "type": "weather_alert",
+                  "event_id": 109464
+                }
+              ],
+              "telemetry_available": true,
+              "complaints_in_window": 79,
+              "complaining_customers": 64
+            },
+            "evidence_references": [
+              {
+                "source_table": "operational_events",
+                "source_record_id": "87901"
+              },
+              {
+                "source_table": "operational_events",
+                "source_record_id": "105691"
+              },
+              {
+                "source_table": "operational_events",
+                "source_record_id": "109463"
+              },
+              {
+                "source_table": "operational_events",
+                "source_record_id": "109464"
+              }
+            ],
+            "status": "completed",
+            "duration_ms": 12,
+            "created_at": "2026-10-31T10:46:17.773Z"
+          },
+          {
+            "id": 553,
+            "agent_run_id": 56,
+            "step_number": 3,
+            "agent_name": "investigator",
+            "tool_name": "cluster_issues",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "method": "hdbscan",
+              "clusters": [
+                {
+                  "size": 25,
+                  "label": "Complaints about synthetic, call, upi, returned"
+                },
+                {
+                  "size": 10,
+                  "label": "Complaints about upi, money, deducted, created"
+                },
+                {
+                  "size": 7,
+                  "label": "Complaints about account, debited, yet, there"
+                },
+                {
+                  "size": 6,
+                  "label": "Complaints about paisa, kat, gaya, nahi"
+                },
+                {
+                  "size": 6,
+                  "label": "Complaints about payment, confirmation, screen, hangs"
+                },
+                {
+                  "size": 6,
+                  "label": "Complaints about charged, upi, debit, shows"
+                }
+              ],
+              "embedding": "sentence-transformers"
+            },
+            "evidence_references": [
+              {
+                "source_table": "feedback",
+                "source_record_id": "2758"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2757"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2756"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2105"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2106"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2118"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2091"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2136"
+              },
+              {
+                "source_table": "feedback",
+                "source_record_id": "2178"
+              }
+            ],
+            "status": "completed",
+            "duration_ms": 235,
+            "created_at": "2026-10-31T10:46:17.774Z"
+          },
+          {
+            "id": 554,
+            "agent_run_id": 56,
+            "step_number": 4,
+            "agent_name": "investigator",
+            "tool_name": "analyze_segments",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "population": 1900,
+              "top_segment": {
+                "p_value": 2.116851610506124e-32,
+                "coverage": 0.762,
+                "dimension": "device_os__app_version__payment",
+                "issue_rate": 0.2,
+                "lift_ratio": 22.133,
+                "limitations": "Observational comparison of complaining customers; silent victims are undercounted.",
+                "significant": true,
+                "segment_value": "Android 14 | v2.3 | upi",
+                "comparison_rate": 0.009036,
+                "total_customers": 240,
+                "affected_customers": 48
+              },
+              "total_affected": 63
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 641,
+            "created_at": "2026-10-31T10:46:17.774Z"
+          },
+          {
+            "id": 555,
+            "agent_run_id": 56,
+            "step_number": 5,
+            "agent_name": "investigator",
+            "tool_name": "run_root_cause_court",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+              "hypotheses": [
+                {
+                  "key": "release_2.3_android",
+                  "tests": {
+                    "temporal": "supported",
+                    "telemetry": "supported",
+                    "counter_check": "supported",
+                    "dose_response": "supported",
+                    "segment_specificity": "supported"
+                  },
+                  "status": "supported"
+                },
+                {
+                  "key": "menu_price_change",
+                  "tests": {
+                    "temporal": "rejected",
+                    "telemetry": "inconclusive",
+                    "counter_check": "rejected",
+                    "dose_response": "inconclusive",
+                    "segment_specificity": "rejected"
+                  },
+                  "status": "rejected"
+                },
+                {
+                  "key": "seasonal_traffic",
+                  "tests": {
+                    "temporal": "rejected",
+                    "telemetry": "inconclusive",
+                    "counter_check": "rejected",
+                    "dose_response": "inconclusive",
+                    "segment_specificity": "rejected"
+                  },
+                  "status": "rejected"
+                },
+                {
+                  "key": "weather_rain",
+                  "tests": {
+                    "temporal": "supported",
+                    "telemetry": "rejected",
+                    "counter_check": "rejected",
+                    "dose_response": "rejected",
+                    "segment_specificity": "rejected"
+                  },
+                  "status": "rejected"
+                },
+                {
+                  "key": "payment_gateway_regression",
+                  "tests": {
+                    "temporal": "untested",
+                    "telemetry": "rejected",
+                    "counter_check": "rejected",
+                    "dose_response": "rejected",
+                    "segment_specificity": "rejected"
+                  },
+                  "status": "rejected"
+                }
+              ],
+              "tests_rerun": 0,
+              "tests_reused": 25,
+              "verdict_status": "supported",
+              "confidence_score": 0.95
+            },
+            "evidence_references": [
+              {
+                "description": "New UPI intent flow and payment confirmation screen",
+                "source_table": "product_releases",
+                "source_record_id": "2.3:android"
+              },
+              {
+                "description": "menu price change",
+                "source_table": "operational_events",
+                "source_record_id": "87901"
+              },
+              {
+                "description": "marketing campaign",
+                "source_table": "operational_events",
+                "source_record_id": "72502"
+              },
+              {
+                "description": "Weather alert",
+                "source_table": "operational_events",
+                "source_record_id": "109463"
+              }
+            ],
+            "status": "completed",
+            "duration_ms": 119,
+            "created_at": "2026-10-31T10:46:17.775Z"
+          },
+          {
+            "id": 556,
+            "agent_run_id": 56,
+            "step_number": 6,
+            "agent_name": "investigator",
+            "tool_name": "request_additional_evidence",
+            "input_summary": {
+              "reason": "Court reported untested evidence"
+            },
+            "output_summary": {
+              "requested": [
+                "temporal"
+              ]
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 0,
+            "created_at": "2026-10-31T10:46:17.776Z"
+          },
+          {
+            "id": 557,
+            "agent_run_id": 56,
+            "step_number": 7,
+            "agent_name": "investigator",
+            "tool_name": "estimate_impact",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "states": {
+                "delivery_problem": {
+                  "amount": 247215.71,
+                  "orders": 656
+                },
+                "captured_no_order": {
+                  "amount": 44345.23,
+                  "orders": 126
+                },
+                "failed_before_debit": {
+                  "amount": 40939.14,
+                  "orders": 112
+                },
+                "debited_then_reversed": {
+                  "amount": 9613.37,
+                  "orders": 26
+                }
+              },
+              "measured": {
+                "complaints": 107,
+                "affected_order_count": 152,
+                "complaining_customers": 91,
+                "captured_amount_at_risk": 44345.23,
+                "confirmed_refund_amount": 0,
+                "observed_repeat_complainers": 15,
+                "failed_or_incomplete_transactions": 264
+              },
+              "estimated": {
+                "estimated_lost_order_value": 53958.6,
+                "estimated_repeat_complaints": 39
+              },
+              "assumptions": [
+                "Repeat-complaint risk uses the larger of the observed rate and an assumed 25%.",
+                "Lost order value assumes affected orders are not re-placed."
+              ],
+              "telemetry_available": true,
+              "affected_order_count": 152,
+              "affected_customer_count": 156,
+              "estimated_business_impact": 53958.6
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 108,
+            "created_at": "2026-10-31T10:46:17.776Z"
+          },
+          {
+            "id": 558,
+            "agent_run_id": 56,
+            "step_number": 8,
+            "agent_name": "investigator",
+            "tool_name": "check_refund_eligibility",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "blocked_reason": null,
+              "eligible_amount": 35373.98,
+              "eligible_orders": 100
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 101,
+            "created_at": "2026-10-31T10:46:17.777Z"
+          },
+          {
+            "id": 559,
+            "agent_run_id": 56,
+            "step_number": 9,
+            "agent_name": "investigator",
+            "tool_name": "recommend_interventions",
+            "input_summary": {
+              "reason": "Fixed plan: next evidence gap in order."
+            },
+            "output_summary": {
+              "ranked": [
+                {
+                  "score": 0.8875,
+                  "action": "disable_feature_flag"
+                },
+                {
+                  "score": 0.805,
+                  "action": "reconcile_payments"
+                },
+                {
+                  "score": 0.7323,
+                  "action": "issue_eligible_refunds"
+                },
+                {
+                  "score": 0.7067,
+                  "action": "create_support_incident"
+                },
+                {
+                  "score": 0.6675,
+                  "action": "update_support_scripts"
+                },
+                {
+                  "score": 0.6633,
+                  "action": "notify_customers"
+                },
+                {
+                  "score": 0.5538,
+                  "action": "goodwill_coupon"
+                }
+              ],
+              "policy_checks": []
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 0,
+            "created_at": "2026-10-31T10:46:17.777Z"
+          },
+          {
+            "id": 560,
+            "agent_run_id": 56,
+            "step_number": 10,
+            "agent_name": "reporter",
+            "tool_name": null,
+            "input_summary": {
+              "llm_conclusion": false
+            },
+            "output_summary": {
+              "explanation": [
+                {
+                  "text": "The court's leading finding is: Release 2.3 on android for Android 14 UPI orders caused the issue, with confidence 0.95.",
+                  "numbers_used": [
+                    {
+                      "path": "run_root_cause_court.hypotheses[0].confidence_score",
+                      "value": 0.95
+                    }
+                  ]
+                },
+                {
+                  "text": "Customers in Android 14 | v2.3 | upi report the issue at 22.133 times the rate of everyone else.",
+                  "numbers_used": [
+                    {
+                      "path": "analyze_segments.top_segment.lift_ratio",
+                      "value": 22.133
+                    }
+                  ]
+                },
+                {
+                  "text": "Telemetry shows 152 affected orders, with 44345.23 still at risk.",
+                  "numbers_used": [
+                    {
+                      "path": "estimate_impact.measured.affected_order_count",
+                      "value": 152
+                    },
+                    {
+                      "path": "estimate_impact.measured.captured_amount_at_risk",
+                      "value": 44345.23
+                    }
+                  ]
+                },
+                {
+                  "text": "Rejected on the evidence: menu_price_change, seasonal_traffic, weather_rain, payment_gateway_regression.",
+                  "numbers_used": []
+                }
+              ]
+            },
+            "evidence_references": [],
+            "status": "completed",
+            "duration_ms": 0,
+            "created_at": "2026-10-31T10:46:17.778Z"
+          }
+        ]
+      }
+    ]
+  }
+}

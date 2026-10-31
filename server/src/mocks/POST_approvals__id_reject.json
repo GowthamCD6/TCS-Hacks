@@ -1,0 +1,104 @@
+{
+  "data": {
+    "id": 132,
+    "decision": "rejected",
+    "incident_status": "awaiting_approval",
+    "alternative": {
+      "recommendation_id": 218,
+      "action_key": "disable_feature_flag",
+      "title": "Disable the affected feature with a flag for the segment",
+      "trade_off": "A flag limits the blast radius to the affected segment but leaves the release live, so the underlying defect remains until a fix ships."
+    },
+    "reassessment": {
+      "before": {
+        "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+        "verdict_status": "supported",
+        "confidence": 0.95,
+        "affected_customer_count": 156,
+        "complaints": 107,
+        "top_segment_lift": 22.133,
+        "hypotheses": {
+          "menu_price_change": {
+            "status": "rejected",
+            "confidence": 0.158
+          },
+          "payment_gateway_regression": {
+            "status": "rejected",
+            "confidence": 0
+          },
+          "release_2.3_android": {
+            "status": "supported",
+            "confidence": 0.95
+          },
+          "seasonal_traffic": {
+            "status": "rejected",
+            "confidence": 0.158
+          },
+          "weather_rain": {
+            "status": "rejected",
+            "confidence": 0.15
+          }
+        },
+        "recommendations": [
+          "disable_feature_flag",
+          "reconcile_payments",
+          "issue_eligible_refunds",
+          "create_support_incident",
+          "update_support_scripts",
+          "notify_customers",
+          "goodwill_coupon"
+        ]
+      },
+      "after": {
+        "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+        "verdict_status": "supported",
+        "confidence": 0.95,
+        "affected_customer_count": 156,
+        "complaints": 107,
+        "top_segment_lift": 22.133,
+        "hypotheses": {
+          "menu_price_change": {
+            "status": "rejected",
+            "confidence": 0.158
+          },
+          "payment_gateway_regression": {
+            "status": "rejected",
+            "confidence": 0
+          },
+          "release_2.3_android": {
+            "status": "supported",
+            "confidence": 0.95
+          },
+          "seasonal_traffic": {
+            "status": "rejected",
+            "confidence": 0.158
+          },
+          "weather_rain": {
+            "status": "rejected",
+            "confidence": 0.15
+          }
+        },
+        "recommendations": [
+          "disable_feature_flag",
+          "reconcile_payments",
+          "issue_eligible_refunds",
+          "create_support_incident",
+          "update_support_scripts",
+          "notify_customers",
+          "goodwill_coupon"
+        ]
+      },
+      "hypotheses_changed": [],
+      "recommendations_added": [],
+      "recommendations_removed": [],
+      "what_changed": [
+        "rollback_release was rejected by the approver and removed from the plan."
+      ],
+      "evidence_kinds": [
+        "approval_rejected"
+      ],
+      "tests_rerun": 0,
+      "tests_reused": 25
+    }
+  }
+}

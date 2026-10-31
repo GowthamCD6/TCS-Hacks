@@ -1,0 +1,17 @@
+{
+  "data": {
+    "job_id": 1,
+    "total_records": 2,
+    "accepted": 1,
+    "duplicates": 0,
+    "failed": 1,
+    "errors": [
+      {
+        "row": 3,
+        "errors": [
+          "text: String must contain at least 1 character(s)"
+        ]
+      }
+    ]
+  }
+}

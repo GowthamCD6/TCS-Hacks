@@ -1,0 +1,77 @@
+{
+  "model": "frozen MiniLM embeddings + class-weighted LogisticRegression",
+  "trained_at": "2026-10-31T06:36:49.578377+00:00",
+  "training_data": {
+    "banking77_rows": 2713,
+    "play_review_rows": 1037,
+    "synthetic_rows": 0,
+    "sha256": "c873a33c2c5f6789c951f3080e43b6ec8eb18c8253ca0ba951ea7f5e8565f612",
+    "class_counts": {
+      "refund_or_reversal_status": 748,
+      "double_or_unrecognised_charge": 733,
+      "payment_failed_or_declined": 579,
+      "payment_pending": 459,
+      "debited_not_fulfilled": 413,
+      "food_quality": 187,
+      "delivery_delay": 169,
+      "app_bug_other": 166,
+      "price_complaint": 153,
+      "praise_or_neutral": 143
+    }
+  },
+  "confidence_threshold": 0.55,
+  "food_app_labels_source": "LLM annotation of real reviews",
+  "human_checked_test": {
+    "status": "not_available",
+    "reason": "0 of 200 gold reviews have a human_label. Fill data/labels/gold_review_labels.csv and re-run."
+  },
+  "proxy_llm_labelled_holdout": {
+    "warning": "Agreement with LLM labels, not human-checked accuracy. Do not quote as M1 performance.",
+    "m1": {
+      "macro_f1": 0.4501,
+      "per_class_f1": {
+        "app_bug_other": 0.5075,
+        "debited_not_fulfilled": 0.32,
+        "delivery_delay": 0.6897,
+        "double_or_unrecognised_charge": 0.0,
+        "food_quality": 0.6364,
+        "payment_failed_or_declined": 0.0,
+        "praise_or_neutral": 0.6415,
+        "price_complaint": 0.8814,
+        "refund_or_reversal_status": 0.375
+      },
+      "n": 183
+    },
+    "baseline_tfidf_svc": {
+      "macro_f1": 0.4003,
+      "per_class_f1": {
+        "app_bug_other": 0.4068,
+        "debited_not_fulfilled": 0.1818,
+        "delivery_delay": 0.5846,
+        "double_or_unrecognised_charge": 0.0,
+        "food_quality": 0.5915,
+        "payment_failed_or_declined": 0.0,
+        "praise_or_neutral": 0.6,
+        "price_complaint": 0.8,
+        "refund_or_reversal_status": 0.4375
+      },
+      "n": 183
+    },
+    "rule_extractor_coarse_agreement": 0.2787,
+    "m1_coarse_agreement": 0.623,
+    "routing_share_to_llm": 0.3005
+  },
+  "banking77_test_payment_labels": {
+    "macro_f1": 0.6655,
+    "per_class_f1": {
+      "app_bug_other": 0.0,
+      "debited_not_fulfilled": 0.8623,
+      "double_or_unrecognised_charge": 0.975,
+      "payment_failed_or_declined": 0.9568,
+      "payment_pending": 0.906,
+      "price_complaint": 0.0,
+      "refund_or_reversal_status": 0.9585
+    },
+    "n": 680
+  }
+}

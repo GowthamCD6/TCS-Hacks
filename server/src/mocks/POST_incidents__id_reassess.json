@@ -1,0 +1,95 @@
+{
+  "data": {
+    "before": {
+      "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+      "verdict_status": "supported",
+      "confidence": 0.95,
+      "affected_customer_count": 156,
+      "complaints": 107,
+      "top_segment_lift": 22.133,
+      "hypotheses": {
+        "menu_price_change": {
+          "status": "rejected",
+          "confidence": 0.158
+        },
+        "payment_gateway_regression": {
+          "status": "rejected",
+          "confidence": 0
+        },
+        "release_2.3_android": {
+          "status": "supported",
+          "confidence": 0.95
+        },
+        "seasonal_traffic": {
+          "status": "rejected",
+          "confidence": 0.158
+        },
+        "weather_rain": {
+          "status": "rejected",
+          "confidence": 0.15
+        }
+      },
+      "recommendations": [
+        "disable_feature_flag",
+        "rollback_release",
+        "reconcile_payments",
+        "issue_eligible_refunds",
+        "create_support_incident",
+        "update_support_scripts",
+        "notify_customers",
+        "goodwill_coupon"
+      ]
+    },
+    "after": {
+      "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+      "verdict_status": "supported",
+      "confidence": 0.95,
+      "affected_customer_count": 156,
+      "complaints": 107,
+      "top_segment_lift": 22.133,
+      "hypotheses": {
+        "menu_price_change": {
+          "status": "rejected",
+          "confidence": 0.158
+        },
+        "payment_gateway_regression": {
+          "status": "rejected",
+          "confidence": 0
+        },
+        "release_2.3_android": {
+          "status": "supported",
+          "confidence": 0.95
+        },
+        "seasonal_traffic": {
+          "status": "rejected",
+          "confidence": 0.158
+        },
+        "weather_rain": {
+          "status": "rejected",
+          "confidence": 0.15
+        }
+      },
+      "recommendations": [
+        "disable_feature_flag",
+        "rollback_release",
+        "reconcile_payments",
+        "issue_eligible_refunds",
+        "create_support_incident",
+        "update_support_scripts",
+        "notify_customers",
+        "goodwill_coupon"
+      ]
+    },
+    "hypotheses_changed": [],
+    "recommendations_added": [],
+    "recommendations_removed": [],
+    "what_changed": [
+      "The new evidence did not change the verdict, confidence or plan."
+    ],
+    "evidence_kinds": [
+      "new_complaints"
+    ],
+    "tests_rerun": 20,
+    "tests_reused": 5
+  }
+}

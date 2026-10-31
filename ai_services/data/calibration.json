@@ -1,0 +1,10 @@
+{
+  "label": "Calibration of SYNTHETIC operational data. Payment logs are never public.",
+  "baseline_upi_failure_rate": 0.025,
+  "basis": "Assumed low single-digit percent level, as section 1 (D5) of the Phase 2 prompt asks.",
+  "source_page": "https://www.npci.org.in/what-we-do/upi/upi-ecosystem-statistics",
+  "verified_against_source": false,
+  "note": "No figure was read from NPCI: the prompt says do not scrape. Check a current monthly decline figure by hand, then update this file and set verified_against_source to true.",
+  "reversal_tat_days": 5,
+  "reversal_tat_source": "https://www.rbi.org.in/scripts/NotificationUser.aspx?Id=11693&Mode=0"
+}

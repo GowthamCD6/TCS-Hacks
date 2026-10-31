@@ -1,0 +1,30 @@
+domain: payments
+labels:
+  debited_not_fulfilled: Money left the account but the order, transfer or service never arrived
+  payment_pending: Payment is stuck, processing or waiting
+  payment_failed_or_declined: Payment failed or was declined, with no sign money was lost
+  refund_or_reversal_status: Asking about or waiting for a refund or reversal
+  double_or_unrecognised_charge: Charged twice, charged an unknown amount, or an unexpected charge
+  delivery_delay: Late delivery, rider or tracking problems
+  price_complaint: Prices, fees or charges are too high, with no payment fault
+  food_quality: Food is cold, wrong, missing or poor
+  app_bug_other: App faults that are not about payment, such as crashes, login or search
+  praise_or_neutral: Praise, thanks, or no complaint
+banking77_map:
+  transfer_not_received_by_recipient: debited_not_fulfilled
+  balance_not_updated_after_bank_transfer: debited_not_fulfilled
+  pending_transfer: payment_pending
+  pending_card_payment: payment_pending
+  pending_top_up: payment_pending
+  declined_transfer: payment_failed_or_declined
+  failed_transfer: payment_failed_or_declined
+  declined_card_payment: payment_failed_or_declined
+  top_up_failed: payment_failed_or_declined
+  Refund_not_showing_up: refund_or_reversal_status
+  request_refund: refund_or_reversal_status
+  reverted_card_payment?: refund_or_reversal_status
+  top_up_reverted: refund_or_reversal_status
+  card_payment_not_recognised: double_or_unrecognised_charge
+  direct_debit_payment_not_recognised: double_or_unrecognised_charge
+  transfer_fee_charged: double_or_unrecognised_charge
+  card_payment_fee_charged: double_or_unrecognised_charge

@@ -1,0 +1,10 @@
+{
+  "data": {
+    "token": "mock-token",
+    "user": {
+      "id": 1,
+      "display_name": "Demo Approver",
+      "role": "approver"
+    }
+  }
+}

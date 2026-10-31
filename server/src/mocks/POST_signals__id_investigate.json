@@ -1,0 +1,1903 @@
+{
+  "data": {
+    "id": 27,
+    "incident_number": "RIQ-2026-0027",
+    "title": "Payment failures: money debited without an order",
+    "description": "Complaint rate is 3.607 times the 21-day baseline.",
+    "issue_category": "payment",
+    "status": "resolved",
+    "severity": 0.092,
+    "severity_inputs": {
+      "confidence": 0.95,
+      "harm_weight": 1,
+      "growth_factor": 3.607,
+      "affected_customers_share": 0.02684
+    },
+    "severity_formula": "affected_customers_share * growth_factor * harm_weight * confidence",
+    "confidence_score": 0.95,
+    "first_detected_at": "2026-10-14T00:00:00.000Z",
+    "last_updated_at": "2026-10-14T04:00:00.000Z",
+    "affected_customer_count": 156,
+    "estimated_business_impact": 53958.6,
+    "root_cause_verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+    "resolution_summary": "Recovery verified: all required KPIs held target for their full monitoring window.",
+    "partially_analyzed": true,
+    "closed_at": "2026-10-14T04:00:00.000Z",
+    "is_synthetic": true,
+    "window_start": "2026-10-11T00:00:00Z",
+    "telemetry_available": true,
+    "fix_deployed": false,
+    "court": {
+      "onset": "2026-10-11T00:00:00",
+      "reasons": [
+        "The issue began 54 h after the change (daily resolution). Timing alone does not prove cause.",
+        "Exposed orders produce complaints at 32.1x the unexposed rate.",
+        "Telemetry confirms the failure: 28.4% of exposed orders against 0.02% unexposed.",
+        "The issue rate rises with the share of a customer's orders that were exposed.",
+        "The unexposed control group stayed flat (1.12x)."
+      ],
+      "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+      "limitations": [
+        "Observational data: these tests support causal claims but cannot prove them as a randomised experiment would."
+      ],
+      "tests_rerun": 0,
+      "verdict_key": "release_2.3_android",
+      "tests_reused": 25,
+      "analysis_start": "2026-10-08T18:00:00",
+      "verdict_status": "supported",
+      "confidence_score": 0.95
+    },
+    "explanation": [
+      {
+        "text": "The court's leading finding is: Release 2.3 on android for Android 14 UPI orders caused the issue, with confidence 0.95.",
+        "numbers_used": [
+          {
+            "path": "run_root_cause_court.hypotheses[0].confidence_score",
+            "value": 0.95
+          }
+        ]
+      },
+      {
+        "text": "Customers in Android 14 | v2.3 | upi report the issue at 22.133 times the rate of everyone else.",
+        "numbers_used": [
+          {
+            "path": "analyze_segments.top_segment.lift_ratio",
+            "value": 22.133
+          }
+        ]
+      },
+      {
+        "text": "Telemetry shows 152 affected orders, with 44345.23 still at risk.",
+        "numbers_used": [
+          {
+            "path": "estimate_impact.measured.affected_order_count",
+            "value": 152
+          },
+          {
+            "path": "estimate_impact.measured.captured_amount_at_risk",
+            "value": 44345.23
+          }
+        ]
+      },
+      {
+        "text": "Rejected on the evidence: menu_price_change, seasonal_traffic, weather_rain, payment_gateway_regression.",
+        "numbers_used": []
+      }
+    ],
+    "impact": {
+      "states": {
+        "delivery_problem": {
+          "amount": 247215.71,
+          "orders": 656
+        },
+        "captured_no_order": {
+          "amount": 44345.23,
+          "orders": 126
+        },
+        "failed_before_debit": {
+          "amount": 40939.14,
+          "orders": 112
+        },
+        "debited_then_reversed": {
+          "amount": 9613.37,
+          "orders": 26
+        }
+      },
+      "measured": {
+        "complaints": 107,
+        "affected_order_count": 152,
+        "complaining_customers": 91,
+        "captured_amount_at_risk": 44345.23,
+        "confirmed_refund_amount": 0,
+        "observed_repeat_complainers": 15,
+        "failed_or_incomplete_transactions": 264
+      },
+      "estimated": {
+        "estimated_lost_order_value": 53958.6,
+        "estimated_repeat_complaints": 39
+      },
+      "assumptions": [
+        "Repeat-complaint risk uses the larger of the observed rate and an assumed 25%.",
+        "Lost order value assumes affected orders are not re-placed."
+      ],
+      "telemetry_available": true,
+      "affected_order_count": 152,
+      "affected_customer_count": 156,
+      "estimated_business_impact": 53958.6
+    },
+    "policy_checks": [],
+    "hypotheses": [
+      {
+        "id": 261,
+        "incident_id": 27,
+        "hypothesis_key": "release_2.3_android",
+        "hypothesis": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+        "status": "supported",
+        "confidence_score": 0.95,
+        "explanation": "5 of 5 tests support this; 0 reject it.",
+        "evidence_summary": {
+          "missing": [],
+          "references": [
+            {
+              "description": "New UPI intent flow and payment confirmation screen",
+              "source_table": "product_releases",
+              "source_record_id": "2.3:android"
+            }
+          ],
+          "supporting": [
+            "The issue began 54 h after the change (daily resolution). Timing alone does not prove cause.",
+            "Exposed orders produce complaints at 32.1x the unexposed rate.",
+            "Telemetry confirms the failure: 28.4% of exposed orders against 0.02% unexposed.",
+            "The issue rate rises with the share of a customer's orders that were exposed.",
+            "The unexposed control group stayed flat (1.12x)."
+          ],
+          "contradicting": []
+        },
+        "created_at": "2026-10-31T10:46:05.704Z",
+        "updated_at": "2026-10-31T10:46:13.807Z",
+        "tests": [
+          {
+            "id": 1301,
+            "test_name": "temporal",
+            "status": "supported",
+            "result": {
+              "onset": "2026-10-11T00:00:00",
+              "reused": true,
+              "gap_hours": 54,
+              "change_time": "2026-10-08T18:00:00"
+            },
+            "explanation": "The issue began 54 h after the change (daily resolution). Timing alone does not prove cause."
+          },
+          {
+            "id": 1302,
+            "test_name": "segment_specificity",
+            "status": "supported",
+            "result": {
+              "lift": 32.142,
+              "reused": true,
+              "p_value": 9.03157614687893e-39,
+              "exposed_rate": 0.1523,
+              "exposed_issues": 53,
+              "exposed_orders": 348,
+              "unexposed_rate": 0.00474,
+              "unexposed_issues": 11,
+              "unexposed_orders": 2426
+            },
+            "explanation": "Exposed orders produce complaints at 32.1x the unexposed rate."
+          },
+          {
+            "id": 1303,
+            "test_name": "telemetry",
+            "status": "supported",
+            "result": {
+              "lift": 1380.879,
+              "reused": true,
+              "p_value": 6.230382796714866e-96,
+              "exposed_rate": 0.28448,
+              "exposed_orders": 348,
+              "unexposed_rate": 0.00021,
+              "exposed_failures": 99,
+              "unexposed_orders": 2426,
+              "unexposed_failures": 0
+            },
+            "explanation": "Telemetry confirms the failure: 28.4% of exposed orders against 0.02% unexposed."
+          },
+          {
+            "id": 1304,
+            "test_name": "dose_response",
+            "status": "supported",
+            "result": {
+              "rates": {
+                "high": 0.15106,
+                "none": 0.00461,
+                "partial": 0.05172
+              },
+              "orders": {
+                "high": 331,
+                "none": 2385,
+                "partial": 58
+              },
+              "reused": true,
+              "p_value": 2.9897099003032104e-61
+            },
+            "explanation": "The issue rate rises with the share of a customer's orders that were exposed."
+          },
+          {
+            "id": 1305,
+            "test_name": "counter_check",
+            "status": "supported",
+            "result": {
+              "ratio": 1.122,
+              "reused": true,
+              "p_value": 0.45178035298489655,
+              "unexposed_rate_after": 0.00474,
+              "unexposed_rate_before": 0.00422
+            },
+            "explanation": "The unexposed control group stayed flat (1.12x)."
+          }
+        ]
+      },
+      {
+        "id": 262,
+        "incident_id": 27,
+        "hypothesis_key": "menu_price_change",
+        "hypothesis": "The menu price change drove the complaints",
+        "status": "rejected",
+        "confidence_score": 0.158,
+        "explanation": "0 of 5 tests support this; 3 reject it.",
+        "evidence_summary": {
+          "missing": [],
+          "references": [
+            {
+              "description": "menu price change",
+              "source_table": "operational_events",
+              "source_record_id": "87901"
+            }
+          ],
+          "supporting": [],
+          "contradicting": [
+            "The issue began 216 h long after this change, which does not fit.",
+            "This change touched every customer, yet the issue is concentrated in one narrow segment.",
+            "Complaints per order rose 4.6x while orders grew only 1.22x, so this does not explain it."
+          ]
+        },
+        "created_at": "2026-10-31T10:46:05.710Z",
+        "updated_at": "2026-10-31T10:46:16.272Z",
+        "tests": [
+          {
+            "id": 1306,
+            "test_name": "temporal",
+            "status": "rejected",
+            "result": {
+              "onset": "2026-10-11T00:00:00",
+              "reused": true,
+              "gap_hours": 216,
+              "change_time": "2026-10-02T00:00:00"
+            },
+            "explanation": "The issue began 216 h long after this change, which does not fit."
+          },
+          {
+            "id": 1307,
+            "test_name": "segment_specificity",
+            "status": "rejected",
+            "result": {
+              "lift": 22.133,
+              "reused": true,
+              "segment": "Android 14 | v2.3 | upi",
+              "coverage": 0.762
+            },
+            "explanation": "This change touched every customer, yet the issue is concentrated in one narrow segment."
+          },
+          {
+            "id": 1308,
+            "test_name": "telemetry",
+            "status": "inconclusive",
+            "result": {
+              "reused": true,
+              "orders_after_change": 8631,
+              "failure_rate_after_change": 0.00614,
+              "failure_rate_before_change": 0
+            },
+            "explanation": "Telemetry around this change is not decisive."
+          },
+          {
+            "id": 1309,
+            "test_name": "dose_response",
+            "status": "inconclusive",
+            "result": {
+              "reused": true
+            },
+            "explanation": "A universal change has no graded exposure to test."
+          },
+          {
+            "id": 1310,
+            "test_name": "counter_check",
+            "status": "rejected",
+            "result": {
+              "reused": true,
+              "rate_ratio": 4.646,
+              "order_growth": 1.221
+            },
+            "explanation": "Complaints per order rose 4.6x while orders grew only 1.22x, so this does not explain it."
+          }
+        ]
+      },
+      {
+        "id": 263,
+        "incident_id": 27,
+        "hypothesis_key": "seasonal_traffic",
+        "hypothesis": "Seasonal or campaign traffic explains the rise",
+        "status": "rejected",
+        "confidence_score": 0.158,
+        "explanation": "0 of 5 tests support this; 3 reject it.",
+        "evidence_summary": {
+          "missing": [],
+          "references": [
+            {
+              "description": "marketing campaign",
+              "source_table": "operational_events",
+              "source_record_id": "72502"
+            }
+          ],
+          "supporting": [],
+          "contradicting": [
+            "The issue began 360 h long after this change, which does not fit.",
+            "This change touched every customer, yet the issue is concentrated in one narrow segment.",
+            "Complaints per order rose 4.6x while orders grew only 1.22x, so this does not explain it."
+          ]
+        },
+        "created_at": "2026-10-31T10:46:05.714Z",
+        "updated_at": "2026-10-31T10:46:16.275Z",
+        "tests": [
+          {
+            "id": 1311,
+            "test_name": "temporal",
+            "status": "rejected",
+            "result": {
+              "onset": "2026-10-11T00:00:00",
+              "reused": true,
+              "gap_hours": 360,
+              "change_time": "2026-09-26T00:00:00"
+            },
+            "explanation": "The issue began 360 h long after this change, which does not fit."
+          },
+          {
+            "id": 1312,
+            "test_name": "segment_specificity",
+            "status": "rejected",
+            "result": {
+              "lift": 22.133,
+              "reused": true,
+              "segment": "Android 14 | v2.3 | upi",
+              "coverage": 0.762
+            },
+            "explanation": "This change touched every customer, yet the issue is concentrated in one narrow segment."
+          },
+          {
+            "id": 1313,
+            "test_name": "telemetry",
+            "status": "inconclusive",
+            "result": {
+              "reused": true,
+              "orders_after_change": 14097,
+              "failure_rate_after_change": 0.00376,
+              "failure_rate_before_change": 0
+            },
+            "explanation": "Telemetry around this change is not decisive."
+          },
+          {
+            "id": 1314,
+            "test_name": "dose_response",
+            "status": "inconclusive",
+            "result": {
+              "reused": true
+            },
+            "explanation": "A universal change has no graded exposure to test."
+          },
+          {
+            "id": 1315,
+            "test_name": "counter_check",
+            "status": "rejected",
+            "result": {
+              "reused": true,
+              "rate_ratio": 4.646,
+              "order_growth": 1.221
+            },
+            "explanation": "Complaints per order rose 4.6x while orders grew only 1.22x, so this does not explain it."
+          }
+        ]
+      },
+      {
+        "id": 264,
+        "incident_id": 27,
+        "hypothesis_key": "weather_rain",
+        "hypothesis": "Heavy rain in Chennai, Mumbai caused the issue",
+        "status": "rejected",
+        "confidence_score": 0.15,
+        "explanation": "1 of 5 tests support this; 4 reject it.",
+        "evidence_summary": {
+          "missing": [],
+          "references": [
+            {
+              "description": "Weather alert",
+              "source_table": "operational_events",
+              "source_record_id": "109463"
+            }
+          ],
+          "supporting": [
+            "The issue began 24 h after the change (daily resolution). Timing alone does not prove cause."
+          ],
+          "contradicting": [
+            "Exposed and unexposed orders complain at similar rates (lift 0.47).",
+            "Telemetry failure rate is not elevated for exposed orders (lift 1.11).",
+            "More exposure does not mean more issues.",
+            "The issue also rose 5.4x where this exposure is absent."
+          ]
+        },
+        "created_at": "2026-10-31T10:46:05.717Z",
+        "updated_at": "2026-10-31T10:46:16.279Z",
+        "tests": [
+          {
+            "id": 1316,
+            "test_name": "temporal",
+            "status": "supported",
+            "result": {
+              "onset": "2026-10-11T00:00:00",
+              "reused": true,
+              "gap_hours": 24,
+              "change_time": "2026-10-10T00:00:00"
+            },
+            "explanation": "The issue began 24 h after the change (daily resolution). Timing alone does not prove cause."
+          },
+          {
+            "id": 1317,
+            "test_name": "segment_specificity",
+            "status": "rejected",
+            "result": {
+              "lift": 0.469,
+              "reused": true,
+              "p_value": 0.9901875764739668,
+              "exposed_rate": 0.01244,
+              "exposed_issues": 8,
+              "exposed_orders": 643,
+              "unexposed_rate": 0.0265,
+              "unexposed_issues": 56,
+              "unexposed_orders": 2131
+            },
+            "explanation": "Exposed and unexposed orders complain at similar rates (lift 0.47)."
+          },
+          {
+            "id": 1318,
+            "test_name": "telemetry",
+            "status": "rejected",
+            "result": {
+              "lift": 1.113,
+              "reused": true,
+              "p_value": 0.3469646117584501,
+              "exposed_rate": 0.03888,
+              "exposed_orders": 643,
+              "unexposed_rate": 0.03494,
+              "exposed_failures": 25,
+              "unexposed_orders": 2131,
+              "unexposed_failures": 74
+            },
+            "explanation": "Telemetry failure rate is not elevated for exposed orders (lift 1.11)."
+          },
+          {
+            "id": 1319,
+            "test_name": "dose_response",
+            "status": "rejected",
+            "result": {
+              "rates": {
+                "high": 0.01675,
+                "none": 0.02494,
+                "partial": 0.02326
+              },
+              "orders": {
+                "high": 597,
+                "none": 2005,
+                "partial": 172
+              },
+              "reused": true,
+              "p_value": 0.5044979730914606
+            },
+            "explanation": "More exposure does not mean more issues."
+          },
+          {
+            "id": 1320,
+            "test_name": "counter_check",
+            "status": "rejected",
+            "result": {
+              "ratio": 5.407,
+              "reused": true,
+              "p_value": 2.5318890124827118e-20,
+              "unexposed_rate_after": 0.0265,
+              "unexposed_rate_before": 0.0049
+            },
+            "explanation": "The issue also rose 5.4x where this exposure is absent."
+          }
+        ]
+      },
+      {
+        "id": 265,
+        "incident_id": 27,
+        "hypothesis_key": "payment_gateway_regression",
+        "hypothesis": "A shared UPI gateway or backend regression, independent of the app release, caused the issue",
+        "status": "rejected",
+        "confidence_score": 0,
+        "explanation": "0 of 5 tests support this; 4 reject it.",
+        "evidence_summary": {
+          "missing": [
+            "temporal: No dated change exists for this hypothesis, so timing cannot be checked."
+          ],
+          "references": [],
+          "supporting": [],
+          "contradicting": [
+            "Exposed and unexposed orders complain at similar rates (lift 0.11).",
+            "Telemetry failure rate is not elevated for exposed orders (lift 0.00).",
+            "More exposure does not mean more issues.",
+            "The issue also rose 6.1x where this exposure is absent."
+          ]
+        },
+        "created_at": "2026-10-31T10:46:05.720Z",
+        "updated_at": "2026-10-31T10:46:16.283Z",
+        "tests": [
+          {
+            "id": 1321,
+            "test_name": "temporal",
+            "status": "untested",
+            "result": {
+              "reused": true
+            },
+            "explanation": "No dated change exists for this hypothesis, so timing cannot be checked."
+          },
+          {
+            "id": 1322,
+            "test_name": "segment_specificity",
+            "status": "rejected",
+            "result": {
+              "lift": 0.112,
+              "reused": true,
+              "p_value": 0.99999999995792,
+              "exposed_rate": 0.00421,
+              "exposed_issues": 5,
+              "exposed_orders": 1188,
+              "unexposed_rate": 0.03749,
+              "unexposed_issues": 59,
+              "unexposed_orders": 1586
+            },
+            "explanation": "Exposed and unexposed orders complain at similar rates (lift 0.11)."
+          },
+          {
+            "id": 1323,
+            "test_name": "telemetry",
+            "status": "rejected",
+            "result": {
+              "lift": 0,
+              "reused": true,
+              "p_value": 1,
+              "exposed_rate": 0,
+              "exposed_orders": 1188,
+              "unexposed_rate": 0.0627,
+              "exposed_failures": 0,
+              "unexposed_orders": 1586,
+              "unexposed_failures": 99
+            },
+            "explanation": "Telemetry failure rate is not elevated for exposed orders (lift 0.00)."
+          },
+          {
+            "id": 1324,
+            "test_name": "dose_response",
+            "status": "rejected",
+            "result": {
+              "rates": {
+                "high": 0.00437,
+                "none": 0.0382,
+                "partial": 0.0184
+              },
+              "orders": {
+                "high": 1145,
+                "none": 1466,
+                "partial": 163
+              },
+              "reused": true,
+              "p_value": 7.48466619798463e-8
+            },
+            "explanation": "More exposure does not mean more issues."
+          },
+          {
+            "id": 1325,
+            "test_name": "counter_check",
+            "status": "rejected",
+            "result": {
+              "ratio": 6.135,
+              "reused": true,
+              "p_value": 6.4698643866308255e-22,
+              "unexposed_rate_after": 0.03749,
+              "unexposed_rate_before": 0.00611
+            },
+            "explanation": "The issue also rose 6.1x where this exposure is absent."
+          }
+        ]
+      }
+    ],
+    "segments": [
+      {
+        "id": 1376,
+        "incident_id": 27,
+        "dimension": "device_os__app_version__payment",
+        "segment_value": "Android 14 | v2.3 | upi",
+        "affected_customers": 48,
+        "total_customers": 240,
+        "issue_rate": 0.2,
+        "comparison_rate": 0.009036,
+        "lift_ratio": 22.133,
+        "p_value": 2.116851610506124e-32,
+        "significant": true,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted.",
+        "created_at": "2026-10-31T10:46:17.785Z"
+      },
+      {
+        "id": 1377,
+        "incident_id": 27,
+        "dimension": "device_os__app_version",
+        "segment_value": "Android 14 | v2.3",
+        "affected_customers": 52,
+        "total_customers": 449,
+        "issue_rate": 0.115813,
+        "comparison_rate": 0.007581,
+        "lift_ratio": 15.277,
+        "p_value": 1.1188176162113445e-23,
+        "significant": true,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted.",
+        "created_at": "2026-10-31T10:46:17.785Z"
+      },
+      {
+        "id": 1378,
+        "incident_id": 27,
+        "dimension": "device_os",
+        "segment_value": "Android 14",
+        "affected_customers": 52,
+        "total_customers": 474,
+        "issue_rate": 0.109705,
+        "comparison_rate": 0.007714,
+        "lift_ratio": 14.222,
+        "p_value": 1.8381444161030906e-22,
+        "significant": true,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted.",
+        "created_at": "2026-10-31T10:46:17.786Z"
+      },
+      {
+        "id": 1379,
+        "incident_id": 27,
+        "dimension": "app_version",
+        "segment_value": "2.3",
+        "affected_customers": 60,
+        "total_customers": 1225,
+        "issue_rate": 0.04898,
+        "comparison_rate": 0.004444,
+        "lift_ratio": 11.02,
+        "p_value": 4.596930689955997e-9,
+        "significant": true,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted.",
+        "created_at": "2026-10-31T10:46:17.786Z"
+      },
+      {
+        "id": 1380,
+        "incident_id": 27,
+        "dimension": "platform",
+        "segment_value": "android",
+        "affected_customers": 60,
+        "total_customers": 1287,
+        "issue_rate": 0.04662,
+        "comparison_rate": 0.004894,
+        "lift_ratio": 9.526,
+        "p_value": 7.254042441902313e-8,
+        "significant": true,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted.",
+        "created_at": "2026-10-31T10:46:17.786Z"
+      },
+      {
+        "id": 1381,
+        "incident_id": 27,
+        "dimension": "payment_method",
+        "segment_value": "upi",
+        "affected_customers": 53,
+        "total_customers": 1042,
+        "issue_rate": 0.050864,
+        "comparison_rate": 0.011655,
+        "lift_ratio": 4.364,
+        "p_value": 5.931919485312656e-7,
+        "significant": true,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted.",
+        "created_at": "2026-10-31T10:46:17.787Z"
+      },
+      {
+        "id": 1382,
+        "incident_id": 27,
+        "dimension": "frequency",
+        "segment_value": "4_plus_orders",
+        "affected_customers": 4,
+        "total_customers": 47,
+        "issue_rate": 0.085106,
+        "comparison_rate": 0.03184,
+        "lift_ratio": 2.673,
+        "p_value": 0.06753077888263372,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted. Small affected count, treat the rate as approximate.",
+        "created_at": "2026-10-31T10:46:17.787Z"
+      },
+      {
+        "id": 1383,
+        "incident_id": 27,
+        "dimension": "value_tier",
+        "segment_value": "power",
+        "affected_customers": 30,
+        "total_customers": 560,
+        "issue_rate": 0.053571,
+        "comparison_rate": 0.024627,
+        "lift_ratio": 2.175,
+        "p_value": 0.0015169468780108538,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted.",
+        "created_at": "2026-10-31T10:46:17.788Z"
+      },
+      {
+        "id": 1384,
+        "incident_id": 27,
+        "dimension": "frequency",
+        "segment_value": "2_3_orders",
+        "affected_customers": 30,
+        "total_customers": 566,
+        "issue_rate": 0.053004,
+        "comparison_rate": 0.024738,
+        "lift_ratio": 2.143,
+        "p_value": 0.0018325518528160211,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted.",
+        "created_at": "2026-10-31T10:46:17.788Z"
+      },
+      {
+        "id": 1385,
+        "incident_id": 27,
+        "dimension": "city",
+        "segment_value": "Hyderabad",
+        "affected_customers": 10,
+        "total_customers": 214,
+        "issue_rate": 0.046729,
+        "comparison_rate": 0.031435,
+        "lift_ratio": 1.487,
+        "p_value": 0.16354947602448158,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted. Small affected count, treat the rate as approximate.",
+        "created_at": "2026-10-31T10:46:17.789Z"
+      },
+      {
+        "id": 1386,
+        "incident_id": 27,
+        "dimension": "customer_type",
+        "segment_value": "new",
+        "affected_customers": 5,
+        "total_customers": 123,
+        "issue_rate": 0.04065,
+        "comparison_rate": 0.032639,
+        "lift_ratio": 1.245,
+        "p_value": 0.3869601776814011,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted. Small affected count, treat the rate as approximate.",
+        "created_at": "2026-10-31T10:46:17.789Z"
+      },
+      {
+        "id": 1387,
+        "incident_id": 27,
+        "dimension": "device_os__app_version__payment",
+        "segment_value": "Android 14 | v2.3 | cod",
+        "affected_customers": 2,
+        "total_customers": 54,
+        "issue_rate": 0.037037,
+        "comparison_rate": 0.033044,
+        "lift_ratio": 1.121,
+        "p_value": 0.5416459125105499,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted. Small affected count, treat the rate as approximate.",
+        "created_at": "2026-10-31T10:46:17.789Z"
+      },
+      {
+        "id": 1388,
+        "incident_id": 27,
+        "dimension": "city",
+        "segment_value": "Mumbai",
+        "affected_customers": 15,
+        "total_customers": 420,
+        "issue_rate": 0.035714,
+        "comparison_rate": 0.032432,
+        "lift_ratio": 1.101,
+        "p_value": 0.4195528090160226,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted. Small affected count, treat the rate as approximate.",
+        "created_at": "2026-10-31T10:46:17.790Z"
+      },
+      {
+        "id": 1389,
+        "incident_id": 27,
+        "dimension": "device_os__app_version__payment",
+        "segment_value": "Android 13 | v2.3 | wallet",
+        "affected_customers": 2,
+        "total_customers": 56,
+        "issue_rate": 0.035714,
+        "comparison_rate": 0.03308,
+        "lift_ratio": 1.08,
+        "p_value": 0.5616901370955181,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted. Small affected count, treat the rate as approximate.",
+        "created_at": "2026-10-31T10:46:17.790Z"
+      },
+      {
+        "id": 1390,
+        "incident_id": 27,
+        "dimension": "value_tier",
+        "segment_value": "casual",
+        "affected_customers": 17,
+        "total_customers": 495,
+        "issue_rate": 0.034343,
+        "comparison_rate": 0.03274,
+        "lift_ratio": 1.049,
+        "p_value": 0.48115543648179326,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted. Small affected count, treat the rate as approximate.",
+        "created_at": "2026-10-31T10:46:17.791Z"
+      },
+      {
+        "id": 1391,
+        "incident_id": 27,
+        "dimension": "city",
+        "segment_value": "Pune",
+        "affected_customers": 5,
+        "total_customers": 149,
+        "issue_rate": 0.033557,
+        "comparison_rate": 0.033124,
+        "lift_ratio": 1.013,
+        "p_value": 0.5585480849146389,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted. Small affected count, treat the rate as approximate.",
+        "created_at": "2026-10-31T10:46:17.791Z"
+      },
+      {
+        "id": 1392,
+        "incident_id": 27,
+        "dimension": "city",
+        "segment_value": "Chennai",
+        "affected_customers": 7,
+        "total_customers": 214,
+        "issue_rate": 0.03271,
+        "comparison_rate": 0.033215,
+        "lift_ratio": 0.985,
+        "p_value": 0.5767483785422363,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted. Small affected count, treat the rate as approximate.",
+        "created_at": "2026-10-31T10:46:17.792Z"
+      },
+      {
+        "id": 1393,
+        "incident_id": 27,
+        "dimension": "city",
+        "segment_value": "Bengaluru",
+        "affected_customers": 15,
+        "total_customers": 514,
+        "issue_rate": 0.029183,
+        "comparison_rate": 0.034632,
+        "lift_ratio": 0.843,
+        "p_value": 0.7652962221866405,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted. Small affected count, treat the rate as approximate.",
+        "created_at": "2026-10-31T10:46:17.792Z"
+      },
+      {
+        "id": 1394,
+        "incident_id": 27,
+        "dimension": "city",
+        "segment_value": "Delhi",
+        "affected_customers": 11,
+        "total_customers": 389,
+        "issue_rate": 0.028278,
+        "comparison_rate": 0.034414,
+        "lift_ratio": 0.822,
+        "p_value": 0.7730128919680075,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted. Small affected count, treat the rate as approximate.",
+        "created_at": "2026-10-31T10:46:17.794Z"
+      },
+      {
+        "id": 1395,
+        "incident_id": 27,
+        "dimension": "customer_type",
+        "segment_value": "returning",
+        "affected_customers": 58,
+        "total_customers": 1777,
+        "issue_rate": 0.032639,
+        "comparison_rate": 0.04065,
+        "lift_ratio": 0.803,
+        "p_value": 0.7805433843857014,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted.",
+        "created_at": "2026-10-31T10:46:17.794Z"
+      },
+      {
+        "id": 1396,
+        "incident_id": 27,
+        "dimension": "device_os__app_version__payment",
+        "segment_value": "Android 12 | v2.3 | wallet",
+        "affected_customers": 1,
+        "total_customers": 41,
+        "issue_rate": 0.02439,
+        "comparison_rate": 0.033351,
+        "lift_ratio": 0.731,
+        "p_value": 0.752796099421049,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted. Small affected count, treat the rate as approximate.",
+        "created_at": "2026-10-31T10:46:17.795Z"
+      },
+      {
+        "id": 1397,
+        "incident_id": 27,
+        "dimension": "device_os__app_version__payment",
+        "segment_value": "Android 13 | v2.3 | cod",
+        "affected_customers": 1,
+        "total_customers": 46,
+        "issue_rate": 0.021739,
+        "comparison_rate": 0.033441,
+        "lift_ratio": 0.65,
+        "p_value": 0.7919786315811144,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted. Small affected count, treat the rate as approximate.",
+        "created_at": "2026-10-31T10:46:17.795Z"
+      },
+      {
+        "id": 1398,
+        "incident_id": 27,
+        "dimension": "device_os__app_version__payment",
+        "segment_value": "Android 13 | v2.3 | card",
+        "affected_customers": 2,
+        "total_customers": 101,
+        "issue_rate": 0.019802,
+        "comparison_rate": 0.033908,
+        "lift_ratio": 0.584,
+        "p_value": 0.8592237392226029,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted. Small affected count, treat the rate as approximate.",
+        "created_at": "2026-10-31T10:46:17.796Z"
+      },
+      {
+        "id": 1399,
+        "incident_id": 27,
+        "dimension": "device_os__app_version__payment",
+        "segment_value": "Android 14 | v2.3 | card",
+        "affected_customers": 2,
+        "total_customers": 102,
+        "issue_rate": 0.019608,
+        "comparison_rate": 0.033927,
+        "lift_ratio": 0.578,
+        "p_value": 0.8630349841209515,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted. Small affected count, treat the rate as approximate.",
+        "created_at": "2026-10-31T10:46:17.796Z"
+      },
+      {
+        "id": 1400,
+        "incident_id": 27,
+        "dimension": "device_os__app_version__payment",
+        "segment_value": "iOS 16 | v2.2 | upi",
+        "affected_customers": 3,
+        "total_customers": 162,
+        "issue_rate": 0.018519,
+        "comparison_rate": 0.034522,
+        "lift_ratio": 0.536,
+        "p_value": 0.9166916537915083,
+        "significant": false,
+        "limitations": "Observational comparison of complaining customers; silent victims are undercounted. Small affected count, treat the rate as approximate.",
+        "created_at": "2026-10-31T10:46:17.796Z"
+      }
+    ],
+    "clusters": [
+      {
+        "id": 411,
+        "label": "Complaints about synthetic, call, upi, returned",
+        "description": "Synthetic call transcript: after the UPI app returned to the app the confirmation screen hung, the money was debited and no order was created.",
+        "feedback_count": 25,
+        "severity_score": 0.316,
+        "first_seen_at": "2026-10-13T23:31:00.000Z",
+        "last_seen_at": "2026-10-13T23:55:00.000Z",
+        "metadata": {
+          "method": "hdbscan",
+          "embedding": "sentence-transformers",
+          "confidence": 1,
+          "feedback_ids": [
+            2758,
+            2757,
+            2756,
+            2755,
+            2754,
+            2753,
+            2752,
+            2751,
+            2750,
+            2749,
+            2748,
+            2747,
+            2746,
+            2745,
+            2744,
+            2743,
+            2742,
+            2741,
+            2740,
+            2739,
+            2738,
+            2737,
+            2736,
+            2735,
+            2734
+          ],
+          "severity_indicators": {
+            "share_of_complaints": 0.316,
+            "financial_loss_mentions": 25
+          }
+        }
+      },
+      {
+        "id": 412,
+        "label": "Complaints about upi, money, deducted, created",
+        "description": "Money deducted through UPI but no order was created in the app",
+        "feedback_count": 10,
+        "severity_score": 0.127,
+        "first_seen_at": "2026-10-11T05:13:39.000Z",
+        "last_seen_at": "2026-10-14T00:00:00.000Z",
+        "metadata": {
+          "method": "hdbscan",
+          "embedding": "sentence-transformers",
+          "confidence": 0.906,
+          "feedback_ids": [
+            2105,
+            2106,
+            2118,
+            2120,
+            2186,
+            2194,
+            2255,
+            2283,
+            2329,
+            2589
+          ],
+          "severity_indicators": {
+            "share_of_complaints": 0.127,
+            "financial_loss_mentions": 9
+          }
+        }
+      },
+      {
+        "id": 413,
+        "label": "Complaints about account, debited, yet, there",
+        "description": "My account was debited for order SYN-O0039570 yet there is no order in my history",
+        "feedback_count": 7,
+        "severity_score": 0.089,
+        "first_seen_at": "2026-10-11T00:27:20.000Z",
+        "last_seen_at": "2026-10-13T20:52:58.000Z",
+        "metadata": {
+          "method": "hdbscan",
+          "embedding": "sentence-transformers",
+          "confidence": 0.995,
+          "feedback_ids": [
+            2091,
+            2136,
+            2178,
+            2230,
+            2244,
+            2306,
+            2324
+          ],
+          "severity_indicators": {
+            "share_of_complaints": 0.089,
+            "financial_loss_mentions": 7
+          }
+        }
+      },
+      {
+        "id": 414,
+        "label": "Complaints about paisa, kat, gaya, nahi",
+        "description": "paisa kat gaya but order nahi bana, please refund",
+        "feedback_count": 6,
+        "severity_score": 0.076,
+        "first_seen_at": "2026-10-11T19:14:12.000Z",
+        "last_seen_at": "2026-10-13T22:38:02.000Z",
+        "metadata": {
+          "method": "hdbscan",
+          "embedding": "sentence-transformers",
+          "confidence": 1,
+          "feedback_ids": [
+            2149,
+            2171,
+            2223,
+            2292,
+            2298,
+            2328
+          ],
+          "severity_indicators": {
+            "share_of_complaints": 0.076,
+            "financial_loss_mentions": 6
+          }
+        }
+      },
+      {
+        "id": 415,
+        "label": "Complaints about payment, confirmation, screen, hangs",
+        "description": "Payment confirmation screen hangs after UPI, money gone and no food",
+        "feedback_count": 6,
+        "severity_score": 0.076,
+        "first_seen_at": "2026-10-11T03:04:20.000Z",
+        "last_seen_at": "2026-10-13T18:09:29.000Z",
+        "metadata": {
+          "method": "hdbscan",
+          "embedding": "sentence-transformers",
+          "confidence": 1,
+          "feedback_ids": [
+            2104,
+            2138,
+            2161,
+            2200,
+            2248,
+            2318
+          ],
+          "severity_indicators": {
+            "share_of_complaints": 0.076,
+            "financial_loss_mentions": 6
+          }
+        }
+      },
+      {
+        "id": 416,
+        "label": "Complaints about charged, upi, debit, shows",
+        "description": "Charged twice? UPI debit shows in bank but app says order not placed",
+        "feedback_count": 6,
+        "severity_score": 0.076,
+        "first_seen_at": "2026-10-11T21:40:27.000Z",
+        "last_seen_at": "2026-10-13T23:39:28.000Z",
+        "metadata": {
+          "method": "hdbscan",
+          "embedding": "sentence-transformers",
+          "confidence": 1,
+          "feedback_ids": [
+            2168,
+            2210,
+            2293,
+            2295,
+            2313,
+            2334
+          ],
+          "severity_indicators": {
+            "share_of_complaints": 0.076,
+            "financial_loss_mentions": 6
+          }
+        }
+      },
+      {
+        "id": 417,
+        "label": "Complaints about card, payment, declined, had",
+        "description": "Card payment was declined at checkout, had to retry",
+        "feedback_count": 5,
+        "severity_score": 0.063,
+        "first_seen_at": "2026-10-11T18:22:46.000Z",
+        "last_seen_at": "2026-10-12T20:32:14.000Z",
+        "metadata": {
+          "method": "hdbscan",
+          "embedding": "sentence-transformers",
+          "confidence": 0.861,
+          "feedback_ids": [
+            2146,
+            2224,
+            2236,
+            2260,
+            2263
+          ],
+          "severity_indicators": {
+            "share_of_complaints": 0.063,
+            "financial_loss_mentions": 0
+          }
+        }
+      },
+      {
+        "id": 418,
+        "label": "Complaints about latest, update, upi, payment",
+        "description": "After latest update UPI payment does not confirm and the amount was deducted",
+        "feedback_count": 5,
+        "severity_score": 0.063,
+        "first_seen_at": "2026-10-11T21:52:49.000Z",
+        "last_seen_at": "2026-10-13T10:25:50.000Z",
+        "metadata": {
+          "method": "hdbscan",
+          "embedding": "sentence-transformers",
+          "confidence": 1,
+          "feedback_ids": [
+            2170,
+            2202,
+            2207,
+            2291,
+            2297
+          ],
+          "severity_indicators": {
+            "share_of_complaints": 0.063,
+            "financial_loss_mentions": 5
+          }
+        }
+      }
+    ],
+    "recommendations": [
+      {
+        "id": 218,
+        "incident_id": 27,
+        "action_key": "disable_feature_flag",
+        "action_type": "simulate_feature_flag_change",
+        "title": "Disable the affected feature with a flag for the segment",
+        "description": "Disable the affected feature with a flag for the segment.",
+        "priority": 1,
+        "score": 0.8875,
+        "estimated_cost": 0,
+        "expected_benefit": "Benefit index 0.85; about 15 minutes to implement",
+        "risk_level": "medium",
+        "requires_approval": true,
+        "status": "executed",
+        "rationale": {
+          "weights": {
+            "speed": 0.1,
+            "urgency": 0.2,
+            "low_cost": 0.05,
+            "low_risk": 0.05,
+            "confidence": 0.2,
+            "reversibility": 0.1,
+            "customer_benefit": 0.3
+          },
+          "alternative": {
+            "replaces": "rollback_release",
+            "trade_off": "A flag limits the blast radius to the affected segment but leaves the release live, so the underlying defect remains until a fix ships."
+          },
+          "target_count": 90,
+          "score_breakdown": {
+            "speed": 0.875,
+            "urgency": 0.9,
+            "low_cost": 1,
+            "low_risk": 0.6,
+            "confidence": 0.95,
+            "reversibility": 0.95,
+            "customer_benefit": 0.85
+          },
+          "evidence_references": [
+            {
+              "path": "$.confidence_score",
+              "tool": "run_root_cause_court",
+              "value": 0.95
+            }
+          ]
+        },
+        "created_at": "2026-10-31T10:46:05.731Z",
+        "approval_id": 131,
+        "approval_decision": "approved"
+      },
+      {
+        "id": 220,
+        "incident_id": 27,
+        "action_key": "reconcile_payments",
+        "action_type": "simulate_support_ticket",
+        "title": "Reconcile captured payments that have no order",
+        "description": "Reconcile captured payments that have no order.",
+        "priority": 2,
+        "score": 0.805,
+        "estimated_cost": 0,
+        "expected_benefit": "Benefit index 0.60; about 30 minutes to implement",
+        "risk_level": "low",
+        "requires_approval": false,
+        "status": "proposed",
+        "rationale": {
+          "weights": {
+            "speed": 0.1,
+            "urgency": 0.2,
+            "low_cost": 0.05,
+            "low_risk": 0.05,
+            "confidence": 0.2,
+            "reversibility": 0.1,
+            "customer_benefit": 0.3
+          },
+          "target_count": 90,
+          "score_breakdown": {
+            "speed": 0.75,
+            "urgency": 0.8,
+            "low_cost": 1,
+            "low_risk": 1,
+            "confidence": 0.95,
+            "reversibility": 1,
+            "customer_benefit": 0.6
+          },
+          "evidence_references": [
+            {
+              "path": "$.confidence_score",
+              "tool": "run_root_cause_court",
+              "value": 0.95
+            }
+          ]
+        },
+        "created_at": "2026-10-31T10:46:05.733Z",
+        "approval_id": null,
+        "approval_decision": null
+      },
+      {
+        "id": 219,
+        "incident_id": 27,
+        "action_key": "rollback_release",
+        "action_type": "simulate_feature_flag_change",
+        "title": "Roll back the suspected release",
+        "description": "Roll back the suspected release.",
+        "priority": 2,
+        "score": 0.87,
+        "estimated_cost": 0,
+        "expected_benefit": "Benefit index 0.95; about 45 minutes to implement",
+        "risk_level": "high",
+        "requires_approval": true,
+        "status": "rejected",
+        "rationale": {
+          "weights": {
+            "speed": 0.1,
+            "urgency": 0.2,
+            "low_cost": 0.05,
+            "low_risk": 0.05,
+            "confidence": 0.2,
+            "reversibility": 0.1,
+            "customer_benefit": 0.3
+          },
+          "target_count": 90,
+          "score_breakdown": {
+            "speed": 0.625,
+            "urgency": 0.95,
+            "low_cost": 1,
+            "low_risk": 0.25,
+            "confidence": 0.95,
+            "reversibility": 0.8,
+            "customer_benefit": 0.95
+          },
+          "evidence_references": [
+            {
+              "path": "$.confidence_score",
+              "tool": "run_root_cause_court",
+              "value": 0.95
+            }
+          ]
+        },
+        "created_at": "2026-10-31T10:46:05.732Z",
+        "approval_id": 132,
+        "approval_decision": "rejected"
+      },
+      {
+        "id": 221,
+        "incident_id": 27,
+        "action_key": "issue_eligible_refunds",
+        "action_type": "simulate_refund",
+        "title": "Refund verified captured payments without orders",
+        "description": "Refund verified captured payments without orders.",
+        "priority": 3,
+        "score": 0.7323,
+        "estimated_cost": 35373.98,
+        "expected_benefit": "Benefit index 0.80; about 60 minutes to implement",
+        "risk_level": "medium",
+        "requires_approval": true,
+        "status": "proposed",
+        "rationale": {
+          "weights": {
+            "speed": 0.1,
+            "urgency": 0.2,
+            "low_cost": 0.05,
+            "low_risk": 0.05,
+            "confidence": 0.2,
+            "reversibility": 0.1,
+            "customer_benefit": 0.3
+          },
+          "target_count": 100,
+          "score_breakdown": {
+            "speed": 0.5,
+            "urgency": 0.8,
+            "low_cost": 0.646,
+            "low_risk": 0.6,
+            "confidence": 0.95,
+            "reversibility": 0.3,
+            "customer_benefit": 0.8
+          },
+          "evidence_references": [
+            {
+              "path": "$.confidence_score",
+              "tool": "run_root_cause_court",
+              "value": 0.95
+            }
+          ]
+        },
+        "created_at": "2026-10-31T10:46:05.733Z",
+        "approval_id": 133,
+        "approval_decision": "pending"
+      },
+      {
+        "id": 222,
+        "incident_id": 27,
+        "action_key": "create_support_incident",
+        "action_type": "simulate_support_ticket",
+        "title": "Open a coordinated support incident",
+        "description": "Open a coordinated support incident.",
+        "priority": 4,
+        "score": 0.7067,
+        "estimated_cost": 0,
+        "expected_benefit": "Benefit index 0.35; about 10 minutes to implement",
+        "risk_level": "low",
+        "requires_approval": false,
+        "status": "proposed",
+        "rationale": {
+          "weights": {
+            "speed": 0.1,
+            "urgency": 0.2,
+            "low_cost": 0.05,
+            "low_risk": 0.05,
+            "confidence": 0.2,
+            "reversibility": 0.1,
+            "customer_benefit": 0.3
+          },
+          "target_count": 90,
+          "score_breakdown": {
+            "speed": 0.917,
+            "urgency": 0.6,
+            "low_cost": 1,
+            "low_risk": 1,
+            "confidence": 0.95,
+            "reversibility": 1,
+            "customer_benefit": 0.35
+          },
+          "evidence_references": [
+            {
+              "path": "$.confidence_score",
+              "tool": "run_root_cause_court",
+              "value": 0.95
+            }
+          ]
+        },
+        "created_at": "2026-10-31T10:46:05.734Z",
+        "approval_id": null,
+        "approval_decision": null
+      },
+      {
+        "id": 223,
+        "incident_id": 27,
+        "action_key": "update_support_scripts",
+        "action_type": "simulate_support_ticket",
+        "title": "Update support scripts with the verified failure",
+        "description": "Update support scripts with the verified failure.",
+        "priority": 5,
+        "score": 0.6675,
+        "estimated_cost": 0,
+        "expected_benefit": "Benefit index 0.30; about 15 minutes to implement",
+        "risk_level": "low",
+        "requires_approval": false,
+        "status": "proposed",
+        "rationale": {
+          "weights": {
+            "speed": 0.1,
+            "urgency": 0.2,
+            "low_cost": 0.05,
+            "low_risk": 0.05,
+            "confidence": 0.2,
+            "reversibility": 0.1,
+            "customer_benefit": 0.3
+          },
+          "target_count": 90,
+          "score_breakdown": {
+            "speed": 0.875,
+            "urgency": 0.5,
+            "low_cost": 1,
+            "low_risk": 1,
+            "confidence": 0.95,
+            "reversibility": 1,
+            "customer_benefit": 0.3
+          },
+          "evidence_references": [
+            {
+              "path": "$.confidence_score",
+              "tool": "run_root_cause_court",
+              "value": 0.95
+            }
+          ]
+        },
+        "created_at": "2026-10-31T10:46:05.735Z",
+        "approval_id": null,
+        "approval_decision": null
+      },
+      {
+        "id": 224,
+        "incident_id": 27,
+        "action_key": "notify_customers",
+        "action_type": "simulate_customer_notification",
+        "title": "Notify verified affected customers",
+        "description": "Notify verified affected customers.",
+        "priority": 6,
+        "score": 0.6633,
+        "estimated_cost": 0,
+        "expected_benefit": "Benefit index 0.50; about 20 minutes to implement",
+        "risk_level": "low",
+        "requires_approval": true,
+        "status": "proposed",
+        "rationale": {
+          "weights": {
+            "speed": 0.1,
+            "urgency": 0.2,
+            "low_cost": 0.05,
+            "low_risk": 0.05,
+            "confidence": 0.2,
+            "reversibility": 0.1,
+            "customer_benefit": 0.3
+          },
+          "target_count": 90,
+          "score_breakdown": {
+            "speed": 0.833,
+            "urgency": 0.6,
+            "low_cost": 1,
+            "low_risk": 1,
+            "confidence": 0.95,
+            "reversibility": 0.2,
+            "customer_benefit": 0.5
+          },
+          "evidence_references": [
+            {
+              "path": "$.confidence_score",
+              "tool": "run_root_cause_court",
+              "value": 0.95
+            }
+          ]
+        },
+        "created_at": "2026-10-31T10:46:05.735Z",
+        "approval_id": 134,
+        "approval_decision": "pending"
+      },
+      {
+        "id": 225,
+        "incident_id": 27,
+        "action_key": "goodwill_coupon",
+        "action_type": "simulate_coupon",
+        "title": "Offer a goodwill coupon to verified affected customers",
+        "description": "Offer a goodwill coupon to verified affected customers.",
+        "priority": 7,
+        "score": 0.5538,
+        "estimated_cost": 9000,
+        "expected_benefit": "Benefit index 0.35; about 20 minutes to implement",
+        "risk_level": "low",
+        "requires_approval": true,
+        "status": "proposed",
+        "rationale": {
+          "weights": {
+            "speed": 0.1,
+            "urgency": 0.2,
+            "low_cost": 0.05,
+            "low_risk": 0.05,
+            "confidence": 0.2,
+            "reversibility": 0.1,
+            "customer_benefit": 0.3
+          },
+          "target_count": 90,
+          "score_breakdown": {
+            "speed": 0.833,
+            "urgency": 0.3,
+            "low_cost": 0.91,
+            "low_risk": 1,
+            "confidence": 0.95,
+            "reversibility": 0.2,
+            "customer_benefit": 0.35
+          },
+          "evidence_references": [
+            {
+              "path": "$.confidence_score",
+              "tool": "run_root_cause_court",
+              "value": 0.95
+            }
+          ]
+        },
+        "created_at": "2026-10-31T10:46:05.736Z",
+        "approval_id": 135,
+        "approval_decision": "pending"
+      }
+    ],
+    "reassessments": [
+      {
+        "id": 29,
+        "trigger_summary": "Approver rejected rollback_release",
+        "diff": {
+          "after": {
+            "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+            "complaints": 107,
+            "confidence": 0.95,
+            "hypotheses": {
+              "weather_rain": {
+                "status": "rejected",
+                "confidence": 0.15
+              },
+              "seasonal_traffic": {
+                "status": "rejected",
+                "confidence": 0.158
+              },
+              "menu_price_change": {
+                "status": "rejected",
+                "confidence": 0.158
+              },
+              "release_2.3_android": {
+                "status": "supported",
+                "confidence": 0.95
+              },
+              "payment_gateway_regression": {
+                "status": "rejected",
+                "confidence": 0
+              }
+            },
+            "verdict_status": "supported",
+            "recommendations": [
+              "disable_feature_flag",
+              "reconcile_payments",
+              "issue_eligible_refunds",
+              "create_support_incident",
+              "update_support_scripts",
+              "notify_customers",
+              "goodwill_coupon"
+            ],
+            "top_segment_lift": 22.133,
+            "affected_customer_count": 156
+          },
+          "before": {
+            "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+            "complaints": 107,
+            "confidence": 0.95,
+            "hypotheses": {
+              "weather_rain": {
+                "status": "rejected",
+                "confidence": 0.15
+              },
+              "seasonal_traffic": {
+                "status": "rejected",
+                "confidence": 0.158
+              },
+              "menu_price_change": {
+                "status": "rejected",
+                "confidence": 0.158
+              },
+              "release_2.3_android": {
+                "status": "supported",
+                "confidence": 0.95
+              },
+              "payment_gateway_regression": {
+                "status": "rejected",
+                "confidence": 0
+              }
+            },
+            "verdict_status": "supported",
+            "recommendations": [
+              "disable_feature_flag",
+              "reconcile_payments",
+              "issue_eligible_refunds",
+              "create_support_incident",
+              "update_support_scripts",
+              "notify_customers",
+              "goodwill_coupon"
+            ],
+            "top_segment_lift": 22.133,
+            "affected_customer_count": 156
+          },
+          "tests_rerun": 0,
+          "tests_reused": 25,
+          "what_changed": [
+            "The new evidence did not change the verdict, confidence or plan."
+          ],
+          "evidence_kinds": [
+            "approval_rejected"
+          ],
+          "hypotheses_changed": [],
+          "recommendations_added": [],
+          "recommendations_removed": []
+        },
+        "created_at": "2026-10-31T10:46:17.839Z"
+      },
+      {
+        "id": 28,
+        "trigger_summary": "Manual reassessment",
+        "diff": {
+          "after": {
+            "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+            "complaints": 107,
+            "confidence": 0.95,
+            "hypotheses": {
+              "weather_rain": {
+                "status": "rejected",
+                "confidence": 0.15
+              },
+              "seasonal_traffic": {
+                "status": "rejected",
+                "confidence": 0.158
+              },
+              "menu_price_change": {
+                "status": "rejected",
+                "confidence": 0.158
+              },
+              "release_2.3_android": {
+                "status": "supported",
+                "confidence": 0.95
+              },
+              "payment_gateway_regression": {
+                "status": "rejected",
+                "confidence": 0
+              }
+            },
+            "verdict_status": "supported",
+            "recommendations": [
+              "disable_feature_flag",
+              "rollback_release",
+              "reconcile_payments",
+              "issue_eligible_refunds",
+              "create_support_incident",
+              "update_support_scripts",
+              "notify_customers",
+              "goodwill_coupon"
+            ],
+            "top_segment_lift": 22.133,
+            "affected_customer_count": 156
+          },
+          "before": {
+            "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+            "complaints": 107,
+            "confidence": 0.95,
+            "hypotheses": {
+              "weather_rain": {
+                "status": "rejected",
+                "confidence": 0.15
+              },
+              "seasonal_traffic": {
+                "status": "rejected",
+                "confidence": 0.158
+              },
+              "menu_price_change": {
+                "status": "rejected",
+                "confidence": 0.158
+              },
+              "release_2.3_android": {
+                "status": "supported",
+                "confidence": 0.95
+              },
+              "payment_gateway_regression": {
+                "status": "rejected",
+                "confidence": 0
+              }
+            },
+            "verdict_status": "supported",
+            "recommendations": [
+              "disable_feature_flag",
+              "rollback_release",
+              "reconcile_payments",
+              "issue_eligible_refunds",
+              "create_support_incident",
+              "update_support_scripts",
+              "notify_customers",
+              "goodwill_coupon"
+            ],
+            "top_segment_lift": 22.133,
+            "affected_customer_count": 156
+          },
+          "tests_rerun": 20,
+          "tests_reused": 5,
+          "what_changed": [
+            "The new evidence did not change the verdict, confidence or plan."
+          ],
+          "evidence_kinds": [
+            "new_complaints"
+          ],
+          "hypotheses_changed": [],
+          "recommendations_added": [],
+          "recommendations_removed": []
+        },
+        "created_at": "2026-10-31T10:46:16.306Z"
+      },
+      {
+        "id": 27,
+        "trigger_summary": "25 support call transcripts imported",
+        "diff": {
+          "after": {
+            "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+            "complaints": 107,
+            "confidence": 0.95,
+            "hypotheses": {
+              "weather_rain": {
+                "status": "rejected",
+                "confidence": 0.15
+              },
+              "seasonal_traffic": {
+                "status": "rejected",
+                "confidence": 0.158
+              },
+              "menu_price_change": {
+                "status": "rejected",
+                "confidence": 0.158
+              },
+              "release_2.3_android": {
+                "status": "supported",
+                "confidence": 0.95
+              },
+              "payment_gateway_regression": {
+                "status": "rejected",
+                "confidence": 0
+              }
+            },
+            "verdict_status": "supported",
+            "recommendations": [
+              "disable_feature_flag",
+              "rollback_release",
+              "reconcile_payments",
+              "issue_eligible_refunds",
+              "create_support_incident",
+              "update_support_scripts",
+              "notify_customers",
+              "goodwill_coupon"
+            ],
+            "top_segment_lift": 22.133,
+            "affected_customer_count": 156
+          },
+          "before": {
+            "verdict": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+            "complaints": 82,
+            "confidence": 0.95,
+            "hypotheses": {
+              "weather_rain": {
+                "status": "rejected",
+                "confidence": 0.15
+              },
+              "seasonal_traffic": {
+                "status": "rejected",
+                "confidence": 0.158
+              },
+              "menu_price_change": {
+                "status": "rejected",
+                "confidence": 0.158
+              },
+              "release_2.3_android": {
+                "status": "supported",
+                "confidence": 0.95
+              },
+              "payment_gateway_regression": {
+                "status": "rejected",
+                "confidence": 0
+              }
+            },
+            "verdict_status": "supported",
+            "recommendations": [
+              "disable_feature_flag",
+              "rollback_release",
+              "reconcile_payments",
+              "issue_eligible_refunds",
+              "create_support_incident",
+              "update_support_scripts",
+              "notify_customers",
+              "goodwill_coupon"
+            ],
+            "top_segment_lift": 16.139,
+            "affected_customer_count": 156
+          },
+          "tests_rerun": 10,
+          "tests_reused": 15,
+          "what_changed": [
+            "Complaints tied to this incident moved from 82 to 107.",
+            "Top segment lift moved from 16.139 to 22.133."
+          ],
+          "evidence_kinds": [
+            "support_transcripts"
+          ],
+          "hypotheses_changed": [],
+          "recommendations_added": [],
+          "recommendations_removed": []
+        },
+        "created_at": "2026-10-31T10:46:13.846Z"
+      }
+    ]
+  }
+}

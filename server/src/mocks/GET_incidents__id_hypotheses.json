@@ -1,0 +1,497 @@
+{
+  "data": [
+    {
+      "id": 261,
+      "incident_id": 27,
+      "hypothesis_key": "release_2.3_android",
+      "hypothesis": "Release 2.3 on android for Android 14 UPI orders caused the issue",
+      "status": "supported",
+      "confidence_score": 0.95,
+      "explanation": "5 of 5 tests support this; 0 reject it.",
+      "evidence_summary": {
+        "missing": [],
+        "references": [
+          {
+            "description": "New UPI intent flow and payment confirmation screen",
+            "source_table": "product_releases",
+            "source_record_id": "2.3:android"
+          }
+        ],
+        "supporting": [
+          "The issue began 54 h after the change (daily resolution). Timing alone does not prove cause.",
+          "Exposed orders produce complaints at 32.1x the unexposed rate.",
+          "Telemetry confirms the failure: 28.4% of exposed orders against 0.02% unexposed.",
+          "The issue rate rises with the share of a customer's orders that were exposed.",
+          "The unexposed control group stayed flat (1.12x)."
+        ],
+        "contradicting": []
+      },
+      "created_at": "2026-10-31T10:46:05.704Z",
+      "updated_at": "2026-10-31T10:46:13.807Z",
+      "tests": [
+        {
+          "id": 1301,
+          "test_name": "temporal",
+          "status": "supported",
+          "result": {
+            "onset": "2026-10-11T00:00:00",
+            "reused": true,
+            "gap_hours": 54,
+            "change_time": "2026-10-08T18:00:00"
+          },
+          "explanation": "The issue began 54 h after the change (daily resolution). Timing alone does not prove cause."
+        },
+        {
+          "id": 1302,
+          "test_name": "segment_specificity",
+          "status": "supported",
+          "result": {
+            "lift": 32.142,
+            "reused": true,
+            "p_value": 9.03157614687893e-39,
+            "exposed_rate": 0.1523,
+            "exposed_issues": 53,
+            "exposed_orders": 348,
+            "unexposed_rate": 0.00474,
+            "unexposed_issues": 11,
+            "unexposed_orders": 2426
+          },
+          "explanation": "Exposed orders produce complaints at 32.1x the unexposed rate."
+        },
+        {
+          "id": 1303,
+          "test_name": "telemetry",
+          "status": "supported",
+          "result": {
+            "lift": 1380.879,
+            "reused": true,
+            "p_value": 6.230382796714866e-96,
+            "exposed_rate": 0.28448,
+            "exposed_orders": 348,
+            "unexposed_rate": 0.00021,
+            "exposed_failures": 99,
+            "unexposed_orders": 2426,
+            "unexposed_failures": 0
+          },
+          "explanation": "Telemetry confirms the failure: 28.4% of exposed orders against 0.02% unexposed."
+        },
+        {
+          "id": 1304,
+          "test_name": "dose_response",
+          "status": "supported",
+          "result": {
+            "rates": {
+              "high": 0.15106,
+              "none": 0.00461,
+              "partial": 0.05172
+            },
+            "orders": {
+              "high": 331,
+              "none": 2385,
+              "partial": 58
+            },
+            "reused": true,
+            "p_value": 2.9897099003032104e-61
+          },
+          "explanation": "The issue rate rises with the share of a customer's orders that were exposed."
+        },
+        {
+          "id": 1305,
+          "test_name": "counter_check",
+          "status": "supported",
+          "result": {
+            "ratio": 1.122,
+            "reused": true,
+            "p_value": 0.45178035298489655,
+            "unexposed_rate_after": 0.00474,
+            "unexposed_rate_before": 0.00422
+          },
+          "explanation": "The unexposed control group stayed flat (1.12x)."
+        }
+      ]
+    },
+    {
+      "id": 262,
+      "incident_id": 27,
+      "hypothesis_key": "menu_price_change",
+      "hypothesis": "The menu price change drove the complaints",
+      "status": "rejected",
+      "confidence_score": 0.158,
+      "explanation": "0 of 5 tests support this; 3 reject it.",
+      "evidence_summary": {
+        "missing": [],
+        "references": [
+          {
+            "description": "menu price change",
+            "source_table": "operational_events",
+            "source_record_id": "87901"
+          }
+        ],
+        "supporting": [],
+        "contradicting": [
+          "The issue began 216 h long after this change, which does not fit.",
+          "This change touched every customer, yet the issue is concentrated in one narrow segment.",
+          "Complaints per order rose 4.6x while orders grew only 1.22x, so this does not explain it."
+        ]
+      },
+      "created_at": "2026-10-31T10:46:05.710Z",
+      "updated_at": "2026-10-31T10:46:16.272Z",
+      "tests": [
+        {
+          "id": 1306,
+          "test_name": "temporal",
+          "status": "rejected",
+          "result": {
+            "onset": "2026-10-11T00:00:00",
+            "reused": true,
+            "gap_hours": 216,
+            "change_time": "2026-10-02T00:00:00"
+          },
+          "explanation": "The issue began 216 h long after this change, which does not fit."
+        },
+        {
+          "id": 1307,
+          "test_name": "segment_specificity",
+          "status": "rejected",
+          "result": {
+            "lift": 22.133,
+            "reused": true,
+            "segment": "Android 14 | v2.3 | upi",
+            "coverage": 0.762
+          },
+          "explanation": "This change touched every customer, yet the issue is concentrated in one narrow segment."
+        },
+        {
+          "id": 1308,
+          "test_name": "telemetry",
+          "status": "inconclusive",
+          "result": {
+            "reused": true,
+            "orders_after_change": 8631,
+            "failure_rate_after_change": 0.00614,
+            "failure_rate_before_change": 0
+          },
+          "explanation": "Telemetry around this change is not decisive."
+        },
+        {
+          "id": 1309,
+          "test_name": "dose_response",
+          "status": "inconclusive",
+          "result": {
+            "reused": true
+          },
+          "explanation": "A universal change has no graded exposure to test."
+        },
+        {
+          "id": 1310,
+          "test_name": "counter_check",
+          "status": "rejected",
+          "result": {
+            "reused": true,
+            "rate_ratio": 4.646,
+            "order_growth": 1.221
+          },
+          "explanation": "Complaints per order rose 4.6x while orders grew only 1.22x, so this does not explain it."
+        }
+      ]
+    },
+    {
+      "id": 263,
+      "incident_id": 27,
+      "hypothesis_key": "seasonal_traffic",
+      "hypothesis": "Seasonal or campaign traffic explains the rise",
+      "status": "rejected",
+      "confidence_score": 0.158,
+      "explanation": "0 of 5 tests support this; 3 reject it.",
+      "evidence_summary": {
+        "missing": [],
+        "references": [
+          {
+            "description": "marketing campaign",
+            "source_table": "operational_events",
+            "source_record_id": "72502"
+          }
+        ],
+        "supporting": [],
+        "contradicting": [
+          "The issue began 360 h long after this change, which does not fit.",
+          "This change touched every customer, yet the issue is concentrated in one narrow segment.",
+          "Complaints per order rose 4.6x while orders grew only 1.22x, so this does not explain it."
+        ]
+      },
+      "created_at": "2026-10-31T10:46:05.714Z",
+      "updated_at": "2026-10-31T10:46:16.275Z",
+      "tests": [
+        {
+          "id": 1311,
+          "test_name": "temporal",
+          "status": "rejected",
+          "result": {
+            "onset": "2026-10-11T00:00:00",
+            "reused": true,
+            "gap_hours": 360,
+            "change_time": "2026-09-26T00:00:00"
+          },
+          "explanation": "The issue began 360 h long after this change, which does not fit."
+        },
+        {
+          "id": 1312,
+          "test_name": "segment_specificity",
+          "status": "rejected",
+          "result": {
+            "lift": 22.133,
+            "reused": true,
+            "segment": "Android 14 | v2.3 | upi",
+            "coverage": 0.762
+          },
+          "explanation": "This change touched every customer, yet the issue is concentrated in one narrow segment."
+        },
+        {
+          "id": 1313,
+          "test_name": "telemetry",
+          "status": "inconclusive",
+          "result": {
+            "reused": true,
+            "orders_after_change": 14097,
+            "failure_rate_after_change": 0.00376,
+            "failure_rate_before_change": 0
+          },
+          "explanation": "Telemetry around this change is not decisive."
+        },
+        {
+          "id": 1314,
+          "test_name": "dose_response",
+          "status": "inconclusive",
+          "result": {
+            "reused": true
+          },
+          "explanation": "A universal change has no graded exposure to test."
+        },
+        {
+          "id": 1315,
+          "test_name": "counter_check",
+          "status": "rejected",
+          "result": {
+            "reused": true,
+            "rate_ratio": 4.646,
+            "order_growth": 1.221
+          },
+          "explanation": "Complaints per order rose 4.6x while orders grew only 1.22x, so this does not explain it."
+        }
+      ]
+    },
+    {
+      "id": 264,
+      "incident_id": 27,
+      "hypothesis_key": "weather_rain",
+      "hypothesis": "Heavy rain in Chennai, Mumbai caused the issue",
+      "status": "rejected",
+      "confidence_score": 0.15,
+      "explanation": "1 of 5 tests support this; 4 reject it.",
+      "evidence_summary": {
+        "missing": [],
+        "references": [
+          {
+            "description": "Weather alert",
+            "source_table": "operational_events",
+            "source_record_id": "109463"
+          }
+        ],
+        "supporting": [
+          "The issue began 24 h after the change (daily resolution). Timing alone does not prove cause."
+        ],
+        "contradicting": [
+          "Exposed and unexposed orders complain at similar rates (lift 0.47).",
+          "Telemetry failure rate is not elevated for exposed orders (lift 1.11).",
+          "More exposure does not mean more issues.",
+          "The issue also rose 5.4x where this exposure is absent."
+        ]
+      },
+      "created_at": "2026-10-31T10:46:05.717Z",
+      "updated_at": "2026-10-31T10:46:16.279Z",
+      "tests": [
+        {
+          "id": 1316,
+          "test_name": "temporal",
+          "status": "supported",
+          "result": {
+            "onset": "2026-10-11T00:00:00",
+            "reused": true,
+            "gap_hours": 24,
+            "change_time": "2026-10-10T00:00:00"
+          },
+          "explanation": "The issue began 24 h after the change (daily resolution). Timing alone does not prove cause."
+        },
+        {
+          "id": 1317,
+          "test_name": "segment_specificity",
+          "status": "rejected",
+          "result": {
+            "lift": 0.469,
+            "reused": true,
+            "p_value": 0.9901875764739668,
+            "exposed_rate": 0.01244,
+            "exposed_issues": 8,
+            "exposed_orders": 643,
+            "unexposed_rate": 0.0265,
+            "unexposed_issues": 56,
+            "unexposed_orders": 2131
+          },
+          "explanation": "Exposed and unexposed orders complain at similar rates (lift 0.47)."
+        },
+        {
+          "id": 1318,
+          "test_name": "telemetry",
+          "status": "rejected",
+          "result": {
+            "lift": 1.113,
+            "reused": true,
+            "p_value": 0.3469646117584501,
+            "exposed_rate": 0.03888,
+            "exposed_orders": 643,
+            "unexposed_rate": 0.03494,
+            "exposed_failures": 25,
+            "unexposed_orders": 2131,
+            "unexposed_failures": 74
+          },
+          "explanation": "Telemetry failure rate is not elevated for exposed orders (lift 1.11)."
+        },
+        {
+          "id": 1319,
+          "test_name": "dose_response",
+          "status": "rejected",
+          "result": {
+            "rates": {
+              "high": 0.01675,
+              "none": 0.02494,
+              "partial": 0.02326
+            },
+            "orders": {
+              "high": 597,
+              "none": 2005,
+              "partial": 172
+            },
+            "reused": true,
+            "p_value": 0.5044979730914606
+          },
+          "explanation": "More exposure does not mean more issues."
+        },
+        {
+          "id": 1320,
+          "test_name": "counter_check",
+          "status": "rejected",
+          "result": {
+            "ratio": 5.407,
+            "reused": true,
+            "p_value": 2.5318890124827118e-20,
+            "unexposed_rate_after": 0.0265,
+            "unexposed_rate_before": 0.0049
+          },
+          "explanation": "The issue also rose 5.4x where this exposure is absent."
+        }
+      ]
+    },
+    {
+      "id": 265,
+      "incident_id": 27,
+      "hypothesis_key": "payment_gateway_regression",
+      "hypothesis": "A shared UPI gateway or backend regression, independent of the app release, caused the issue",
+      "status": "rejected",
+      "confidence_score": 0,
+      "explanation": "0 of 5 tests support this; 4 reject it.",
+      "evidence_summary": {
+        "missing": [
+          "temporal: No dated change exists for this hypothesis, so timing cannot be checked."
+        ],
+        "references": [],
+        "supporting": [],
+        "contradicting": [
+          "Exposed and unexposed orders complain at similar rates (lift 0.11).",
+          "Telemetry failure rate is not elevated for exposed orders (lift 0.00).",
+          "More exposure does not mean more issues.",
+          "The issue also rose 6.1x where this exposure is absent."
+        ]
+      },
+      "created_at": "2026-10-31T10:46:05.720Z",
+      "updated_at": "2026-10-31T10:46:16.283Z",
+      "tests": [
+        {
+          "id": 1321,
+          "test_name": "temporal",
+          "status": "untested",
+          "result": {
+            "reused": true
+          },
+          "explanation": "No dated change exists for this hypothesis, so timing cannot be checked."
+        },
+        {
+          "id": 1322,
+          "test_name": "segment_specificity",
+          "status": "rejected",
+          "result": {
+            "lift": 0.112,
+            "reused": true,
+            "p_value": 0.99999999995792,
+            "exposed_rate": 0.00421,
+            "exposed_issues": 5,
+            "exposed_orders": 1188,
+            "unexposed_rate": 0.03749,
+            "unexposed_issues": 59,
+            "unexposed_orders": 1586
+          },
+          "explanation": "Exposed and unexposed orders complain at similar rates (lift 0.11)."
+        },
+        {
+          "id": 1323,
+          "test_name": "telemetry",
+          "status": "rejected",
+          "result": {
+            "lift": 0,
+            "reused": true,
+            "p_value": 1,
+            "exposed_rate": 0,
+            "exposed_orders": 1188,
+            "unexposed_rate": 0.0627,
+            "exposed_failures": 0,
+            "unexposed_orders": 1586,
+            "unexposed_failures": 99
+          },
+          "explanation": "Telemetry failure rate is not elevated for exposed orders (lift 0.00)."
+        },
+        {
+          "id": 1324,
+          "test_name": "dose_response",
+          "status": "rejected",
+          "result": {
+            "rates": {
+              "high": 0.00437,
+              "none": 0.0382,
+              "partial": 0.0184
+            },
+            "orders": {
+              "high": 1145,
+              "none": 1466,
+              "partial": 163
+            },
+            "reused": true,
+            "p_value": 7.48466619798463e-8
+          },
+          "explanation": "More exposure does not mean more issues."
+        },
+        {
+          "id": 1325,
+          "test_name": "counter_check",
+          "status": "rejected",
+          "result": {
+            "ratio": 6.135,
+            "reused": true,
+            "p_value": 6.4698643866308255e-22,
+            "unexposed_rate_after": 0.03749,
+            "unexposed_rate_before": 0.00611
+          },
+          "explanation": "The issue also rose 6.1x where this exposure is absent."
+        }
+      ]
+    }
+  ]
+}

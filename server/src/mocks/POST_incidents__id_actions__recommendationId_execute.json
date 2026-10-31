@@ -1,0 +1,17 @@
+{
+  "data": {
+    "id": 16,
+    "incident_id": 27,
+    "recommendation_id": 218,
+    "action_type": "simulate_feature_flag_change",
+    "status": "completed",
+    "target_reference": "disable_feature_flag",
+    "execution_result": {
+      "flag_change": "disable_feature_flag",
+      "target": "mobile-payments-config",
+      "simulated": true,
+      "note": "No real money, message or production flag was touched."
+    },
+    "executed_at": "2026-10-14T00:00:00.000Z"
+  }
+}

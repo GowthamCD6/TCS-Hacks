@@ -1,0 +1,288 @@
+{
+  "data": {
+    "sim_now": "2026-10-14T04:00:00.000Z",
+    "kpis": [
+      {
+        "name": "payment_without_order_rate",
+        "unit": "percent",
+        "target_value": 0.5,
+        "comparison_operator": "<=",
+        "monitoring_window_minutes": 120,
+        "points": [
+          {
+            "measured_at": "2026-10-14T00:00:00.000Z",
+            "value": 3.7333
+          },
+          {
+            "measured_at": "2026-10-14T00:15:00.000Z",
+            "value": 2.2956
+          },
+          {
+            "measured_at": "2026-10-14T00:30:00.000Z",
+            "value": 1.5044
+          },
+          {
+            "measured_at": "2026-10-14T00:45:00.000Z",
+            "value": 0.8841
+          },
+          {
+            "measured_at": "2026-10-14T01:00:00.000Z",
+            "value": 0.5571
+          },
+          {
+            "measured_at": "2026-10-14T01:15:00.000Z",
+            "value": 0.3496
+          },
+          {
+            "measured_at": "2026-10-14T01:30:00.000Z",
+            "value": 0.3192
+          },
+          {
+            "measured_at": "2026-10-14T01:45:00.000Z",
+            "value": 0.3165
+          },
+          {
+            "measured_at": "2026-10-14T02:00:00.000Z",
+            "value": 0.1438
+          },
+          {
+            "measured_at": "2026-10-14T02:15:00.000Z",
+            "value": 0.0329
+          },
+          {
+            "measured_at": "2026-10-14T02:30:00.000Z",
+            "value": 0.0291
+          },
+          {
+            "measured_at": "2026-10-14T02:45:00.000Z",
+            "value": 0.0106
+          },
+          {
+            "measured_at": "2026-10-14T03:00:00.000Z",
+            "value": 0
+          },
+          {
+            "measured_at": "2026-10-14T03:15:00.000Z",
+            "value": 0
+          },
+          {
+            "measured_at": "2026-10-14T03:30:00.000Z",
+            "value": 0.0131
+          },
+          {
+            "measured_at": "2026-10-14T03:45:00.000Z",
+            "value": 0.068
+          },
+          {
+            "measured_at": "2026-10-14T04:00:00.000Z",
+            "value": 0.1842
+          }
+        ]
+      },
+      {
+        "name": "complaint_volume",
+        "unit": "per_hour",
+        "target_value": 3,
+        "comparison_operator": "<=",
+        "monitoring_window_minutes": 120,
+        "points": [
+          {
+            "measured_at": "2026-10-14T00:00:00.000Z",
+            "value": 0.7083
+          },
+          {
+            "measured_at": "2026-10-14T00:15:00.000Z",
+            "value": 0.8205
+          },
+          {
+            "measured_at": "2026-10-14T00:30:00.000Z",
+            "value": 0.8935
+          },
+          {
+            "measured_at": "2026-10-14T00:45:00.000Z",
+            "value": 0.9325
+          },
+          {
+            "measured_at": "2026-10-14T01:00:00.000Z",
+            "value": 0.9584
+          },
+          {
+            "measured_at": "2026-10-14T01:15:00.000Z",
+            "value": 0.9805
+          },
+          {
+            "measured_at": "2026-10-14T01:30:00.000Z",
+            "value": 0.9911
+          },
+          {
+            "measured_at": "2026-10-14T01:45:00.000Z",
+            "value": 0.9877
+          },
+          {
+            "measured_at": "2026-10-14T02:00:00.000Z",
+            "value": 0.9948
+          },
+          {
+            "measured_at": "2026-10-14T02:15:00.000Z",
+            "value": 0.9899
+          },
+          {
+            "measured_at": "2026-10-14T02:30:00.000Z",
+            "value": 0.9926
+          },
+          {
+            "measured_at": "2026-10-14T02:45:00.000Z",
+            "value": 1.0025
+          },
+          {
+            "measured_at": "2026-10-14T03:00:00.000Z",
+            "value": 1.0059
+          },
+          {
+            "measured_at": "2026-10-14T03:15:00.000Z",
+            "value": 0.9998
+          },
+          {
+            "measured_at": "2026-10-14T03:30:00.000Z",
+            "value": 1.0008
+          },
+          {
+            "measured_at": "2026-10-14T03:45:00.000Z",
+            "value": 1.0048
+          },
+          {
+            "measured_at": "2026-10-14T04:00:00.000Z",
+            "value": 0.999
+          }
+        ]
+      },
+      {
+        "name": "successful_order_completion_rate",
+        "unit": "percent",
+        "target_value": 93,
+        "comparison_operator": ">=",
+        "monitoring_window_minutes": 120,
+        "points": [
+          {
+            "measured_at": "2026-10-14T00:00:00.000Z",
+            "value": 93.1555
+          },
+          {
+            "measured_at": "2026-10-14T00:15:00.000Z",
+            "value": 94.2541
+          },
+          {
+            "measured_at": "2026-10-14T00:30:00.000Z",
+            "value": 94.8965
+          },
+          {
+            "measured_at": "2026-10-14T00:45:00.000Z",
+            "value": 95.4206
+          },
+          {
+            "measured_at": "2026-10-14T01:00:00.000Z",
+            "value": 95.6221
+          },
+          {
+            "measured_at": "2026-10-14T01:15:00.000Z",
+            "value": 95.7597
+          },
+          {
+            "measured_at": "2026-10-14T01:30:00.000Z",
+            "value": 95.8371
+          },
+          {
+            "measured_at": "2026-10-14T01:45:00.000Z",
+            "value": 95.9352
+          },
+          {
+            "measured_at": "2026-10-14T02:00:00.000Z",
+            "value": 95.9753
+          },
+          {
+            "measured_at": "2026-10-14T02:15:00.000Z",
+            "value": 95.9987
+          },
+          {
+            "measured_at": "2026-10-14T02:30:00.000Z",
+            "value": 95.9671
+          },
+          {
+            "measured_at": "2026-10-14T02:45:00.000Z",
+            "value": 95.9726
+          },
+          {
+            "measured_at": "2026-10-14T03:00:00.000Z",
+            "value": 95.9049
+          },
+          {
+            "measured_at": "2026-10-14T03:15:00.000Z",
+            "value": 95.869
+          },
+          {
+            "measured_at": "2026-10-14T03:30:00.000Z",
+            "value": 95.8594
+          },
+          {
+            "measured_at": "2026-10-14T03:45:00.000Z",
+            "value": 95.9357
+          },
+          {
+            "measured_at": "2026-10-14T04:00:00.000Z",
+            "value": 96.0376
+          }
+        ]
+      }
+    ],
+    "verification": {
+      "outcome": "recovered",
+      "reasons": [
+        "All required KPIs met target for their full monitoring window."
+      ],
+      "kpis": [
+        {
+          "name": "payment_without_order_rate",
+          "unit": "percent",
+          "target_value": 0.5,
+          "comparison_operator": "<=",
+          "latest_value": 0.1842,
+          "meets_target": true,
+          "sustained": true,
+          "sustained_minutes": 165,
+          "monitoring_window_minutes": 120,
+          "required": true,
+          "measurements_after_action": 16,
+          "window_elapsed": true
+        },
+        {
+          "name": "complaint_volume",
+          "unit": "per_hour",
+          "target_value": 3,
+          "comparison_operator": "<=",
+          "latest_value": 0.999,
+          "meets_target": true,
+          "sustained": true,
+          "sustained_minutes": 225,
+          "monitoring_window_minutes": 120,
+          "required": true,
+          "measurements_after_action": 16,
+          "window_elapsed": true
+        },
+        {
+          "name": "successful_order_completion_rate",
+          "unit": "percent",
+          "target_value": 93,
+          "comparison_operator": ">=",
+          "latest_value": 96.0376,
+          "meets_target": true,
+          "sustained": true,
+          "sustained_minutes": 225,
+          "monitoring_window_minutes": 120,
+          "required": true,
+          "measurements_after_action": 16,
+          "window_elapsed": true
+        }
+      ]
+    }
+  }
+}

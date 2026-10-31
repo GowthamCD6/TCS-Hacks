@@ -1,0 +1,21 @@
+{
+  "data": {
+    "id": 2733,
+    "source": "mock-capture",
+    "source_record_id": "capture-1793423765781",
+    "channel": "api",
+    "rating": 1,
+    "text": "SYNTHETIC: UPI money deducted but no order was created",
+    "language": "en",
+    "category": null,
+    "sentiment": null,
+    "urgency": null,
+    "order_id": null,
+    "metadata": {},
+    "event_timestamp": "2026-10-14T00:00:00.000Z",
+    "processing_status": "pending",
+    "is_synthetic": 0,
+    "customer_ref": null,
+    "city": null
+  }
+}

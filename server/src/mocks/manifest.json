@@ -1,0 +1,218 @@
+[
+  {
+    "method": "POST",
+    "route": "/demo/run-detection",
+    "file": "POST_demo_run-detection.json",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "route": "/feedback",
+    "file": "POST_feedback.json",
+    "status": 202
+  },
+  {
+    "method": "GET",
+    "route": "/feedback",
+    "file": "GET_feedback.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/feedback/:id",
+    "file": "GET_feedback__id.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/dashboard/overview",
+    "file": "GET_dashboard_overview.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/signals",
+    "file": "GET_signals.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/incidents",
+    "file": "GET_incidents.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/demo/clock",
+    "file": "GET_demo_clock.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/demo/scenarios",
+    "file": "GET_demo_scenarios.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/approvals",
+    "file": "GET_approvals.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/incidents/:id/recommendations",
+    "file": "GET_incidents__id_recommendations.json",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "route": "/demo/scenario/:name",
+    "file": "POST_demo_scenario__name.json",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "route": "/incidents/:id/reassess",
+    "file": "POST_incidents__id_reassess.json",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "route": "/approvals/:id/reject",
+    "file": "POST_approvals__id_reject.json",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "route": "/approvals/:id/approve",
+    "file": "POST_approvals__id_approve.json",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "route": "/incidents/:id/actions/:recommendationId/execute",
+    "file": "POST_incidents__id_actions__recommendationId_execute.json",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "route": "/demo/advance-clock",
+    "file": "POST_demo_advance-clock.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/incidents/:id",
+    "file": "GET_incidents__id.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/incidents/:id/graph",
+    "file": "GET_incidents__id_graph.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/incidents/:id/evidence",
+    "file": "GET_incidents__id_evidence.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/incidents/:id/hypotheses",
+    "file": "GET_incidents__id_hypotheses.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/incidents/:id/agent-trace",
+    "file": "GET_incidents__id_agent-trace.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/incidents/:id/impact",
+    "file": "GET_incidents__id_impact.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/incidents/:id/actions",
+    "file": "GET_incidents__id_actions.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/incidents/:id/kpis",
+    "file": "GET_incidents__id_kpis.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/incidents/:id/timeline",
+    "file": "GET_incidents__id_timeline.json",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "route": "/demo/evaluate",
+    "file": "POST_demo_evaluate.json",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "route": "/evaluation/scorecard",
+    "file": "GET_evaluation_scorecard.json",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "route": "/auth/login",
+    "file": "POST_auth_login.json",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "route": "/demo/reset",
+    "file": "POST_demo_reset.json",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "route": "/ingestion/csv",
+    "file": "POST_ingestion_csv.json",
+    "status": 202
+  },
+  {
+    "method": "GET",
+    "route": "/ingestion/jobs/:id",
+    "file": "GET_ingestion_jobs__id.json",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "route": "/operational-events",
+    "file": "POST_operational-events.json",
+    "status": 201
+  },
+  {
+    "method": "POST",
+    "route": "/incidents/:id/evidence",
+    "file": "POST_incidents__id_evidence.json",
+    "status": 201
+  },
+  {
+    "method": "POST",
+    "route": "/incidents/:id/investigate",
+    "file": "POST_incidents__id_investigate.json",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "route": "/signals/:id/investigate",
+    "file": "POST_signals__id_investigate.json",
+    "status": 200
+  }
+]

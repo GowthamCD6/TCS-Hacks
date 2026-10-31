@@ -1,0 +1,372 @@
+{
+  "data": [
+    {
+      "id": 218,
+      "incident_id": 27,
+      "action_key": "disable_feature_flag",
+      "action_type": "simulate_feature_flag_change",
+      "title": "Disable the affected feature with a flag for the segment",
+      "description": "Disable the affected feature with a flag for the segment.",
+      "priority": 1,
+      "score": 0.8875,
+      "estimated_cost": 0,
+      "expected_benefit": "Benefit index 0.85; about 15 minutes to implement",
+      "risk_level": "medium",
+      "requires_approval": true,
+      "status": "proposed",
+      "rationale": {
+        "weights": {
+          "speed": 0.1,
+          "urgency": 0.2,
+          "low_cost": 0.05,
+          "low_risk": 0.05,
+          "confidence": 0.2,
+          "reversibility": 0.1,
+          "customer_benefit": 0.3
+        },
+        "target_count": 90,
+        "score_breakdown": {
+          "speed": 0.875,
+          "urgency": 0.9,
+          "low_cost": 1,
+          "low_risk": 0.6,
+          "confidence": 0.95,
+          "reversibility": 0.95,
+          "customer_benefit": 0.85
+        },
+        "evidence_references": [
+          {
+            "path": "$.confidence_score",
+            "tool": "run_root_cause_court",
+            "value": 0.95
+          }
+        ]
+      },
+      "created_at": "2026-10-31T10:46:05.731Z",
+      "approval_id": 131,
+      "approval_decision": "pending"
+    },
+    {
+      "id": 219,
+      "incident_id": 27,
+      "action_key": "rollback_release",
+      "action_type": "simulate_feature_flag_change",
+      "title": "Roll back the suspected release",
+      "description": "Roll back the suspected release.",
+      "priority": 2,
+      "score": 0.87,
+      "estimated_cost": 0,
+      "expected_benefit": "Benefit index 0.95; about 45 minutes to implement",
+      "risk_level": "high",
+      "requires_approval": true,
+      "status": "proposed",
+      "rationale": {
+        "weights": {
+          "speed": 0.1,
+          "urgency": 0.2,
+          "low_cost": 0.05,
+          "low_risk": 0.05,
+          "confidence": 0.2,
+          "reversibility": 0.1,
+          "customer_benefit": 0.3
+        },
+        "target_count": 90,
+        "score_breakdown": {
+          "speed": 0.625,
+          "urgency": 0.95,
+          "low_cost": 1,
+          "low_risk": 0.25,
+          "confidence": 0.95,
+          "reversibility": 0.8,
+          "customer_benefit": 0.95
+        },
+        "evidence_references": [
+          {
+            "path": "$.confidence_score",
+            "tool": "run_root_cause_court",
+            "value": 0.95
+          }
+        ]
+      },
+      "created_at": "2026-10-31T10:46:05.732Z",
+      "approval_id": 132,
+      "approval_decision": "pending"
+    },
+    {
+      "id": 220,
+      "incident_id": 27,
+      "action_key": "reconcile_payments",
+      "action_type": "simulate_support_ticket",
+      "title": "Reconcile captured payments that have no order",
+      "description": "Reconcile captured payments that have no order.",
+      "priority": 3,
+      "score": 0.805,
+      "estimated_cost": 0,
+      "expected_benefit": "Benefit index 0.60; about 30 minutes to implement",
+      "risk_level": "low",
+      "requires_approval": false,
+      "status": "proposed",
+      "rationale": {
+        "weights": {
+          "speed": 0.1,
+          "urgency": 0.2,
+          "low_cost": 0.05,
+          "low_risk": 0.05,
+          "confidence": 0.2,
+          "reversibility": 0.1,
+          "customer_benefit": 0.3
+        },
+        "target_count": 90,
+        "score_breakdown": {
+          "speed": 0.75,
+          "urgency": 0.8,
+          "low_cost": 1,
+          "low_risk": 1,
+          "confidence": 0.95,
+          "reversibility": 1,
+          "customer_benefit": 0.6
+        },
+        "evidence_references": [
+          {
+            "path": "$.confidence_score",
+            "tool": "run_root_cause_court",
+            "value": 0.95
+          }
+        ]
+      },
+      "created_at": "2026-10-31T10:46:05.733Z",
+      "approval_id": null,
+      "approval_decision": null
+    },
+    {
+      "id": 221,
+      "incident_id": 27,
+      "action_key": "issue_eligible_refunds",
+      "action_type": "simulate_refund",
+      "title": "Refund verified captured payments without orders",
+      "description": "Refund verified captured payments without orders.",
+      "priority": 4,
+      "score": 0.7323,
+      "estimated_cost": 35373.98,
+      "expected_benefit": "Benefit index 0.80; about 60 minutes to implement",
+      "risk_level": "medium",
+      "requires_approval": true,
+      "status": "proposed",
+      "rationale": {
+        "weights": {
+          "speed": 0.1,
+          "urgency": 0.2,
+          "low_cost": 0.05,
+          "low_risk": 0.05,
+          "confidence": 0.2,
+          "reversibility": 0.1,
+          "customer_benefit": 0.3
+        },
+        "target_count": 100,
+        "score_breakdown": {
+          "speed": 0.5,
+          "urgency": 0.8,
+          "low_cost": 0.646,
+          "low_risk": 0.6,
+          "confidence": 0.95,
+          "reversibility": 0.3,
+          "customer_benefit": 0.8
+        },
+        "evidence_references": [
+          {
+            "path": "$.confidence_score",
+            "tool": "run_root_cause_court",
+            "value": 0.95
+          }
+        ]
+      },
+      "created_at": "2026-10-31T10:46:05.733Z",
+      "approval_id": 133,
+      "approval_decision": "pending"
+    },
+    {
+      "id": 222,
+      "incident_id": 27,
+      "action_key": "create_support_incident",
+      "action_type": "simulate_support_ticket",
+      "title": "Open a coordinated support incident",
+      "description": "Open a coordinated support incident.",
+      "priority": 5,
+      "score": 0.7067,
+      "estimated_cost": 0,
+      "expected_benefit": "Benefit index 0.35; about 10 minutes to implement",
+      "risk_level": "low",
+      "requires_approval": false,
+      "status": "proposed",
+      "rationale": {
+        "weights": {
+          "speed": 0.1,
+          "urgency": 0.2,
+          "low_cost": 0.05,
+          "low_risk": 0.05,
+          "confidence": 0.2,
+          "reversibility": 0.1,
+          "customer_benefit": 0.3
+        },
+        "target_count": 90,
+        "score_breakdown": {
+          "speed": 0.917,
+          "urgency": 0.6,
+          "low_cost": 1,
+          "low_risk": 1,
+          "confidence": 0.95,
+          "reversibility": 1,
+          "customer_benefit": 0.35
+        },
+        "evidence_references": [
+          {
+            "path": "$.confidence_score",
+            "tool": "run_root_cause_court",
+            "value": 0.95
+          }
+        ]
+      },
+      "created_at": "2026-10-31T10:46:05.734Z",
+      "approval_id": null,
+      "approval_decision": null
+    },
+    {
+      "id": 223,
+      "incident_id": 27,
+      "action_key": "update_support_scripts",
+      "action_type": "simulate_support_ticket",
+      "title": "Update support scripts with the verified failure",
+      "description": "Update support scripts with the verified failure.",
+      "priority": 6,
+      "score": 0.6675,
+      "estimated_cost": 0,
+      "expected_benefit": "Benefit index 0.30; about 15 minutes to implement",
+      "risk_level": "low",
+      "requires_approval": false,
+      "status": "proposed",
+      "rationale": {
+        "weights": {
+          "speed": 0.1,
+          "urgency": 0.2,
+          "low_cost": 0.05,
+          "low_risk": 0.05,
+          "confidence": 0.2,
+          "reversibility": 0.1,
+          "customer_benefit": 0.3
+        },
+        "target_count": 90,
+        "score_breakdown": {
+          "speed": 0.875,
+          "urgency": 0.5,
+          "low_cost": 1,
+          "low_risk": 1,
+          "confidence": 0.95,
+          "reversibility": 1,
+          "customer_benefit": 0.3
+        },
+        "evidence_references": [
+          {
+            "path": "$.confidence_score",
+            "tool": "run_root_cause_court",
+            "value": 0.95
+          }
+        ]
+      },
+      "created_at": "2026-10-31T10:46:05.735Z",
+      "approval_id": null,
+      "approval_decision": null
+    },
+    {
+      "id": 224,
+      "incident_id": 27,
+      "action_key": "notify_customers",
+      "action_type": "simulate_customer_notification",
+      "title": "Notify verified affected customers",
+      "description": "Notify verified affected customers.",
+      "priority": 7,
+      "score": 0.6633,
+      "estimated_cost": 0,
+      "expected_benefit": "Benefit index 0.50; about 20 minutes to implement",
+      "risk_level": "low",
+      "requires_approval": true,
+      "status": "proposed",
+      "rationale": {
+        "weights": {
+          "speed": 0.1,
+          "urgency": 0.2,
+          "low_cost": 0.05,
+          "low_risk": 0.05,
+          "confidence": 0.2,
+          "reversibility": 0.1,
+          "customer_benefit": 0.3
+        },
+        "target_count": 90,
+        "score_breakdown": {
+          "speed": 0.833,
+          "urgency": 0.6,
+          "low_cost": 1,
+          "low_risk": 1,
+          "confidence": 0.95,
+          "reversibility": 0.2,
+          "customer_benefit": 0.5
+        },
+        "evidence_references": [
+          {
+            "path": "$.confidence_score",
+            "tool": "run_root_cause_court",
+            "value": 0.95
+          }
+        ]
+      },
+      "created_at": "2026-10-31T10:46:05.735Z",
+      "approval_id": 134,
+      "approval_decision": "pending"
+    },
+    {
+      "id": 225,
+      "incident_id": 27,
+      "action_key": "goodwill_coupon",
+      "action_type": "simulate_coupon",
+      "title": "Offer a goodwill coupon to verified affected customers",
+      "description": "Offer a goodwill coupon to verified affected customers.",
+      "priority": 8,
+      "score": 0.5538,
+      "estimated_cost": 9000,
+      "expected_benefit": "Benefit index 0.35; about 20 minutes to implement",
+      "risk_level": "low",
+      "requires_approval": true,
+      "status": "proposed",
+      "rationale": {
+        "weights": {
+          "speed": 0.1,
+          "urgency": 0.2,
+          "low_cost": 0.05,
+          "low_risk": 0.05,
+          "confidence": 0.2,
+          "reversibility": 0.1,
+          "customer_benefit": 0.3
+        },
+        "target_count": 90,
+        "score_breakdown": {
+          "speed": 0.833,
+          "urgency": 0.3,
+          "low_cost": 0.91,
+          "low_risk": 1,
+          "confidence": 0.95,
+          "reversibility": 0.2,
+          "customer_benefit": 0.35
+        },
+        "evidence_references": [
+          {
+            "path": "$.confidence_score",
+            "tool": "run_root_cause_court",
+            "value": 0.95
+          }
+        ]
+      },
+      "created_at": "2026-10-31T10:46:05.736Z",
+      "approval_id": 135,
+      "approval_decision": "pending"
+    }
+  ]
+}

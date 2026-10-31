@@ -1,0 +1,46 @@
+{
+  "data": {
+    "label": "Measured on synthetic data with a planted incident. These are not production results.",
+    "measured_at_sim_time": "2026-10-14 04:00:00",
+    "checks": {
+      "planted_incident_detected": true,
+      "correct_segment_identified": true,
+      "main_hypothesis_supported": true,
+      "decoys_avoided": true,
+      "evidence_traceable": true,
+      "recommendations_safe": true,
+      "recovery_correctly_verified": true
+    },
+    "metrics": {
+      "incident_precision": 1,
+      "incident_recall": 1,
+      "detection_delay_hours": 54,
+      "segment_identification_accuracy": 1,
+      "hypothesis_verdict_accuracy": 1,
+      "action_eligibility_precision": null,
+      "action_eligibility_recall": 0,
+      "ineligible_refunds_issued": 0,
+      "evidence_traceability": 1,
+      "consequential_actions_without_approval": 0
+    },
+    "top_segment": "Android 14 | v2.3 | upi",
+    "hypothesis_verdicts": {
+      "release_2.3_android": {
+        "expected": "supported",
+        "actual": "supported"
+      },
+      "weather_rain": {
+        "expected": "rejected",
+        "actual": "rejected"
+      },
+      "menu_price_change": {
+        "expected": "rejected",
+        "actual": "rejected"
+      },
+      "seasonal_traffic": {
+        "expected": "rejected",
+        "actual": "rejected"
+      }
+    }
+  }
+}

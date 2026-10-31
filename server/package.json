@@ -1,0 +1,41 @@
+{
+  "name": "recoveriq-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RecoverIQ Node.js backend: system of record for incidents, approvals, actions and KPIs",
+  "type": "module",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "migrate": "node scripts/migrate.js",
+    "seed": "node scripts/seed.js",
+    "seed:product": "node scripts/seed-product.js",
+    "demo:reset": "node scripts/demo-reset.js",
+    "demo:run": "node scripts/demo-run.js",
+    "demo:scenarios": "node scripts/scenario-check.js",
+    "contract": "node scripts/build-contract.js",
+    "capture:mocks": "node scripts/capture-mocks.js",
+    "test": "node --test --test-concurrency=1 \"test/**/*.test.js\""
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "csv-parse": "^7.0.3",
+    "dotenv": "^18.0.9",
+    "express": "^4.22.3",
+    "express-rate-limit": "^8.7.2",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.5.0",
+    "mysql2": "^3.24.6",
+    "pino": "^10.4.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "supertest": "^7.3.1"
+  }
+}
