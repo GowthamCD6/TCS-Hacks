@@ -18,6 +18,7 @@ import { authService } from '../../services/auth.service';
 import { incidentsService } from '../../services/incidents.service';
 import { formatDateTime } from '../../utils/formatters';
 import { useTheme } from '../../context/ThemeContext';
+import { useTimeFilter } from '../../context/TimeFilterContext';
 import { cn } from '../../utils/cn';
 import logoLight from '../../assets/recoveriq-logo-light.png';
 import logoDark from '../../assets/recoveriq-logo-dark.png';
@@ -26,7 +27,7 @@ export const Header = ({ onSearch }) => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
 
-  const [timeFilter, setTimeFilter] = useState('today');
+  const { timeFilter, setTimeFilter } = useTimeFilter();
   const [searchValue, setSearchValue] = useState('');
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [clockPopoverOpen, setClockPopoverOpen] = useState(false);
@@ -243,10 +244,10 @@ export const Header = ({ onSearch }) => {
             />
             <div className="hidden lg:block text-left pr-1">
               <p className="text-[13px] font-medium text-[#FFFFFF] group-hover:text-purple-200 transition-colors leading-tight">
-                {currentUser?.name || 'Liam Anderson'}
+                {currentUser?.name || 'Lead Reliability Engineer'}
               </p>
               <p className="text-[11px] text-[#A8A3BA] leading-tight">
-                {currentUser?.role || 'Operations Manager'}
+                {currentUser?.role || 'Incident Commander'}
               </p>
             </div>
             <ChevronDown className="w-3.5 h-3.5 text-white/70 group-hover:text-[#FFFFFF] transition-colors" />
@@ -257,10 +258,10 @@ export const Header = ({ onSearch }) => {
             <div className="absolute right-0 mt-2 w-52 rounded-2xl glass-card py-2 z-50 border border-white/10 shadow-2xl text-[12px] animate-in fade-in duration-200">
               <div className="px-4 py-2 border-b border-white/10">
                 <p className="font-semibold text-white">
-                  {currentUser?.name || 'Liam Anderson'}
+                  {currentUser?.name || 'Lead Reliability Engineer'}
                 </p>
                 <p className="text-[11px] text-[#9E9BB2] truncate">
-                  {currentUser?.email || 'approver@recoveriq.local'}
+                  {currentUser?.email || 'approver@recoveriq.demo'}
                 </p>
                 <div className="mt-1 flex items-center gap-1.5 text-[10px] text-emerald-400">
                   <CheckCircle2 className="w-3 h-3" />

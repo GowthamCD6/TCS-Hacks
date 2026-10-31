@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTimeFilter } from '../context/TimeFilterContext';
 import { useQuery } from '@tanstack/react-query';
 import { incidentsService } from '../services/incidents.service';
 import { approvalsService } from '../services/approvals.service';
@@ -21,31 +22,32 @@ import {
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
+  const { timeFilter, timeWindowLabel, timeMultiplier } = useTimeFilter();
 
   // 1. Live Overview from Node.js Backend API
   const { data: overview } = useQuery({
-    queryKey: ['dashboard-overview'],
+    queryKey: ['dashboard-overview', timeFilter],
     queryFn: () => incidentsService.getDashboardOverview(),
     refetchInterval: 10000,
   });
 
   // 2. Live Pending Approvals from Node.js Backend API
   const { data: approvalsData } = useQuery({
-    queryKey: ['dashboard-approvals'],
+    queryKey: ['dashboard-approvals', timeFilter],
     queryFn: () => approvalsService.getApprovals({ decision: 'pending' }),
     refetchInterval: 10000,
   });
 
   // 3. Live Signals from Node.js Backend API
   const { data: signalsData } = useQuery({
-    queryKey: ['dashboard-signals'],
+    queryKey: ['dashboard-signals', timeFilter],
     queryFn: () => signalsService.getSignals({ page_size: 5 }),
     refetchInterval: 10000,
   });
 
   // 4. Live Incidents list from Node.js Backend API
   const { data: incidentsData } = useQuery({
-    queryKey: ['dashboard-incidents'],
+    queryKey: ['dashboard-incidents', timeFilter],
     queryFn: () => incidentsService.getIncidents({ page_size: 5 }),
     refetchInterval: 10000,
   });
@@ -77,7 +79,7 @@ export const DashboardPage = () => {
             </span>
           </div>
           <p className="text-[13px] sm:text-[14px] text-slate-500 dark:text-[#9E9BB2]">
-            Real-time autonomous customer experience recovery telemetry and AI agent workflows
+            Real-time autonomous customer experience recovery telemetry • {timeWindowLabel}
           </p>
         </div>
 
