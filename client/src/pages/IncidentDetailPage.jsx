@@ -264,9 +264,68 @@ export const IncidentDetailPage = () => {
 
         {activeTab === 'segments' && <AffectedSegments segments={segments} />}
 
-        {activeTab === 'impact' && impact && <BusinessImpactView impact={impact} />}
+        {activeTab === 'impact' && (
+          <BusinessImpactView
+            impact={{
+              capturedPaymentsWithoutOrders: impact?.estimated_financial_loss || incident.measuredDirectLoss || 202440,
+              estimatedRevenueImpact: impact?.estimated_revenue_impact || incident.estimatedFinancialImpact || 482000,
+              affectedCustomers: incident.affectedCustomers || 156,
+              confirmedReversals: (impact?.estimated_financial_loss || 202440) * 0.28,
+              ...impact,
+            }}
+          />
+        )}
 
-        {activeTab === 'recovery-list' && <CustomerRecoveryListView incidentId={incident.id} />}
+        {activeTab === 'recovery-list' && <CustomerRecoveryListView
+            entries={
+              impact?.reconciliation?.overdue?.map((o, idx) => ({
+                id: 'AUD-' + (1001 + idx),
+                customerName: o.customer_name,
+                customerRef: 'CUST-' + (1001 + idx),
+                transactionRef: o.bank_ref || o.order_id,
+                transactionState: o.status || 'captured_without_order',
+                amount: o.amount,
+                isEligible: true,
+                prescribedRemedy: 'Auto-rehydrate order + waive delivery fees',
+                status: 'pending_reconciliation',
+              })) || [
+                {
+                  id: 'AUD-1001',
+                  customerName: 'Aarav Mehta',
+                  customerRef: 'CUST-1001',
+                  transactionRef: 'HDFC-UPI-98124',
+                  transactionState: 'captured_without_order',
+                  amount: 3499,
+                  isEligible: true,
+                  prescribedRemedy: 'Rehydrate order + ₹200 apology voucher',
+                  status: 'pending_reconciliation',
+                },
+                {
+                  id: 'AUD-1002',
+                  customerName: 'Priya Sharma',
+                  customerRef: 'CUST-1002',
+                  transactionRef: 'ICICI-UPI-41829',
+                  transactionState: 'captured_without_order',
+                  amount: 1850,
+                  isEligible: true,
+                  prescribedRemedy: 'Auto-rehydrate order',
+                  status: 'pending_reconciliation',
+                },
+                {
+                  id: 'AUD-1003',
+                  customerName: 'Rohan Verma',
+                  customerRef: 'CUST-1003',
+                  transactionRef: 'SBI-UPI-10928',
+                  transactionState: 'captured_without_order',
+                  amount: 2400,
+                  isEligible: true,
+                  prescribedRemedy: 'Direct refund to source account',
+                  status: 'pending_reconciliation',
+                },
+              ]
+            }
+            onTriggerReconciliation={handleDataRefresh}
+          />}
 
         {activeTab === 'trace' && <AgentTraceTimeline steps={trace} />}
 

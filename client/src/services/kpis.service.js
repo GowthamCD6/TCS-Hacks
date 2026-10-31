@@ -7,6 +7,10 @@ export const kpisService = {
     return incidentsService.getKPIs(incidentId);
   },
 
+  async getKPIMonitoring(incidentId) {
+    return this.getMonitoringKPIs(incidentId);
+  },
+
   async refreshKPIs(minutes = 15) {
     return demoService.advanceClock(minutes);
   },

@@ -76,6 +76,15 @@ export const incidentsService = {
     }
   },
 
+  async getAffectedSegments(incidentId) {
+    try {
+      const inc = await this.getIncidentById(incidentId);
+      return inc?.segments || [];
+    } catch {
+      return [];
+    }
+  },
+
   async getFunnel(incidentId) {
     const res = await apiClient.get(`/incidents/${incidentId}/funnel`);
     return res.data?.data || res.data;
@@ -118,7 +127,11 @@ export const incidentsService = {
 
   async getAgentTrace(incidentId) {
     const res = await apiClient.get(`/incidents/${incidentId}/agent-trace`);
-    return res.data?.data || res.data;
+    const data = res.data?.data || res.data;
+    if (data?.runs?.[0]?.steps) return data.runs[0].steps;
+    if (Array.isArray(data?.runs)) return data.runs;
+    if (Array.isArray(data)) return data;
+    return [];
   },
 
   async getTimeline(incidentId) {
