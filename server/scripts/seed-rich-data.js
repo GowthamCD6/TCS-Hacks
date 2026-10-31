@@ -191,17 +191,24 @@ async function seedRichData() {
 
   await query('DELETE FROM incident_segments WHERE id > 0');
   await query(
-    `INSERT INTO incident_segments (incident_id, dimension, segment_value, total_population, affected_count, lift_ratio, significant, is_synthetic)
+    `INSERT INTO incident_segments (incident_id, dimension, segment_value, affected_customers, total_customers, issue_rate, comparison_rate, lift_ratio, p_value, significant)
      VALUES
-       (?, 'app_version', 'Android v2.3', 14200, 156, 14.80, 1, 1),
-       (?, 'device_os', 'Android 14', 28500, 142, 11.20, 1, 1),
-       (?, 'payment_gateway', 'UPI_INTENT', 45000, 156, 8.40, 1, 1),
-       (?, 'city', 'Bengaluru South', 18900, 342, 6.70, 1, 1)`,
+       (?, 'app_version', 'Android v2.3', 156, 14200, 0.0109, 0.0007, 14.80, 0.0001, 1),
+       (?, 'device_os', 'Android 14', 142, 28500, 0.0049, 0.0004, 11.20, 0.0001, 1),
+       (?, 'payment_gateway', 'UPI_INTENT', 156, 45000, 0.0034, 0.0004, 8.40, 0.0001, 1),
+       (?, 'city', 'Bengaluru South', 342, 18900, 0.0180, 0.0026, 6.70, 0.0001, 1)`,
     [primaryIncId, primaryIncId, primaryIncId, deliveryIncId]
   );
+  console.log(`✓ Seeded incident segments`);
 
   // 6. Seed Root Cause Hypotheses
+  await query('SET FOREIGN_KEY_CHECKS = 0');
+  await query('DELETE FROM recovery_actions WHERE id > 0');
+  await query('DELETE FROM approvals WHERE id > 0');
+  await query('DELETE FROM recovery_recommendations WHERE id > 0');
+  await query('DELETE FROM investigation_tests WHERE id > 0');
   await query('DELETE FROM root_cause_hypotheses WHERE id > 0');
+  await query('SET FOREIGN_KEY_CHECKS = 1');
   await query(
     `INSERT INTO root_cause_hypotheses (incident_id, hypothesis_key, hypothesis, status, confidence_score, explanation, evidence_summary)
      VALUES
@@ -268,7 +275,7 @@ async function seedRichData() {
 
   for (const r of recs) {
     const incId = r.key === 'adjust_delivery_sla' ? deliveryIncId : primaryIncId;
-    const [result] = await query(
+    const result = await query(
       `INSERT INTO recovery_recommendations 
        (incident_id, title, description, action_key, action_type, risk_level, estimated_cost, expected_benefit, rationale, priority, requires_approval, status)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 'proposed')`,
@@ -285,16 +292,19 @@ async function seedRichData() {
   console.log(`✓ Seeded 4 recovery recommendations and approvals`);
 
   // 8. Seed Recovery Actions (Executed history)
+  const seededRecRows = await query('SELECT id, action_key FROM recovery_recommendations WHERE incident_id = ?', [primaryIncId]);
+  const seededRecMap = Object.fromEntries(seededRecRows.map(r => [r.action_key, r.id]));
+
   await query('DELETE FROM recovery_actions WHERE id > 0');
   await query(
     `INSERT INTO recovery_actions 
-       (incident_id, recommendation_id, action_type, target_reference, execution_result, status, executed_at, is_synthetic)
+       (incident_id, recommendation_id, action_type, target_reference, execution_result, status, executed_at)
      VALUES
-       (?, 1, 'simulate_feature_flag_change', 'FeatureFlag:ENABLE_UPI_SOCKET_TIMEOUT_V2', ?, 'succeeded', NOW() - INTERVAL 45 MINUTE, 1),
-       (?, 2, 'simulate_refund', 'BatchJob:reconcile_upi_intent_failures', ?, 'succeeded', NOW() - INTERVAL 20 MINUTE, 1)`,
+       (?, ?, 'simulate_feature_flag_change', 'FeatureFlag:ENABLE_UPI_SOCKET_TIMEOUT_V2', ?, 'succeeded', NOW() - INTERVAL 45 MINUTE),
+       (?, ?, 'simulate_refund', 'BatchJob:reconcile_upi_intent_failures', ?, 'succeeded', NOW() - INTERVAL 20 MINUTE)`,
     [
-      primaryIncId, JSON.stringify({ flag: 'ENABLE_UPI_SOCKET_TIMEOUT_V2', previous: '60s', updated: '30s', response_code: 200 }),
-      primaryIncId, JSON.stringify({ batch_id: 'BATCH-REC-20261031-01', total_reconciled: 156, restored_orders: 156, total_amount: 482000 })
+      primaryIncId, seededRecMap['disable_feature_flag'] || seededRecRows[0]?.id, JSON.stringify({ flag: 'ENABLE_UPI_SOCKET_TIMEOUT_V2', previous: '60s', updated: '30s', response_code: 200 }),
+      primaryIncId, seededRecMap['batch_order_rehydration'] || seededRecRows[1]?.id, JSON.stringify({ batch_id: 'BATCH-REC-20261031-01', total_reconciled: 156, restored_orders: 156, total_amount: 482000 })
     ]
   );
   console.log(`✓ Seeded 2 executed recovery actions`);

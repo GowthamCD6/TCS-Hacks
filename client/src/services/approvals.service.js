@@ -64,7 +64,8 @@ export const approvalsService = {
         actionType: r.action_type,
       }));
     }
-    const { items } = await this.getApprovals({ decision: 'pending' });
+    const raw = await this.getApprovals({ decision: 'pending' });
+    const items = Array.isArray(raw) ? raw : (raw?.items || []);
     return items.map(mapApproval);
   },
 
