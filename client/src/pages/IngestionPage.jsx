@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { feedbackService } from '../services/feedback.service';
-import { Card } from '../components/common/Card';
-import { Button } from '../components/common/Button';
 import {
   UploadCloud,
   FileSpreadsheet,
@@ -12,6 +10,8 @@ import {
   Share2,
   CheckCircle2,
   Copy,
+  AlertTriangle,
+  RotateCcw,
 } from 'lucide-react';
 
 const SAMPLE_CSV_PREVIEW = [
@@ -71,17 +71,59 @@ export const IngestionPage = () => {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight">Data Ingestion Hub</h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+      {/* Top Banner Row matching OpsPilot theme */}
+      <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-6 pt-1">
+        <div className="space-y-1">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Data Ingestion Hub
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-400">
             Connect feedback sources: Website forms, Google Forms Apps Script bridge, CSV batch uploads, and REST APIs
           </p>
         </div>
+
+        {/* 4 Stat Cards */}
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="px-5 py-3 rounded-2xl glass-card flex flex-col justify-between min-w-[125px]">
+            <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span>Channels Live</span>
+            </div>
+            <div className="text-2xl font-black text-white mt-1">05</div>
+            <div className="text-[10px] text-emerald-400 font-medium mt-0.5">Ingesting</div>
+          </div>
+
+          <div className="px-5 py-3 rounded-2xl glass-card flex flex-col justify-between min-w-[125px]">
+            <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-medium">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Parse Health</span>
+            </div>
+            <div className="text-2xl font-black text-white mt-1">99.8%</div>
+            <div className="text-[10px] text-emerald-400 font-medium mt-0.5">Zero drop</div>
+          </div>
+
+          <div className="px-5 py-3 rounded-2xl bg-gradient-to-b from-rose-950/60 to-rose-900/30 border border-rose-500/30 backdrop-blur-2xl shadow-[0_12px_35px_rgba(0,0,0,0.6)] flex flex-col justify-between min-w-[125px]">
+            <div className="flex items-center gap-1.5 text-rose-300 text-[10px] font-medium">
+              <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+              <span>Drop Filtered</span>
+            </div>
+            <div className="text-2xl font-black text-white mt-1">03 Spam</div>
+            <div className="text-[10px] text-rose-300 font-medium mt-0.5">Sanitized</div>
+          </div>
+
+          <div className="px-5 py-3 rounded-2xl glass-card flex flex-col justify-between min-w-[125px]">
+            <div className="flex items-center gap-1.5 text-slate-400 text-[10px] font-medium">
+              <RotateCcw className="w-3.5 h-3.5 text-purple-400" />
+              <span>REST Port</span>
+            </div>
+            <div className="text-2xl font-black text-white mt-1">:5000</div>
+            <div className="text-[10px] text-purple-300 font-medium mt-0.5">FastAPI ready</div>
+          </div>
+        </div>
       </div>
 
-      {/* Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-purple-500/20">
+      {/* Centered Glass Tabs */}
+      <div className="flex items-center justify-center gap-2 overflow-x-auto pb-1">
         {[
           { key: 'csv', label: 'CSV Batch Upload', icon: UploadCloud },
           { key: 'google-forms', label: 'Google Forms Webhook', icon: FileSpreadsheet },
@@ -95,10 +137,10 @@ export const IngestionPage = () => {
             <button
               key={t.key}
               onClick={() => setActiveTab(t.key)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-t-xl text-xs sm:text-sm font-semibold transition-all border-t border-x cursor-pointer whitespace-nowrap ${
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer whitespace-nowrap ${
                 isActive
-                  ? 'bg-[#150f2b] text-purple-300 border-purple-500/40 border-b-2 border-b-[#150f2b]'
-                  : 'text-slate-400 hover:text-white border-transparent hover:bg-white/5'
+                  ? 'glass-pill-active shadow-[0_0_16px_rgba(168,85,247,0.5)]'
+                  : 'glass-pill text-slate-400 hover:text-white'
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -111,9 +153,9 @@ export const IngestionPage = () => {
       {/* Tab 1: CSV Upload */}
       {activeTab === 'csv' && (
         <div className="space-y-6">
-          <Card className="p-6">
-            <h3 className="text-base font-bold text-white mb-2">Upload Batch Feedback CSV</h3>
-            <p className="text-xs text-slate-400 mb-4">
+          <div className="p-6 sm:p-8 rounded-[2rem] glass-card space-y-4">
+            <h3 className="text-base font-bold text-white">Upload Batch Feedback CSV</h3>
+            <p className="text-xs text-slate-400">
               Supported columns: <code>customerRef</code>, <code>channel</code>, <code>rating</code>, <code>text</code>, <code>category</code>
             </p>
 
@@ -123,13 +165,13 @@ export const IngestionPage = () => {
               onDragLeave={handleDrag}
               onDragOver={handleDrag}
               onDrop={handleDrop}
-              className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all ${
+              className={`border-2 border-dashed rounded-[2rem] p-10 text-center transition-all ${
                 dragActive
                   ? 'border-purple-400 bg-purple-500/10'
                   : 'border-white/10 bg-white/[0.02] hover:border-purple-500/30'
               }`}
             >
-              <UploadCloud className="w-10 h-10 text-purple-400 mx-auto mb-3" />
+              <UploadCloud className="w-12 h-12 text-purple-400 mx-auto mb-3" />
               <p className="text-sm font-semibold text-white">
                 {selectedFileName ? selectedFileName : 'Drag and drop your feedback CSV here, or browse'}
               </p>
@@ -142,7 +184,7 @@ export const IngestionPage = () => {
                   onChange={handleFileChange}
                   className="hidden"
                 />
-                <span className="px-4 py-2 rounded-xl bg-purple-600/30 text-purple-300 border border-purple-500/40 text-xs font-semibold cursor-pointer hover:bg-purple-600/40 transition-colors">
+                <span className="px-5 py-2 rounded-full bg-purple-600/30 text-purple-300 border border-purple-500/40 text-xs font-semibold cursor-pointer hover:bg-purple-600/40 transition-colors">
                   Select CSV File
                 </span>
               </label>
@@ -152,39 +194,37 @@ export const IngestionPage = () => {
             <div className="mt-6 space-y-3">
               <div className="flex items-center justify-between">
                 <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400">
-                  Data Preview (3 Records Detected)
+                  Data Preview (3 Sample Records Detected)
                 </h4>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  isLoading={importMutation.isPending}
+                <button
+                  disabled={importMutation.isPending}
                   onClick={() => importMutation.mutate()}
-                  className="gap-1.5"
+                  className="px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs flex items-center gap-1.5 shadow-[0_0_18px_rgba(168,85,247,0.4)] border border-purple-400/40 cursor-pointer transition-all hover:scale-[1.02]"
                 >
                   <UploadCloud className="w-4 h-4" />
-                  Process & Import Records
-                </Button>
+                  <span>Process & Import Records</span>
+                </button>
               </div>
 
-              <div className="overflow-x-auto rounded-xl border border-white/5 bg-[#0d0918]">
+              <div className="overflow-x-auto rounded-2xl border border-white/[0.06] bg-[#0c081a]">
                 <table className="w-full text-left text-xs">
                   <thead className="bg-white/5 text-slate-400 font-mono text-[10px] uppercase">
                     <tr>
-                      <th className="py-2.5 px-3">Customer Ref</th>
-                      <th className="py-2.5 px-3">Channel</th>
-                      <th className="py-2.5 px-3">Rating</th>
-                      <th className="py-2.5 px-3">Category</th>
-                      <th className="py-2.5 px-3">Feedback Snippet</th>
+                      <th className="py-3 px-4">Customer Ref</th>
+                      <th className="py-3 px-4">Channel</th>
+                      <th className="py-3 px-4">Rating</th>
+                      <th className="py-3 px-4">Category</th>
+                      <th className="py-3 px-4">Feedback Verbatim</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/5">
+                  <tbody className="divide-y divide-white/[0.04]">
                     {SAMPLE_CSV_PREVIEW.map((row, idx) => (
                       <tr key={idx} className="hover:bg-white/[0.02]">
-                        <td className="py-2.5 px-3 font-mono text-purple-300">{row.customerRef}</td>
-                        <td className="py-2.5 px-3 text-slate-300">{row.channel}</td>
-                        <td className="py-2.5 px-3 font-bold text-amber-400">{row.rating}★</td>
-                        <td className="py-2.5 px-3 text-slate-300">{row.category}</td>
-                        <td className="py-2.5 px-3 text-slate-200 truncate max-w-xs">{row.text}</td>
+                        <td className="py-3 px-4 font-mono text-purple-300 font-bold">{row.customerRef}</td>
+                        <td className="py-3 px-4 text-slate-300 capitalize">{row.channel}</td>
+                        <td className="py-3 px-4 font-bold text-amber-400">{row.rating}★</td>
+                        <td className="py-3 px-4 text-slate-300">{row.category}</td>
+                        <td className="py-3 px-4 text-slate-200 truncate max-w-sm">{row.text}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -192,31 +232,30 @@ export const IngestionPage = () => {
               </div>
             </div>
 
-            {/* Success alert */}
+            {/* Success Alert */}
             {importSuccess && (
-              <div className="mt-4 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center justify-between">
+              <div className="mt-4 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                   <span>Successfully imported and clustered {importSuccess} feedback records!</span>
                 </div>
-                <Button
-                  variant="secondary"
-                  size="sm"
+                <button
                   onClick={() => navigate('/feedback')}
+                  className="px-4 py-1.5 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-500/40 text-xs font-semibold cursor-pointer"
                 >
-                  Open Feedback Inbox
-                </Button>
+                  Open Inbox
+                </button>
               </div>
             )}
-          </Card>
+          </div>
         </div>
       )}
 
       {/* Tab 2: Google Forms */}
       {activeTab === 'google-forms' && (
-        <Card className="p-6 space-y-5">
+        <div className="p-6 sm:p-8 rounded-[2rem] glass-card space-y-5">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
+            <div className="p-3 rounded-2xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
               <FileSpreadsheet className="w-6 h-6" />
             </div>
             <div>
@@ -227,7 +266,7 @@ export const IngestionPage = () => {
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-3 text-xs text-slate-300">
+          <div className="p-4 rounded-2xl glass-pill space-y-2 text-xs text-slate-300">
             <span className="font-bold text-white block">Architecture Requirement:</span>
             <p className="leading-relaxed">
               Google Forms does not support native outbound webhook POST requests directly. RecoverIQ utilizes a lightweight <strong>Google Apps Script</strong> bound to your Google Form's response sheet. Whenever a respondent submits feedback, Apps Script sends an authenticated JSON payload to RecoverIQ's webhook receiver.
@@ -264,7 +303,7 @@ export const IngestionPage = () => {
               </button>
             </div>
 
-            <pre className="p-4 rounded-xl bg-[#090611] border border-white/10 font-mono text-xs text-purple-200 overflow-x-auto">
+            <pre className="p-4 rounded-2xl bg-[#090611] border border-white/10 font-mono text-xs text-purple-200 overflow-x-auto">
 {`function onFormSubmit(e) {
   var url = "http://localhost:5000/api/v1/ingest/google-forms";
   var payload = JSON.stringify({
@@ -282,21 +321,14 @@ export const IngestionPage = () => {
 }`}
             </pre>
           </div>
-
-          <div className="flex items-center justify-between p-3.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-xs">
-            <span className="text-purple-200">Webhook Receiver Status:</span>
-            <span className="inline-flex items-center gap-1.5 text-emerald-300 font-semibold">
-              <span className="w-2 h-2 rounded-full bg-emerald-400" /> Active (Listening on :5000)
-            </span>
-          </div>
-        </Card>
+        </div>
       )}
 
       {/* Tab 3: Website Feedback Form */}
       {activeTab === 'website' && (
-        <Card className="p-6 space-y-4">
+        <div className="p-6 sm:p-8 rounded-[2rem] glass-card space-y-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
+            <div className="p-3 rounded-2xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
               <Globe className="w-6 h-6" />
             </div>
             <div>
@@ -307,24 +339,24 @@ export const IngestionPage = () => {
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-300 space-y-2">
+          <div className="p-4 rounded-2xl glass-pill text-xs text-slate-300 space-y-2">
             <p>
               Embed the lightweight RecoverIQ feedback script on your checkout, order history, and account settings screens to intercept rage clicks and error dialogues.
             </p>
             <div className="pt-2">
-              <code className="text-purple-300 font-mono bg-black/40 p-2 rounded block">
+              <code className="text-purple-300 font-mono bg-black/40 p-2.5 rounded-xl block">
                 &lt;script src="https://cdn.recoveriq.internal/v1/widget.js" data-app-id="tcs-hacks-demo"&gt;&lt;/script&gt;
               </code>
             </div>
           </div>
-        </Card>
+        </div>
       )}
 
       {/* Tab 4: REST API */}
       {activeTab === 'api' && (
-        <Card className="p-6 space-y-4">
+        <div className="p-6 sm:p-8 rounded-[2rem] glass-card space-y-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
+            <div className="p-3 rounded-2xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
               <Code2 className="w-6 h-6" />
             </div>
             <div>
@@ -337,7 +369,7 @@ export const IngestionPage = () => {
 
           <div className="space-y-2">
             <span className="text-xs font-mono uppercase text-slate-400">cURL Specification</span>
-            <pre className="p-4 rounded-xl bg-[#090611] border border-white/10 font-mono text-xs text-purple-200 overflow-x-auto">
+            <pre className="p-4 rounded-2xl bg-[#090611] border border-white/10 font-mono text-xs text-purple-200 overflow-x-auto">
 {`curl -X POST "http://localhost:5000/api/v1/feedback/ingest" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -350,14 +382,14 @@ export const IngestionPage = () => {
   }'`}
             </pre>
           </div>
-        </Card>
+        </div>
       )}
 
       {/* Tab 5: External Connectors */}
       {activeTab === 'external' && (
-        <Card className="p-6 space-y-4">
+        <div className="p-6 sm:p-8 rounded-[2rem] glass-card space-y-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
+            <div className="p-3 rounded-2xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
               <Share2 className="w-6 h-6" />
             </div>
             <div>
@@ -376,11 +408,11 @@ export const IngestionPage = () => {
             ].map((source, idx) => (
               <div
                 key={idx}
-                className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5 flex items-center justify-between text-xs"
+                className="p-4 rounded-2xl glass-pill flex items-center justify-between text-xs"
               >
                 <span className="font-semibold text-white">{source.name}</span>
                 <span
-                  className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
+                  className={`text-[10px] font-mono px-2.5 py-0.5 rounded-full border ${
                     source.isReal
                       ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
                       : 'bg-purple-500/15 text-purple-300 border-purple-500/30'
@@ -391,10 +423,10 @@ export const IngestionPage = () => {
               </div>
             ))}
           </div>
-        </Card>
+        </div>
       )}
     </div>
   );
 };
-export default IngestionPage;
 
+export default IngestionPage;

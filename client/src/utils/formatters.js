@@ -28,15 +28,15 @@ export function formatPercent(val) {
 export function getSeverityBadgeClass(severity) {
   switch (severity?.toLowerCase()) {
     case 'critical':
-      return 'bg-rose-500/15 text-rose-300 border border-rose-500/30 shadow-[0_0_12px_rgba(244,63,94,0.2)]';
+      return 'badge-failed';
     case 'high':
-      return 'bg-amber-500/15 text-amber-300 border border-amber-500/30 shadow-[0_0_12px_rgba(245,158,11,0.2)]';
+      return 'badge-failed';
     case 'medium':
-      return 'bg-purple-500/15 text-purple-300 border border-purple-500/30 shadow-[0_0_12px_rgba(168,85,247,0.2)]';
+      return 'badge-warning';
     case 'low':
-      return 'bg-blue-500/15 text-blue-300 border border-blue-500/30';
+      return 'badge-retried';
     default:
-      return 'bg-slate-500/15 text-slate-300 border border-slate-500/30';
+      return 'bg-white/5 text-[#9E9BB2] border border-white/10';
   }
 }
 
@@ -47,22 +47,26 @@ export function getStatusBadgeClass(status) {
     case 'completed':
     case 'approved':
     case 'optimized':
-      return 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shadow-[0_0_10px_rgba(16,185,129,0.25)]';
+    case 'success':
+      return 'badge-success';
     case 'improving':
     case 'recovery_in_progress':
     case 'running':
     case 'executing':
-      return 'bg-purple-500/20 text-purple-200 border border-purple-500/40 shadow-[0_0_12px_rgba(168,85,247,0.3)]';
+      return 'badge-success';
+    case 'in_progress':
+    case 'in-progress':
+    case 'retried':
+      return 'badge-retried';
     case 'at_risk':
     case 'investigating':
     case 'pending':
     case 'delayed':
-      return 'bg-amber-500/15 text-amber-300 border border-amber-500/30 shadow-[0_0_10px_rgba(245,158,11,0.25)]';
+      return 'badge-warning';
     case 'rejected':
     case 'failed':
-      return 'bg-rose-500/15 text-rose-300 border border-rose-500/30 shadow-[0_0_10px_rgba(244,63,94,0.25)]';
+      return 'badge-failed';
     default:
-      return 'bg-slate-500/15 text-slate-300 border border-slate-500/30';
+      return 'bg-white/5 text-[#9E9BB2] border border-white/10';
   }
 }
-

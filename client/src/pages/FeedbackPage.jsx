@@ -2,25 +2,23 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { feedbackService } from '../services/feedback.service';
-import { Card } from '../components/common/Card';
-import { Button } from '../components/common/Button';
-import { Badge } from '../components/common/Badge';
 import { Drawer } from '../components/common/Drawer';
 import { Skeleton } from '../components/common/LoadingSkeleton';
 import { EmptyState } from '../components/common/EmptyState';
 import {
   Inbox,
-  Filter,
   Search,
   UploadCloud,
-  Star,
   ExternalLink,
-  ShieldAlert,
   Smartphone,
   Globe,
   FileSpreadsheet,
   Headphones,
   Share2,
+  AlertTriangle,
+  RotateCcw,
+  CheckCircle2,
+  ArrowUpRight,
 } from 'lucide-react';
 import { formatDateTime } from '../utils/formatters';
 
@@ -37,282 +35,329 @@ export const FeedbackPage = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [channelFilter, setChannelFilter] = useState('all');
-  const [sentimentFilter, setSentimentFilter] = useState('all');
-  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [selectedItem, setSelectedItem] = useState(null);
 
   const { data: feedbackList = [], isLoading } = useQuery({
-    queryKey: ['feedback', channelFilter, sentimentFilter, categoryFilter, search],
+    queryKey: ['feedback', channelFilter, statusFilter, search],
     queryFn: () =>
       feedbackService.getFeedback({
         channel: channelFilter,
-        sentiment: sentimentFilter,
-        category: categoryFilter,
+        sentiment: statusFilter,
         search,
       }),
   });
 
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
-      {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight">Feedback Inbox</h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            Multichannel customer feedback normalized with real-time NLP classification & entity extraction
+      {/* Top Banner Row matching exact specs */}
+      <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-6 pt-1">
+        <div className="space-y-1">
+          <h1 className="text-[34px] font-semibold text-[#FFFFFF] tracking-tight leading-tight">
+            Automation History
+          </h1>
+          <p className="text-[13px] text-[#9E9BB2]">
+            Track, investigate, and audit workflow executions and system logs in real time.
           </p>
         </div>
 
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={() => navigate('/ingestion')}
-          className="gap-2"
-        >
-          <UploadCloud className="w-4 h-4" />
-          Ingest / Import Data
-        </Button>
+        {/* 4 Stat Metric Cards (32px-36px Numbers, 14px-15px Card Titles) */}
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Card 1: Total Executions */}
+          <div className="px-5 py-4 rounded-[18px] glass-card flex flex-col justify-between min-w-[130px]">
+            <div className="flex items-center gap-1.5 text-[#9E9BB2] text-[14px] font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
+              <span>Total Executions</span>
+            </div>
+            <div className="text-[34px] font-semibold text-[#FFFFFF] mt-1 leading-none">8,421</div>
+            <div className="text-[12px] text-[#34D399] font-normal mt-1">+12% vs last week</div>
+          </div>
+
+          {/* Card 2: Successful */}
+          <div className="px-5 py-4 rounded-[18px] glass-card flex flex-col justify-between min-w-[130px]">
+            <div className="flex items-center gap-1.5 text-[#9E9BB2] text-[14px] font-medium">
+              <CheckCircle2 className="w-4 h-4 text-[#34D399]" />
+              <span>Successful</span>
+            </div>
+            <div className="text-[34px] font-semibold text-[#FFFFFF] mt-1 leading-none">7,984</div>
+            <div className="text-[12px] text-[#34D399] font-normal mt-1">94.8% rate</div>
+          </div>
+
+          {/* Card 3: Failed (Solid #3A1922 / rgba(239, 68, 68, 0.2)) */}
+          <div className="px-5 py-4 rounded-[18px] bg-[rgba(239,68,68,0.2)] border border-[rgba(248,113,113,0.3)] backdrop-blur-[16px] flex flex-col justify-between min-w-[130px]">
+            <div className="flex items-center gap-1.5 text-[#F87171] text-[14px] font-medium">
+              <AlertTriangle className="w-4 h-4 text-[#F87171]" />
+              <span>Failed</span>
+            </div>
+            <div className="text-[34px] font-semibold text-[#FFFFFF] mt-1 leading-none">253</div>
+            <div className="text-[12px] text-[#F87171] font-normal mt-1">Action required</div>
+          </div>
+
+          {/* Card 4: Retried/In-progress */}
+          <div className="px-5 py-4 rounded-[18px] glass-card flex flex-col justify-between min-w-[130px]">
+            <div className="flex items-center gap-1.5 text-[#9E9BB2] text-[14px] font-medium">
+              <RotateCcw className="w-4 h-4 text-[#60A5FA]" />
+              <span>Retried/In-progress</span>
+            </div>
+            <div className="text-[34px] font-semibold text-[#FFFFFF] mt-1 leading-none">184</div>
+            <div className="text-[12px] text-[#9E9BB2] font-normal mt-1">Active tracking</div>
+          </div>
+        </div>
       </div>
 
-      {/* Filter and Search Bar */}
-      <Card className="p-4 flex flex-wrap items-center justify-between gap-3 bg-[#130d24]/90 border border-white/10">
-        <div className="relative w-full sm:w-72">
-          <Search className="w-4 h-4 text-purple-400 absolute left-3 top-2.5" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search feedback text, user ID..."
-            className="w-full pl-9 pr-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-400"
-          />
-        </div>
+      {/* Main Table Container: Execution Logs Card */}
+      <div className="glass-card space-y-5">
+        {/* Table Header and Filter Row */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-3 border-b border-white/[0.08]">
+          <h2 className="text-[20px] font-medium text-[#FFFFFF] tracking-tight">
+            Execution Logs
+          </h2>
 
-        <div className="flex flex-wrap items-center gap-2 text-xs">
-          {/* Channel Filter */}
-          <select
-            value={channelFilter}
-            onChange={(e) => setChannelFilter(e.target.value)}
-            className="px-3 py-1.5 rounded-xl bg-[#140e26] border border-white/10 text-white focus:outline-none focus:border-purple-400"
-          >
-            <option value="all">All Channels</option>
-            <option value="mobile_app">Mobile App</option>
-            <option value="website">Website</option>
-            <option value="support_ticket">Support Tickets</option>
-            <option value="google_forms">Google Forms</option>
-            <option value="social_media">Social Media</option>
-            <option value="csv">CSV Upload</option>
-          </select>
+          <div className="flex flex-wrap items-center gap-3">
+            {/* All Workflows Filter */}
+            <select
+              value={channelFilter}
+              onChange={(e) => setChannelFilter(e.target.value)}
+              className="action-control px-4 py-2 text-[13px] text-[#FFFFFF] cursor-pointer appearance-none pr-8"
+            >
+              <option value="all">All Workflows</option>
+              <option value="mobile_app">Customer onboarding</option>
+              <option value="website">Invoice generation</option>
+              <option value="support_ticket">Price change request</option>
+              <option value="google_forms">Budget allocation</option>
+              <option value="social_media">Refund approval</option>
+            </select>
 
-          {/* Sentiment Filter */}
-          <select
-            value={sentimentFilter}
-            onChange={(e) => setSentimentFilter(e.target.value)}
-            className="px-3 py-1.5 rounded-xl bg-[#140e26] border border-white/10 text-white focus:outline-none focus:border-purple-400"
-          >
-            <option value="all">All Sentiments</option>
-            <option value="critical">Critical</option>
-            <option value="negative">Negative</option>
-            <option value="neutral">Neutral</option>
-            <option value="positive">Positive</option>
-          </select>
+            {/* Filter by Status */}
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="action-control px-4 py-2 text-[13px] text-[#FFFFFF] cursor-pointer appearance-none pr-8"
+            >
+              <option value="all">Filter by Status</option>
+              <option value="positive">Success</option>
+              <option value="critical">Failed</option>
+              <option value="negative">Retried</option>
+              <option value="neutral">In-progress</option>
+            </select>
 
-          {/* Category Filter */}
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="px-3 py-1.5 rounded-xl bg-[#140e26] border border-white/10 text-white focus:outline-none focus:border-purple-400"
-          >
-            <option value="all">All Categories</option>
-            <option value="Payment Processing">Payment Processing</option>
-            <option value="Checkout Delivery">Checkout Delivery</option>
-            <option value="Authentication">Authentication</option>
-            <option value="Order Tracking">Order Tracking</option>
-            <option value="Product Catalog">Product Catalog</option>
-          </select>
-        </div>
-      </Card>
-
-      {/* Table */}
-      <Card className="p-0 overflow-hidden">
-        {isLoading ? (
-          <div className="p-6 space-y-3">
-            <Skeleton className="h-10" count={6} />
-          </div>
-        ) : feedbackList.length === 0 ? (
-          <EmptyState
-            icon={Inbox}
-            title="No feedback records match filters"
-            description="Try modifying search keywords or reset filter dropdowns to view records."
-            actionLabel="Reset Filters"
-            onAction={() => {
-              setSearch('');
-              setChannelFilter('all');
-              setSentimentFilter('all');
-              setCategoryFilter('all');
-            }}
-          />
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs sm:text-sm">
-              <thead className="bg-[#120d24] text-slate-400 uppercase text-[10px] font-mono border-b border-white/10">
-                <tr>
-                  <th className="py-3 px-4">ID</th>
-                  <th className="py-3 px-4">Channel</th>
-                  <th className="py-3 px-4">Customer</th>
-                  <th className="py-3 px-4">Feedback Verbatim</th>
-                  <th className="py-3 px-4">Rating</th>
-                  <th className="py-3 px-4">Category</th>
-                  <th className="py-3 px-4">Sentiment</th>
-                  <th className="py-3 px-4">Urgency</th>
-                  <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-4 text-right">Timestamp</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/5">
-                {feedbackList.map((item) => {
-                  const ChannelIcon = CHANNEL_ICONS[item.channel] || Globe;
-                  return (
-                    <tr
-                      key={item.id}
-                      onClick={() => setSelectedItem(item)}
-                      className="hover:bg-purple-900/10 cursor-pointer transition-colors"
-                    >
-                      <td className="py-3.5 px-4 font-mono font-bold text-purple-300">
-                        {item.id}
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-1.5 capitalize text-slate-300 text-xs">
-                          <ChannelIcon className="w-3.5 h-3.5 text-purple-400" />
-                          <span>{item.channel.replace(/_/g, ' ')}</span>
-                        </div>
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <span className="font-semibold text-white block">{item.customerName}</span>
-                        <span className="text-[11px] text-slate-400 font-mono">
-                          {item.customerRef}
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4 max-w-xs sm:max-w-md">
-                        <p className="text-xs text-slate-200 line-clamp-2 leading-relaxed">
-                          {item.text}
-                        </p>
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center text-amber-400 text-xs">
-                          <Star className="w-3.5 h-3.5 fill-current mr-1" />
-                          <span className="font-bold">{item.rating}</span>
-                        </div>
-                      </td>
-                      <td className="py-3.5 px-4 text-xs text-slate-300">{item.category}</td>
-                      <td className="py-3.5 px-4">
-                        <Badge variant="severity" value={item.sentiment}>
-                          {item.sentiment}
-                        </Badge>
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <Badge variant="severity" value={item.urgency}>
-                          {item.urgency}
-                        </Badge>
-                      </td>
-                      <td className="py-3.5 px-4">
-                        <Badge variant="status" value={item.status}>
-                          {item.status.replace(/_/g, ' ')}
-                        </Badge>
-                      </td>
-                      <td className="py-3.5 px-4 text-right font-mono text-[11px] text-slate-400 whitespace-nowrap">
-                        {formatDateTime(item.timestamp)}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </Card>
-
-      {/* Detail Drawer */}
-      <Drawer
-        isOpen={!!selectedItem}
-        onClose={() => setSelectedItem(null)}
-        title={selectedItem?.id || 'Feedback Detail'}
-        description={`Reported via ${selectedItem?.channel.replace(/_/g, ' ')}`}
-      >
-        {selectedItem && (
-          <div className="space-y-6">
-            <div className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/20 space-y-2">
-              <span className="text-[10px] font-mono uppercase text-purple-300">Original Feedback</span>
-              <p className="text-sm text-slate-100 leading-relaxed font-medium">"{selectedItem.text}"</p>
+            {/* Search Input */}
+            <div className="relative w-48 sm:w-60">
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search logs..."
+                className="action-control w-full pl-4 pr-9 py-2 text-[13px] text-[#FFFFFF] placeholder-[#706C82]"
+              />
+              <Search className="w-4 h-4 text-[#706C82] absolute right-3.5 top-2.5" />
             </div>
 
-            {/* Extracted Entities */}
-            <div>
-              <h4 className="text-xs font-mono uppercase tracking-wider text-slate-400 mb-3">
-                Extracted Operational Entities
-              </h4>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 text-xs">
-                  <span className="text-slate-400">Customer Reference</span>
-                  <span className="font-bold text-white font-mono">{selectedItem.customerRef}</span>
+            {/* Import Button */}
+            <button
+              onClick={() => navigate('/ingestion')}
+              className="px-4 py-2 rounded-[12px] bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] hover:from-[#7C3AED] hover:to-[#5B21B6] text-white font-medium text-[13px] flex items-center gap-1.5 cursor-pointer transition-all"
+            >
+              <UploadCloud className="w-4 h-4" />
+              <span>Import Data</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Execution Logs Table & Failure Analysis Grid */}
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+          {/* Main Table (Col 3) */}
+          <div className="xl:col-span-3 overflow-x-auto">
+            {isLoading ? (
+              <div className="p-4 space-y-3">
+                <Skeleton className="h-12" count={6} />
+              </div>
+            ) : feedbackList.length === 0 ? (
+              <EmptyState
+                icon={Inbox}
+                title="No execution logs found"
+                description="Try clearing search filters or import new workflow runs."
+                actionLabel="Reset Filters"
+                onAction={() => {
+                  setSearch('');
+                  setChannelFilter('all');
+                  setStatusFilter('all');
+                }}
+              />
+            ) : (
+              <table className="w-full text-left">
+                <thead className="table-header-strip text-[12px] font-medium text-[#9E9BB2] border-b border-white/[0.08]">
+                  <tr>
+                    <th className="py-3 px-4">Execution ID</th>
+                    <th className="py-3 px-4">Workflow Name</th>
+                    <th className="py-3 px-4">Triggered By</th>
+                    <th className="py-3 px-4">Start Time</th>
+                    <th className="py-3 px-4">Duration</th>
+                    <th className="py-3 px-4">Status</th>
+                    <th className="py-3 px-4 text-right">Details</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/[0.04]">
+                  {feedbackList.map((item, idx) => {
+                    const executionId = `0072033${item.id?.replace(/\D/g, '').padEnd(4, '0').slice(0, 4) || (6300 + idx)}`;
+                    const isSuccess = item.sentiment === 'positive';
+                    const isFailed = item.sentiment === 'critical';
+                    const isRetried = item.sentiment === 'negative';
+                    const isInProgress = item.sentiment === 'neutral' || !item.sentiment;
+
+                    return (
+                      <tr
+                        key={item.id}
+                        onClick={() => setSelectedItem(item)}
+                        className="table-log-row hover:bg-white/[0.03] transition-colors cursor-pointer text-[13px]"
+                      >
+                        <td className="py-3.5 px-4 font-mono text-[#706C82]">
+                          {executionId}
+                        </td>
+                        <td className="py-3.5 px-4 font-normal text-[#FFFFFF]">
+                          {item.category || 'Invoice generation'}
+                        </td>
+                        <td className="py-3.5 px-4 text-[#9E9BB2]">
+                          {item.channel === 'mobile_app' ? 'API Trigger' : item.channel === 'support_ticket' ? 'Liam Anderson' : 'Schedule'}
+                        </td>
+                        <td className="py-3.5 px-4 font-mono text-[#706C82] whitespace-nowrap">
+                          {formatDateTime(item.timestamp)}
+                        </td>
+                        <td className="py-3.5 px-4 font-mono text-[#9E9BB2]">
+                          {idx % 3 === 0 ? '2m 12s' : idx % 2 === 0 ? '4m 06s' : '3h 15m'}
+                        </td>
+                        <td className="py-3.5 px-4">
+                          {isSuccess && (
+                            <span className="badge-success px-3 py-0.5 text-[12px] font-medium">
+                              Success
+                            </span>
+                          )}
+                          {isFailed && (
+                            <span className="badge-failed px-3 py-0.5 text-[12px] font-medium">
+                              Failed
+                            </span>
+                          )}
+                          {isRetried && (
+                            <span className="badge-retried px-3 py-0.5 text-[12px] font-medium">
+                              Retried
+                            </span>
+                          )}
+                          {isInProgress && (
+                            <span className="badge-warning px-3 py-0.5 text-[12px] font-medium">
+                              In-progress
+                            </span>
+                          )}
+                        </td>
+                        <td className="py-3.5 px-4 text-right">
+                          <button className="px-3 py-1 rounded-[10px] action-control text-[#FFFFFF] text-[12px] hover:border-[rgba(168,85,247,0.35)] transition-all">
+                            {isFailed ? 'Debug' : isRetried ? 'Restart' : 'View Data'}
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
+          </div>
+
+          {/* Right Column: Failure Analysis Card */}
+          <div className="xl:col-span-1 rounded-[16px] bg-[#141220] border border-white/[0.08] p-5 flex flex-col justify-between">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-[15px] font-medium text-[#FFFFFF]">Failure Analysis</h3>
+                <span className="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center text-[#9E9BB2]">
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </span>
+              </div>
+
+              {/* Alert 1 */}
+              <div className="p-3.5 rounded-[12px] bg-[#181528] border border-white/[0.06] space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[#F87171] text-[13px] font-medium">UPI Android 14</span>
+                  <span className="badge-failed px-2 py-0.5 text-[11px]">Highlight</span>
                 </div>
-                <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 text-xs">
-                  <span className="text-slate-400">Customer Name</span>
-                  <span className="font-bold text-white">{selectedItem.customerName}</span>
+                <p className="text-[12px] text-[#9E9BB2] leading-snug">
+                  Billing workflows taking 33% longer on Android 14 UPI gateways.
+                </p>
+              </div>
+
+              {/* Alert 2 */}
+              <div className="p-3.5 rounded-[12px] bg-[#181528] border border-white/[0.06] space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[#FBBF24] text-[13px] font-medium">Auto-route</span>
+                  <span className="badge-warning px-2 py-0.5 text-[11px]">System</span>
                 </div>
-                <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 text-xs">
-                  <span className="text-slate-400">Contact / Email</span>
-                  <span className="font-mono text-purple-300">{selectedItem.maskedEmail}</span>
+                <p className="text-[12px] text-[#9E9BB2] leading-snug">
+                  12 support tickets can be auto-routed to priority refund queue.
+                </p>
+              </div>
+
+              {/* Alert 3 */}
+              <div className="p-3.5 rounded-[12px] bg-[#181528] border border-white/[0.06] space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[#60A5FA] text-[13px] font-medium">Validation</span>
+                  <span className="badge-retried px-2 py-0.5 text-[11px]">Quick debug</span>
                 </div>
-                {selectedItem.platform && (
-                  <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 text-xs">
-                    <span className="text-slate-400">Runtime Client</span>
-                    <span className="font-mono text-white">
-                      {selectedItem.platform} (v{selectedItem.appVersion})
-                    </span>
-                  </div>
-                )}
-                {selectedItem.extractedEntities?.errorCode && (
-                  <div className="flex items-center justify-between p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs">
-                    <span className="text-rose-300">Detected Error Signature</span>
-                    <span className="font-mono font-bold text-rose-300">
-                      {selectedItem.extractedEntities.errorCode}
-                    </span>
-                  </div>
-                )}
-                {selectedItem.extractedEntities?.amount && (
-                  <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 text-xs">
-                    <span className="text-slate-400">Transaction Value</span>
-                    <span className="font-mono font-bold text-white">
-                      ₹{selectedItem.extractedEntities.amount}
-                    </span>
-                  </div>
-                )}
+                <p className="text-[12px] text-[#9E9BB2] leading-snug">
+                  Document workflow has repeat errors in step 3 verification.
+                </p>
               </div>
             </div>
 
-            {/* Linked Incident */}
+            <div className="pt-4 border-t border-white/[0.08] mt-4">
+              <button
+                onClick={() => navigate('/incidents/INC-2026-084')}
+                className="w-full py-2.5 rounded-[12px] bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] text-[#FFFFFF] font-medium text-[13px] flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>Launch Causal Workspace</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Detail Inspection Drawer */}
+      <Drawer
+        isOpen={!!selectedItem}
+        onClose={() => setSelectedItem(null)}
+        title={selectedItem?.id || 'Log Detail'}
+        description={`Source Channel: ${selectedItem?.channel?.replace(/_/g, ' ')}`}
+      >
+        {selectedItem && (
+          <div className="space-y-6">
+            <div className="p-4 rounded-[14px] bg-[#181528] border border-white/[0.08] space-y-2">
+              <span className="text-[11px] font-mono uppercase text-[#A8A3BA] font-medium">Original Log Data</span>
+              <p className="text-[14px] text-[#FFFFFF] leading-relaxed">"{selectedItem.text}"</p>
+            </div>
+
+            <div className="space-y-2">
+              <h4 className="text-[13px] font-medium text-[#9E9BB2]">Extracted Metadata</h4>
+              <div className="p-3 rounded-[12px] bg-[#141220] flex items-center justify-between text-[13px]">
+                <span className="text-[#9E9BB2]">Customer Reference</span>
+                <span className="font-mono text-[#FFFFFF]">{selectedItem.customerRef}</span>
+              </div>
+              <div className="p-3 rounded-[12px] bg-[#141220] flex items-center justify-between text-[13px]">
+                <span className="text-[#9E9BB2]">Customer Name</span>
+                <span className="text-[#FFFFFF]">{selectedItem.customerName}</span>
+              </div>
+              {selectedItem.platform && (
+                <div className="p-3 rounded-[12px] bg-[#141220] flex items-center justify-between text-[13px]">
+                  <span className="text-[#9E9BB2]">Device Platform</span>
+                  <span className="font-mono text-[#A8A3BA]">{selectedItem.platform}</span>
+                </div>
+              )}
+            </div>
+
             {selectedItem.incidentId && (
-              <div className="p-4 rounded-xl bg-purple-950/40 border border-purple-500/30 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-purple-300 flex items-center gap-1.5">
-                    <ShieldAlert className="w-4 h-4 text-purple-400" />
-                    Linked Incident Case
-                  </span>
-                  <span className="font-mono text-xs text-purple-300">{selectedItem.incidentId}</span>
-                </div>
-                <p className="text-xs text-slate-300">
-                  This complaint has been clustered into active incident investigation #{selectedItem.incidentId}.
-                </p>
-                <div className="pt-2">
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    className="w-full text-xs"
-                    onClick={() => navigate(`/incidents/${selectedItem.incidentId}`)}
-                  >
-                    Open Incident Workspace <ExternalLink className="w-3.5 h-3.5 ml-1" />
-                  </Button>
-                </div>
+              <div className="pt-2">
+                <button
+                  onClick={() => navigate(`/incidents/${selectedItem.incidentId}`)}
+                  className="w-full py-2.5 rounded-[12px] bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] text-white font-medium text-[13px] flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  Open Incident Case {selectedItem.incidentId} <ExternalLink className="w-3.5 h-3.5" />
+                </button>
               </div>
             )}
           </div>
@@ -321,5 +366,5 @@ export const FeedbackPage = () => {
     </div>
   );
 };
-export default FeedbackPage;
 
+export default FeedbackPage;

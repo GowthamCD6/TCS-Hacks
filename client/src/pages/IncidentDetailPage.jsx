@@ -215,8 +215,8 @@ export const IncidentDetailPage = () => {
         </div>
       </Card>
 
-      {/* Navigation Tabs Bar matching modern IDE layout */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none border-b border-purple-500/20">
+      {/* Navigation Tabs Bar centered */}
+      <div className="flex items-center justify-center gap-2 overflow-x-auto pb-1 scrollbar-none border-b border-purple-500/20">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.key;
