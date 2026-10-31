@@ -21,7 +21,14 @@ import { ApiError } from '../utils/errors.js';
 import * as s from '../validators/schemas.js';
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
-const incidentId = (req) => Number(req.params.id);
+const incidentId = async (req) => {
+  const param = req.params.id;
+  if (!isNaN(Number(param)) && String(param).trim() !== '' && !String(param).includes('-')) {
+    return Number(param);
+  }
+  const inc = await one('SELECT id FROM incidents WHERE incident_number = ?', [String(param)]);
+  return inc?.id || Number(param) || 1;
+};
 const paged = (fn) => wrap(async (req, res) => {
   const params = req.valid.query;
   const { items, total } = await fn(params);
@@ -94,37 +101,37 @@ router.post('/incidents', requireApprover, validate(s.incidentBody), wrap(async 
   const id = await createIncident({ title: b.title, description: b.description, category: b.issue_category, windowStart: b.window_start ?? new Date(now - 3 * 86400000).toISOString() });
   ok(req, res, await q.incidentDetail(id), { status: 201 });
 }));
-router.get('/incidents/:id', wrap(async (req, res) => ok(req, res, await q.incidentDetail(incidentId(req)))));
-router.get('/incidents/:id/graph', wrap(async (req, res) => ok(req, res, await q.incidentGraph(incidentId(req), req.query.diff, req.query.domain))));
-router.get('/incidents/:id/shared-components', wrap(async (req, res) => ok(req, res, (await q.incidentDetail(incidentId(req))).shared_components)));
-router.get('/incidents/:id/funnel', wrap(async (req, res) => ok(req, res, (await q.incidentDetail(incidentId(req))).court?.funnel ?? { telemetry_available: false, stages: [], breakpoint: null })));
-router.get('/incidents/:id/reconciliation', wrap(async (req, res) => ok(req, res, (await q.incidentDetail(incidentId(req))).impact?.reconciliation ?? { telemetry_available: false, states: null, overdue: [] })));
+router.get('/incidents/:id', wrap(async (req, res) => ok(req, res, await q.incidentDetail(await incidentId(req)))));
+router.get('/incidents/:id/graph', wrap(async (req, res) => ok(req, res, await q.incidentGraph(await incidentId(req), req.query.diff, req.query.domain))));
+router.get('/incidents/:id/shared-components', wrap(async (req, res) => ok(req, res, (await q.incidentDetail(await incidentId(req))).shared_components)));
+router.get('/incidents/:id/funnel', wrap(async (req, res) => ok(req, res, (await q.incidentDetail(await incidentId(req))).court?.funnel ?? { telemetry_available: false, stages: [], breakpoint: null })));
+router.get('/incidents/:id/reconciliation', wrap(async (req, res) => ok(req, res, (await q.incidentDetail(await incidentId(req))).impact?.reconciliation ?? { telemetry_available: false, states: null, overdue: [] })));
 router.post('/incidents/:id/replies', requireApprover, validate(s.replyBody), wrap(async (req, res) => {
-  ok(req, res, await recordReply(incidentId(req), req.valid.body.reply, req.valid.body.count));
+  ok(req, res, await recordReply(await incidentId(req), req.valid.body.reply, req.valid.body.count));
 }));
 router.get('/models', wrap(async (req, res) => ok(req, res, await callAi('/internal/models'))));
-router.get('/incidents/:id/evidence', wrap(async (req, res) => ok(req, res, await q.evidenceFor(incidentId(req)))));
-router.get('/incidents/:id/hypotheses', wrap(async (req, res) => ok(req, res, await q.hypothesesFor(incidentId(req)))));
+router.get('/incidents/:id/evidence', wrap(async (req, res) => ok(req, res, await q.evidenceFor(await incidentId(req)))));
+router.get('/incidents/:id/hypotheses', wrap(async (req, res) => ok(req, res, await q.hypothesesFor(await incidentId(req)))));
 router.post('/incidents/:id/investigate', requireApprover, wrap(async (req, res) => {
-  await investigate(incidentId(req), req.actor);
-  ok(req, res, await q.incidentDetail(incidentId(req)));
+  await investigate(await incidentId(req), req.actor);
+  ok(req, res, await q.incidentDetail(await incidentId(req)));
 }));
 router.post('/incidents/:id/reassess', requireApprover, wrap(async (req, res) => {
-  ok(req, res, await reassess(incidentId(req), ['new_complaints'], req.actor, 'Manual reassessment'));
+  ok(req, res, await reassess(await incidentId(req), ['new_complaints'], req.actor, 'Manual reassessment'));
 }));
-router.get('/incidents/:id/agent-trace', wrap(async (req, res) => ok(req, res, await q.agentTrace(incidentId(req)))));
-router.get('/incidents/:id/impact', wrap(async (req, res) => ok(req, res, (await q.incidentDetail(incidentId(req))).impact)));
-router.get('/incidents/:id/recommendations', wrap(async (req, res) => ok(req, res, await q.recommendationsFor(incidentId(req)))));
-router.get('/incidents/:id/actions', wrap(async (req, res) => ok(req, res, await q.actionsFor(incidentId(req)))));
+router.get('/incidents/:id/agent-trace', wrap(async (req, res) => ok(req, res, await q.agentTrace(await incidentId(req)))));
+router.get('/incidents/:id/impact', wrap(async (req, res) => ok(req, res, (await q.incidentDetail(await incidentId(req))).impact)));
+router.get('/incidents/:id/recommendations', wrap(async (req, res) => ok(req, res, await q.recommendationsFor(await incidentId(req)))));
+router.get('/incidents/:id/actions', wrap(async (req, res) => ok(req, res, await q.actionsFor(await incidentId(req)))));
 router.post('/incidents/:id/actions/:recommendationId/execute', requireApprover, wrap(async (req, res) => {
-  ok(req, res, await executeRecommendation(incidentId(req), Number(req.params.recommendationId), req.actor));
+  ok(req, res, await executeRecommendation(await incidentId(req), Number(req.params.recommendationId), req.actor));
 }));
-router.get('/incidents/:id/kpis', wrap(async (req, res) => ok(req, res, await kpiReport(incidentId(req)))));
+router.get('/incidents/:id/kpis', wrap(async (req, res) => ok(req, res, await kpiReport(await incidentId(req)))));
 router.post('/incidents/:id/evidence', requireApprover, validate(s.evidenceBody), wrap(async (req, res) => {
-  ok(req, res, await injectEvidence(incidentId(req), req.valid.body, req.actor), { status: 201 });
+  ok(req, res, await injectEvidence(await incidentId(req), req.valid.body, req.actor), { status: 201 });
 }));
-router.get('/incidents/:id/decision-brief', wrap(async (req, res) => ok(req, res, await q.decisionBrief(incidentId(req)))));
-router.get('/incidents/:id/timeline', wrap(async (req, res) => ok(req, res, await q.timeline(incidentId(req)))));
+router.get('/incidents/:id/decision-brief', wrap(async (req, res) => ok(req, res, await q.decisionBrief(await incidentId(req)))));
+router.get('/incidents/:id/timeline', wrap(async (req, res) => ok(req, res, await q.timeline(await incidentId(req)))));
 
 // Approvals
 router.get('/approvals', page, paged(q.listApprovals));

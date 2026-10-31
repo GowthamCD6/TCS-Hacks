@@ -7,7 +7,10 @@ import { simNow } from '../services/clock.js';
 export const ACTIVE_STATUSES = ['detected', 'investigating', 'awaiting_approval', 'approved', 'executing', 'monitoring', 'reopened', 'escalated'];
 
 export async function getIncident(id, conn) {
-  const row = await one('SELECT * FROM incidents WHERE id = ?', [id], conn);
+  const isNumeric = typeof id === 'number' || (!isNaN(Number(id)) && String(id).trim() !== '' && !String(id).includes('-'));
+  const row = isNumeric
+    ? await one('SELECT * FROM incidents WHERE id = ?', [Number(id)], conn)
+    : await one('SELECT * FROM incidents WHERE incident_number = ?', [String(id)], conn);
   if (!row) throw notFound('Incident');
   return { ...row, metadata: parseJson(row.metadata) ?? {}, severity_inputs: parseJson(row.severity_inputs) };
 }
