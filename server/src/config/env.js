@@ -31,7 +31,7 @@ const schema = z.object({
   DB_USER: z.string().default(''),
   DB_PASSWORD: z.string().default(''),
   DB_NAME: z.string().default(''),
-  DB_SSL: bool(false),
+  DB_SSL: bool(true),
   DB_SSL_CA: z.string().default('isrgrootx1.pem'),
   WORKER_ENABLED: bool(true),
   WORKER_INTERVAL_MS: z.coerce.number().default(5000),

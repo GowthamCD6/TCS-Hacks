@@ -141,35 +141,37 @@ async function seedRichData() {
   // 4. Seed Signals across Anomaly Monitor
   const signals = [
     [
-      primaryIncId, 'payment_upi_intent_drop',
-      JSON.stringify({ drop_rate: 0.187, order_creation_rate: 0.043, baseline_conversion: 0.94, description: 'UPI Intent callback timeout spike on Android client release build v2.3' }),
-      0.0920, 3.450, 156, 'promoted_to_incident', 1
+      'SIG-UPI-DROP-01', 'payment', 'incident', 'UPI Intent callback timeout spike on Android v2.3',
+      primaryIncId, '2026-10-31 07:00:00', '2026-10-31 09:00:00', 12.0, 156, 144.0, 1200.0, 14.2650, 0.0920,
+      JSON.stringify({ drop_rate: 0.187, order_creation_rate: 0.043, description: 'UPI Intent callback timeout spike on Android client release build v2.3' }), 1
     ],
     [
-      primaryIncId, 'playstore_1star_spike_payment',
-      JSON.stringify({ negative_sentiment_ratio: 0.82, keyword_cluster: ['money deducted', 'no order', 'fraud app'], description: 'Play Store 1-star negative review flood citing debited UPI funds without invoice' }),
-      0.0810, 2.920, 68, 'promoted_to_incident', 1
+      'SIG-PLAYSTORE-02', 'payment', 'incident', 'Play Store 1-star review surge citing missing orders',
+      primaryIncId, '2026-10-31 07:15:00', '2026-10-31 09:15:00', 5.0, 68, 63.0, 1260.0, 11.4500, 0.0810,
+      JSON.stringify({ negative_sentiment_ratio: 0.82, keyword_cluster: ['money deducted', 'no order', 'fraud app'], description: 'Play Store 1-star negative review flood citing debited UPI funds without invoice' }), 1
     ],
     [
-      deliveryIncId, 'delivery_dispatch_sla_breach',
-      JSON.stringify({ avg_delay_minutes: 43.5, rider_acceptance_rate: 0.38, description: 'Order dispatch latency exceeding SLA buffer (>35 mins) across South Bengaluru hubs' }),
-      0.0640, 2.410, 342, 'open', 1
+      'SIG-WEATHER-RAIN-03', 'delivery', 'open', 'Delivery rider transit duration SLA breach',
+      deliveryIncId, '2026-10-31 06:00:00', '2026-10-31 09:00:00', 25.0, 342, 317.0, 1268.0, 9.8500, 0.0640,
+      JSON.stringify({ avg_delay_minutes: 43.5, rider_acceptance_rate: 0.38, description: 'Order dispatch latency exceeding SLA buffer (>35 mins) across South Bengaluru hubs' }), 1
     ],
     [
-      null, 'cart_abandonment_surge_ios',
-      JSON.stringify({ checkout_exit_rate: 0.22, baseline_exit_rate: 0.08, description: 'Elevated checkout drop-off rate on iOS after shipping address selection' }),
-      0.0380, 1.850, 94, 'open', 1
+      'SIG-CART-ABANDON-04', 'product', 'open', 'Checkout step-2 cart exit rate elevation',
+      null, '2026-10-31 07:30:00', '2026-10-31 09:30:00', 18.0, 94, 76.0, 422.0, 6.7200, 0.0380,
+      JSON.stringify({ checkout_exit_rate: 0.22, baseline_exit_rate: 0.08, description: 'Elevated checkout drop-off rate on iOS after shipping address selection' }), 1
     ],
     [
-      null, 'search_zero_results_spike',
-      JSON.stringify({ zero_hit_queries: ['diwali sweets', 'organic milk'], hit_rate: 0.61, description: 'Zero-result search query rate increased by 28% following catalog indexing update' }),
-      0.0290, 1.520, 112, 'watch', 1
+      'SIG-SEARCH-ZERO-05', 'product', 'watch', 'Zero result search query frequency lift',
+      null, '2026-10-31 06:30:00', '2026-10-31 09:30:00', 30.0, 112, 82.0, 273.0, 5.1200, 0.0290,
+      JSON.stringify({ zero_hit_queries: ['diwali sweets', 'organic milk'], hit_rate: 0.61, description: 'Zero-result search query rate increased by 28% following catalog indexing update' }), 1
     ],
   ];
 
   await query('DELETE FROM signals WHERE id > 0');
   await query(
-    `INSERT INTO signals (incident_id, category, metrics, severity_score, anomaly_score, current_count, status, is_synthetic) VALUES ?`,
+    `INSERT INTO signals 
+     (signal_key, category, status, triage_reason, incident_id, window_start, window_end, baseline_count, current_count, absolute_increase, percent_increase, anomaly_score, severity_score, metrics, is_synthetic)
+     VALUES ?`,
     [signals]
   );
   console.log(`✓ Seeded ${signals.length} real-time signals`);
@@ -177,10 +179,10 @@ async function seedRichData() {
   // 5. Seed Issue Clusters & Segments
   await query('DELETE FROM issue_clusters WHERE id > 0');
   await query(
-    `INSERT INTO issue_clusters (incident_id, label, description, feedback_count, severity_score, first_seen_at, last_seen_at, is_synthetic, metadata)
+    `INSERT INTO issue_clusters (incident_id, cluster_key, label, description, feedback_count, severity_score, first_seen_at, last_seen_at, metadata)
      VALUES 
-       (?, 'UPI Intent Deep-Link Loss on Android v2.3', 'Money debited from user bank, app fails to receive payment confirmation callback on returning from GPay/PhonePe.', 156, 0.092, NOW() - INTERVAL 4 HOUR, NOW(), 1, ?),
-       (?, 'Food Delivery Rider ETA Buffer Breach', 'Heavy rainfall causing riders to cancel dispatch; orders delayed beyond acceptable customer threshold.', 342, 0.064, NOW() - INTERVAL 3 HOUR, NOW(), 1, ?)`,
+       (?, 'ERR_UPI_INTENT_DROP', 'UPI Intent Deep-Link Loss on Android v2.3', 'Money debited from user bank, app fails to receive payment confirmation callback on returning from GPay/PhonePe.', 156, 0.092, NOW() - INTERVAL 4 HOUR, NOW(), ?),
+       (?, 'ERR_RAIN_DELIVERY_DELAY', 'Food Delivery Rider ETA Buffer Breach', 'Heavy rainfall causing riders to cancel dispatch; orders delayed beyond acceptable customer threshold.', 342, 0.064, NOW() - INTERVAL 3 HOUR, NOW(), ?)`,
     [
       primaryIncId, JSON.stringify({ segment: 'android_v2.3', error_code: 'INTENT_CALLBACK_TIMEOUT' }),
       deliveryIncId, JSON.stringify({ hub: 'South_BLR', weather: 'heavy_rain' })
@@ -198,14 +200,14 @@ async function seedRichData() {
     [primaryIncId, primaryIncId, primaryIncId, deliveryIncId]
   );
 
-  // 6. Seed Root Cause Hypotheses & Tests
+  // 6. Seed Root Cause Hypotheses
   await query('DELETE FROM root_cause_hypotheses WHERE id > 0');
   await query(
-    `INSERT INTO root_cause_hypotheses (incident_id, title, description, confidence_score, status, prior_probability, is_synthetic, evidence_summary)
+    `INSERT INTO root_cause_hypotheses (incident_id, hypothesis_key, hypothesis, status, confidence_score, explanation, evidence_summary)
      VALUES
-       (?, 'Android v2.3 intent callback lifecycle unregister on activity pause', 'Android release v2.3 Activity unregisters onActivityResult listener during external UPI app launch, discarding callback payload.', 0.942, 'supported', 0.40, 1, ?),
-       (?, 'Payment Gateway partner webhook timeout', 'Partner bank webhook infrastructure delayed by >30s exceeding internal ingress timeout threshold.', 0.125, 'refuted', 0.35, 1, ?),
-       (?, 'Distributed lock deadlocking order reservation', 'Redis distributed lock on checkout cart holding lease beyond connection timeout.', 0.080, 'refuted', 0.25, 1, ?)`,
+       (?, 'HYP-01', 'Android v2.3 intent callback lifecycle unregister on activity pause', 'supported', 0.942, 'Android release v2.3 Activity unregisters onActivityResult listener during external UPI app launch, discarding callback payload.', ?),
+       (?, 'HYP-02', 'Payment Gateway partner webhook timeout', 'refuted', 0.125, 'Partner bank webhook infrastructure delayed by >30s exceeding internal ingress timeout threshold.', ?),
+       (?, 'HYP-03', 'Distributed lock deadlocking order reservation', 'refuted', 0.080, 'Redis distributed lock on checkout cart holding lease beyond connection timeout.', ?)`,
     [
       primaryIncId, JSON.stringify({ passed_tests: 4, failed_tests: 0 }),
       primaryIncId, JSON.stringify({ refuted_by: 'Test T-02 Webhook log audit shows 99.8% 200 OK delivery in <800ms' }),
@@ -226,9 +228,8 @@ async function seedRichData() {
       cost: 0.00,
       benefit: 'Immediate drop in intent callback drops (<1%) within 60 seconds.',
       priority: 1,
-      target: 'FeatureFlag:ENABLE_UPI_SOCKET_TIMEOUT_V2',
+      description: 'Restore the socket timeout threshold from 8s to 30s across production clients.',
       rationale: { confidence: 0.95, reversibility: 1.0, impact_hours: 4 },
-      time: 2,
     },
     {
       title: 'Simulate Automated Batch Reconciliation & Order Rehydration',
@@ -238,9 +239,8 @@ async function seedRichData() {
       cost: 1500.00,
       benefit: 'Reconcile 156 stranded debits with partner bank and auto-generate confirmed orders without charging again.',
       priority: 2,
-      target: 'BatchJob:reconcile_upi_intent_failures',
+      description: 'Run automated batch query against bank settlement API to rehydrate orders for debited accounts.',
       rationale: { target_count: 156, total_amount: 482000 },
-      time: 15,
     },
     {
       title: 'Dispatch Proactive Recovery SMS & ₹200 Apology Credit Voucher',
@@ -250,9 +250,8 @@ async function seedRichData() {
       cost: 31200.00,
       benefit: 'Prevent churn and rebuild trust by issuing instant ₹200 credits to all 156 impacted users.',
       priority: 3,
-      target: 'Campaign:cx_recovery_upi_v2_3',
+      description: 'Issue immediate automated apology notification with compensation coupon to impacted user profiles.',
       rationale: { target_count: 156, voucher_amount: 200 },
-      time: 5,
     },
     {
       title: 'Extend Delivery SLA Window by +25 Mins Across South Hubs',
@@ -262,9 +261,8 @@ async function seedRichData() {
       cost: 0.00,
       benefit: 'Calibrate consumer expectations during rain storm; drop customer cancellation rate by 60%.',
       priority: 1,
-      target: 'Hubs:Koramangala,HSR',
+      description: 'Temporarily expand estimated delivery time to account for monsoon road waterlogging in South Bengaluru.',
       rationale: { rain_severity: 'high', affected_riders: 85 },
-      time: 3,
     },
   ];
 
@@ -272,9 +270,9 @@ async function seedRichData() {
     const incId = r.key === 'adjust_delivery_sla' ? deliveryIncId : primaryIncId;
     const [result] = await query(
       `INSERT INTO recovery_recommendations 
-       (incident_id, title, action_key, action_type, risk_level, estimated_cost, rationale, priority, requires_approval, status, target_reference, is_synthetic)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, 'pending', ?, 1)`,
-      [incId, r.title, r.key, r.type, r.risk, r.cost, JSON.stringify(r.rationale), r.priority, r.target]
+       (incident_id, title, description, action_key, action_type, risk_level, estimated_cost, expected_benefit, rationale, priority, requires_approval, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, 'proposed')`,
+      [incId, r.title, r.description, r.key, r.type, r.risk, r.cost, r.benefit, JSON.stringify(r.rationale), r.priority]
     );
 
     await query(

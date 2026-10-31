@@ -16,7 +16,7 @@ export function getPool() {
       connectionLimit: 8,
       timezone: 'Z',
       decimalNumbers: true,
-      // ssl: env.DB_SSL ? { ca: fs.readFileSync(path.resolve(env.serverRoot, env.DB_SSL_CA)), minVersion: 'TLSv1.2' } : undefined,
+      ssl: env.DB_SSL ? { ca: fs.readFileSync(path.resolve(env.serverRoot, env.DB_SSL_CA)), minVersion: 'TLSv1.2' } : undefined,
     });
   }
   return pool;
