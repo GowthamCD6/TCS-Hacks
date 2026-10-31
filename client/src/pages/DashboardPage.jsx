@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { incidentsService } from '../services/incidents.service';
@@ -17,14 +17,13 @@ import {
   Calendar,
   Play,
   Lightbulb,
-  CheckCircle2,
 } from 'lucide-react';
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
 
   // Load live incident overview
-  const { data: overview, isLoading } = useQuery({
+  const { data: overview } = useQuery({
     queryKey: ['dashboard-overview'],
     queryFn: () => incidentsService.getDashboardOverview(),
   });
@@ -39,58 +38,64 @@ export const DashboardPage = () => {
   const pendingApprovals = recommendations.filter((r) => r.approvalStatus === 'pending');
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-300">
-      {/* Top Banner Row: Title on Left, 4 Stat Cards + '+ Create Workflow' Button on Right */}
+    <div className="space-y-8 animate-in fade-in duration-300 pb-12">
+      {/* =========================================================================
+          Top Banner Row: Title on Left, 4 Stat Cards + '+ Create Workflow' Button
+          ========================================================================= */}
       <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-6 pt-1">
-        {/* Main Title: 32px – 36px | Semi-bold (600) */}
-        <div className="space-y-1">
-          <h1 className="text-[34px] font-semibold text-[#FFFFFF] tracking-tight leading-tight">
+        {/* Main Title & Subtitle */}
+        <div className="space-y-1.5">
+          <h1 className="text-3xl sm:text-[34px] font-semibold text-slate-900 dark:text-[#FFFFFF] tracking-tight leading-tight">
             Automation center
           </h1>
-          <p className="text-[13px] text-[#9E9BB2]">
-            Monitor workflows, approvals, incidents and AI recommendations in real time
+          <p className="text-[13px] sm:text-[14px] text-slate-500 dark:text-[#9E9BB2]">
+            Monitor workflows, approvals, incidents, and AI recommendations in real time
           </p>
         </div>
 
         {/* 4 Stat Cards + Button */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
           {/* Stat 1: Active workflows */}
           <div
             onClick={() => navigate('/feedback')}
-            className="px-5 py-3.5 rounded-[18px] glass-card flex flex-col justify-between min-w-[125px] cursor-pointer hover:border-white/30 transition-all"
+            className="px-5 py-4 rounded-[20px] glass-card flex flex-col justify-between min-w-[136px] flex-1 sm:flex-initial cursor-pointer hover:border-purple-400/50 dark:hover:border-white/30 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
             title="View Active Workflows"
           >
-            <div className="flex items-center gap-1.5 text-[#9E9BB2] text-[14px] font-medium">
-              <RotateCcw className="w-3.5 h-3.5 text-[#8B5CF6]" />
+            <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] font-medium">
+              <RotateCcw className="w-3.5 h-3.5 text-purple-600 dark:text-[#8B5CF6]" />
               <span>Active workflows</span>
             </div>
-            <div className="text-[34px] font-semibold text-[#FFFFFF] mt-1 leading-none">128</div>
+            <div className="text-[32px] sm:text-[34px] font-semibold text-slate-900 dark:text-[#FFFFFF] mt-2 leading-none tracking-tight">
+              {overview?.activeWorkflows || 128}
+            </div>
           </div>
 
           {/* Stat 2: Success Rate */}
           <div
             onClick={() => navigate('/recovery')}
-            className="px-5 py-3.5 rounded-[18px] glass-card flex flex-col justify-between min-w-[125px] cursor-pointer hover:border-white/30 transition-all"
+            className="px-5 py-4 rounded-[20px] glass-card flex flex-col justify-between min-w-[136px] flex-1 sm:flex-initial cursor-pointer hover:border-emerald-400/50 dark:hover:border-white/30 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
             title="View Recovery SLAs"
           >
-            <div className="flex items-center gap-1.5 text-[#9E9BB2] text-[14px] font-medium">
-              <TrendingUp className="w-3.5 h-3.5 text-[#34D399]" />
+            <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] font-medium">
+              <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-[#34D399]" />
               <span>Success Rate</span>
             </div>
-            <div className="text-[34px] font-semibold text-[#34D399] mt-1 leading-none">92%</div>
+            <div className="text-[32px] sm:text-[34px] font-semibold text-emerald-600 dark:text-[#34D399] mt-2 leading-none tracking-tight">
+              92%
+            </div>
           </div>
 
           {/* Stat 3: Pending Approvals */}
           <div
             onClick={() => navigate('/approvals')}
-            className="px-5 py-3.5 rounded-[18px] glass-card flex flex-col justify-between min-w-[125px] cursor-pointer hover:border-white/30 transition-all"
+            className="px-5 py-4 rounded-[20px] glass-card flex flex-col justify-between min-w-[136px] flex-1 sm:flex-initial cursor-pointer hover:border-amber-400/50 dark:hover:border-white/30 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
             title="Open Approvals Desk"
           >
-            <div className="flex items-center gap-1.5 text-[#9E9BB2] text-[14px] font-medium">
-              <Clock className="w-3.5 h-3.5 text-[#FBBF24]" />
+            <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] font-medium">
+              <Clock className="w-3.5 h-3.5 text-amber-600 dark:text-[#FBBF24]" />
               <span>Pending Approvals</span>
             </div>
-            <div className="text-[34px] font-semibold text-[#FBBF24] mt-1 leading-none">
+            <div className="text-[32px] sm:text-[34px] font-semibold text-amber-600 dark:text-[#FBBF24] mt-2 leading-none tracking-tight">
               {pendingApprovals.length > 0 ? pendingApprovals.length : 18}
             </div>
           </div>
@@ -98,59 +103,71 @@ export const DashboardPage = () => {
           {/* Stat 4: Failed Tasks */}
           <div
             onClick={() => navigate('/incidents')}
-            className="px-5 py-3.5 rounded-[18px] bg-[rgba(239,68,68,0.2)] border border-[rgba(248,113,113,0.3)] backdrop-blur-[16px] flex flex-col justify-between min-w-[125px] cursor-pointer hover:border-rose-400 transition-all"
+            className="px-5 py-4 rounded-[20px] bg-rose-50/90 border border-rose-200 dark:bg-[rgba(239,68,68,0.2)] dark:border-[rgba(248,113,113,0.3)] backdrop-blur-[16px] flex flex-col justify-between min-w-[136px] flex-1 sm:flex-initial cursor-pointer hover:border-rose-400/80 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
             title="Inspect Critical Incidents"
           >
-            <div className="flex items-center gap-1.5 text-[#F87171] text-[14px] font-medium">
-              <AlertTriangle className="w-3.5 h-3.5 text-[#F87171]" />
+            <div className="flex items-center gap-2 text-rose-600 dark:text-[#F87171] text-[13px] font-medium">
+              <AlertTriangle className="w-3.5 h-3.5 text-rose-600 dark:text-[#F87171]" />
               <span>Failed Tasks</span>
             </div>
-            <div className="text-[34px] font-semibold text-[#F87171] mt-1 leading-none">07</div>
+            <div className="text-[32px] sm:text-[34px] font-semibold text-rose-600 dark:text-[#F87171] mt-2 leading-none tracking-tight">
+              07
+            </div>
           </div>
 
           {/* Create Workflow Button */}
           <button
             onClick={() => navigate('/ingestion')}
-            className="px-5 py-3 rounded-[12px] bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] hover:from-[#7C3AED] hover:to-[#5B21B6] text-white font-medium text-[13px] flex items-center gap-2 cursor-pointer transition-all shadow-[0_0_16px_rgba(139,92,246,0.35)]"
+            className="px-5 py-3.5 rounded-[14px] bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] hover:from-[#7C3AED] hover:to-[#5B21B6] text-white font-medium text-[13px] flex items-center justify-center gap-2 cursor-pointer transition-all shadow-[0_4px_16px_rgba(139,92,246,0.35)] hover:shadow-[0_6px_22px_rgba(139,92,246,0.5)] active:scale-95"
           >
-            <Plus className="w-4 h-4" />
-            <span>Create Workflow</span>
+            <Plus className="w-4 h-4 text-white" />
+            <span className="text-white">Create Workflow</span>
           </button>
         </div>
       </div>
 
-      {/* Main Section: AI Workflow Map Container */}
-      <div className="glass-card space-y-6">
+      {/* =========================================================================
+          Main Section: AI Workflow Map Container
+          ========================================================================= */}
+      <div className="glass-card p-6 sm:p-7 md:p-8 space-y-6 rounded-[24px]">
         {/* Section Header + Status Pills */}
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-[20px] font-medium text-[#FFFFFF] tracking-tight">AI Workflow Map</h2>
+        <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-white/[0.08]">
+          <div className="flex items-center gap-2.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse" />
+            <h2 className="text-lg sm:text-[20px] font-semibold text-slate-900 dark:text-[#FFFFFF] tracking-tight">
+              AI Workflow Map
+            </h2>
+            <span className="text-xs font-medium text-slate-400 dark:text-[#706C82] hidden sm:inline">
+              • Real-time Agent State
+            </span>
+          </div>
 
           {/* Workflow Status Legend Pills */}
-          <div className="flex items-center gap-2 text-[12px]">
+          <div className="flex flex-wrap items-center gap-2 text-[12px]">
             <span
               onClick={() => navigate('/recovery')}
-              className="badge-success px-3.5 py-1 flex items-center gap-1.5 font-medium cursor-pointer"
+              className="badge-success px-3.5 py-1.5 flex items-center gap-1.5 font-medium cursor-pointer transition-transform hover:scale-105"
             >
               <span className="w-2 h-2 rounded-full bg-[#34D399]" />
               Running
             </span>
             <span
               onClick={() => navigate('/recovery')}
-              className="badge-success px-3.5 py-1 flex items-center gap-1.5 font-medium cursor-pointer"
+              className="badge-success px-3.5 py-1.5 flex items-center gap-1.5 font-medium cursor-pointer transition-transform hover:scale-105"
             >
               <span className="w-2 h-2 rounded-full bg-[#34D399]" />
               Optimized
             </span>
             <span
               onClick={() => navigate('/signals')}
-              className="badge-warning px-3.5 py-1 flex items-center gap-1.5 font-medium cursor-pointer"
+              className="badge-warning px-3.5 py-1.5 flex items-center gap-1.5 font-medium cursor-pointer transition-transform hover:scale-105"
             >
               <span className="w-2 h-2 rounded-full bg-[#FBBF24]" />
               At risk
             </span>
             <span
               onClick={() => navigate('/incidents')}
-              className="badge-failed px-3.5 py-1 flex items-center gap-1.5 font-medium cursor-pointer"
+              className="badge-failed px-3.5 py-1.5 flex items-center gap-1.5 font-medium cursor-pointer transition-transform hover:scale-105"
             >
               <span className="w-2 h-2 rounded-full bg-[#F87171]" />
               Delayed
@@ -159,8 +176,9 @@ export const DashboardPage = () => {
         </div>
 
         {/* Horizontal Pipeline of 6 Interactive Connected Glass Nodes */}
-        <div className="overflow-x-auto pb-4 scrollbar-none">
-          <div className="min-w-[1040px] flex items-center justify-between gap-3 relative py-6">
+        {/* Generous pt-24 ensures the popover priority stack has ample headroom and never overlaps */}
+        <div className="overflow-x-auto pt-24 pb-6 px-2 scrollbar-none">
+          <div className="min-w-[1060px] flex items-center justify-between gap-4 relative py-6">
             
             {/* SVG Connecting Track Line */}
             <svg
@@ -170,9 +188,9 @@ export const DashboardPage = () => {
               <line
                 x1="40"
                 y1="20"
-                x2="1000"
+                x2="1020"
                 y2="20"
-                stroke="rgba(139, 92, 246, 0.3)"
+                className="stroke-purple-400/40 dark:stroke-purple-500/30"
                 strokeWidth="2"
                 strokeDasharray="4 4"
               />
@@ -181,62 +199,83 @@ export const DashboardPage = () => {
             {/* Node 1: New Request */}
             <div
               onClick={() => navigate('/feedback')}
-              className="w-44 p-4 rounded-[16px] glass-node-card relative z-10 cursor-pointer hover:border-purple-400"
+              className="w-44 p-4.5 rounded-[18px] glass-node-card relative z-10 cursor-pointer hover:border-purple-400 transition-all hover:scale-[1.02] shadow-sm"
               title="Click to view raw requests in Inbox"
             >
-              <div className="flex items-center gap-2 text-[#9E9BB2] text-[13px] mb-2 font-medium">
-                <User className="w-3.5 h-3.5 text-[#8B5CF6]" />
-                <span className="text-[#FFFFFF]">New Request</span>
+              <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] mb-2 font-medium">
+                <User className="w-3.5 h-3.5 text-purple-600 dark:text-[#8B5CF6]" />
+                <span className="text-slate-900 dark:text-[#FFFFFF]">New Request</span>
               </div>
-              <div className="text-[32px] font-semibold text-[#FFFFFF] leading-tight">24</div>
-              <div className="text-[12px] text-[#706C82] mt-1">incoming feed</div>
+              <div className="text-[32px] font-semibold text-slate-900 dark:text-[#FFFFFF] leading-tight">
+                24
+              </div>
+              <div className="text-[12px] text-slate-500 dark:text-[#706C82] mt-1.5">
+                incoming feed
+              </div>
             </div>
 
             {/* Node 2: AI Classification */}
             <div
               onClick={() => navigate('/feedback')}
-              className="w-48 p-4 rounded-[16px] glass-node-card relative z-10 cursor-pointer hover:border-teal-400"
+              className="w-48 p-4.5 rounded-[18px] glass-node-card relative z-10 cursor-pointer hover:border-teal-400 transition-all hover:scale-[1.02] shadow-sm"
               title="Click to view NLP classified feedback"
             >
-              <div className="flex items-center gap-2 text-[#9E9BB2] text-[13px] mb-2 font-medium">
-                <Globe className="w-3.5 h-3.5 text-[#34D399]" />
-                <span className="text-[#FFFFFF]">AI Classification</span>
+              <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] mb-2 font-medium">
+                <Globe className="w-3.5 h-3.5 text-emerald-600 dark:text-[#34D399]" />
+                <span className="text-slate-900 dark:text-[#FFFFFF]">AI Classification</span>
               </div>
               <div className="flex items-baseline justify-between">
-                <span className="text-[32px] font-semibold text-[#FFFFFF] leading-tight">22</span>
+                <span className="text-[32px] font-semibold text-slate-900 dark:text-[#FFFFFF] leading-tight">
+                  22
+                </span>
                 <span className="badge-success px-2 py-0.5 text-[11px] font-medium">
                   Optimized
                 </span>
               </div>
-              <div className="mt-2 text-[12px] text-[#706C82]">Auto-sorted NLP</div>
+              <div className="mt-1.5 text-[12px] text-slate-500 dark:text-[#706C82]">
+                Auto-sorted NLP
+              </div>
             </div>
 
             {/* Node 3: Risk Detection (Interactive Link to Root Cause Court) */}
             <div
               onClick={() => navigate('/incidents/INC-2026-084')}
-              className="w-56 p-4 rounded-[16px] glass-node-active relative z-20 cursor-pointer hover:scale-[1.02] transition-transform"
+              className="w-56 p-4.5 rounded-[18px] glass-node-active relative z-20 cursor-pointer hover:scale-[1.03] transition-all shadow-md"
               title="Click to enter Root Cause Court for INC-2026-084"
             >
-              {/* Top Popover Priority Stack */}
-              <div className="absolute -top-20 left-4 w-44 p-2.5 rounded-[12px] glass-panel border border-white/[0.12] space-y-1 text-[11px] font-medium pointer-events-none shadow-xl">
-                <div className="flex items-center text-[#F87171] gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#F87171]" /> High priority (04)
+              {/* Top Popover Priority Stack with proper contrast and border */}
+              <div className="absolute -top-[82px] left-3 w-48 p-3 rounded-[14px] glass-panel border border-slate-200/90 dark:border-white/[0.12] space-y-1.5 text-[11px] font-medium pointer-events-none shadow-xl bg-white/95 dark:bg-[#120d24]/95">
+                <div className="flex items-center justify-between text-rose-600 dark:text-[#F87171] font-semibold">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500" /> High priority
+                  </span>
+                  <span className="font-mono text-xs">04</span>
                 </div>
-                <div className="flex items-center text-[#FBBF24] gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#FBBF24]" /> Medium priority (09)
+                <div className="flex items-center justify-between text-amber-600 dark:text-[#FBBF24]">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500" /> Medium priority
+                  </span>
+                  <span className="font-mono text-xs">09</span>
                 </div>
-                <div className="flex items-center text-[#34D399] gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#34D399]" /> Low priority (05)
+                <div className="flex items-center justify-between text-emerald-600 dark:text-[#34D399]">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Low priority
+                  </span>
+                  <span className="font-mono text-xs">05</span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 text-[#C4B5FD] text-[13px] mb-2 font-medium">
-                <Headphones className="w-3.5 h-3.5 text-[#A855F7]" />
-                <span className="text-[#FFFFFF]">Risk detection</span>
+              <div className="flex items-center gap-2 text-purple-700 dark:text-[#C4B5FD] text-[13px] mb-2 font-medium">
+                <Headphones className="w-3.5 h-3.5 text-purple-600 dark:text-[#A855F7]" />
+                <span className="text-slate-900 dark:text-[#FFFFFF] font-semibold">Risk detection</span>
               </div>
               <div className="flex items-baseline justify-between">
-                <span className="text-[32px] font-semibold text-[#FFFFFF] leading-tight">18</span>
-                <span className="text-[12px] text-[#A8A3BA]">Root Cause Court</span>
+                <span className="text-[32px] font-bold text-slate-900 dark:text-[#FFFFFF] leading-tight">
+                  18
+                </span>
+                <span className="text-[12px] font-medium text-purple-600 dark:text-[#A8A3BA]">
+                  Root Cause Court
+                </span>
               </div>
               <div className="mt-2">
                 <span className="badge-success px-2.5 py-0.5 text-[11px] font-medium">
@@ -248,16 +287,20 @@ export const DashboardPage = () => {
             {/* Node 4: Human follow-up */}
             <div
               onClick={() => navigate('/approvals')}
-              className="w-48 p-4 rounded-[16px] glass-node-card relative z-10 cursor-pointer hover:border-amber-400"
+              className="w-48 p-4.5 rounded-[18px] glass-node-card relative z-10 cursor-pointer hover:border-amber-400 transition-all hover:scale-[1.02] shadow-sm"
               title="Click to review actions awaiting approval"
             >
-              <div className="flex items-center gap-2 text-[#9E9BB2] text-[13px] mb-2 font-medium">
-                <UserCheck className="w-3.5 h-3.5 text-[#FBBF24]" />
-                <span className="text-[#FFFFFF]">Human follow-up</span>
+              <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] mb-2 font-medium">
+                <UserCheck className="w-3.5 h-3.5 text-amber-600 dark:text-[#FBBF24]" />
+                <span className="text-slate-900 dark:text-[#FFFFFF]">Human follow-up</span>
               </div>
               <div className="flex items-baseline justify-between">
-                <span className="text-[32px] font-semibold text-[#FFFFFF] leading-tight">08</span>
-                <span className="text-[12px] text-[#FBBF24]">5 awaiting</span>
+                <span className="text-[32px] font-semibold text-slate-900 dark:text-[#FFFFFF] leading-tight">
+                  08
+                </span>
+                <span className="text-[12px] font-medium text-amber-600 dark:text-[#FBBF24]">
+                  5 awaiting
+                </span>
               </div>
               <div className="mt-2">
                 <span className="badge-warning px-2.5 py-0.5 text-[11px] font-medium">
@@ -269,16 +312,20 @@ export const DashboardPage = () => {
             {/* Node 5: Scheduling */}
             <div
               onClick={() => navigate('/recovery')}
-              className="w-44 p-4 rounded-[16px] glass-node-card relative z-10 cursor-pointer hover:border-rose-400"
+              className="w-44 p-4.5 rounded-[18px] glass-node-card relative z-10 cursor-pointer hover:border-rose-400 transition-all hover:scale-[1.02] shadow-sm"
               title="Click to inspect throttled execution queue"
             >
-              <div className="flex items-center gap-2 text-[#9E9BB2] text-[13px] mb-2 font-medium">
-                <Calendar className="w-3.5 h-3.5 text-[#F87171]" />
-                <span className="text-[#FFFFFF]">Scheduling</span>
+              <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] mb-2 font-medium">
+                <Calendar className="w-3.5 h-3.5 text-rose-600 dark:text-[#F87171]" />
+                <span className="text-slate-900 dark:text-[#FFFFFF]">Scheduling</span>
               </div>
               <div className="flex items-baseline justify-between">
-                <span className="text-[32px] font-semibold text-[#FFFFFF] leading-tight">06</span>
-                <span className="text-[12px] text-[#F87171]">3 blocked</span>
+                <span className="text-[32px] font-semibold text-slate-900 dark:text-[#FFFFFF] leading-tight">
+                  06
+                </span>
+                <span className="text-[12px] font-medium text-rose-600 dark:text-[#F87171]">
+                  3 blocked
+                </span>
               </div>
               <div className="mt-2">
                 <span className="badge-failed px-2.5 py-0.5 text-[11px] font-medium">
@@ -290,16 +337,20 @@ export const DashboardPage = () => {
             {/* Node 6: Execution */}
             <div
               onClick={() => navigate('/recovery')}
-              className="w-44 p-4 rounded-[16px] glass-node-card relative z-10 cursor-pointer hover:border-emerald-400"
+              className="w-44 p-4.5 rounded-[18px] glass-node-card relative z-10 cursor-pointer hover:border-emerald-400 transition-all hover:scale-[1.02] shadow-sm"
               title="Click to view simulated sandbox executions"
             >
-              <div className="flex items-center gap-2 text-[#9E9BB2] text-[13px] mb-2 font-medium">
-                <Play className="w-3.5 h-3.5 text-[#34D399]" />
-                <span className="text-[#FFFFFF]">Execution</span>
+              <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] mb-2 font-medium">
+                <Play className="w-3.5 h-3.5 text-emerald-600 dark:text-[#34D399]" />
+                <span className="text-slate-900 dark:text-[#FFFFFF]">Execution</span>
               </div>
               <div className="flex items-baseline justify-between">
-                <span className="text-[32px] font-semibold text-[#FFFFFF] leading-tight">12</span>
-                <span className="text-[12px] text-[#706C82]">in progress</span>
+                <span className="text-[32px] font-semibold text-slate-900 dark:text-[#FFFFFF] leading-tight">
+                  12
+                </span>
+                <span className="text-[12px] text-slate-500 dark:text-[#706C82]">
+                  in progress
+                </span>
               </div>
               <div className="mt-2">
                 <span className="badge-success px-2.5 py-0.5 text-[11px] font-medium">
@@ -312,20 +363,29 @@ export const DashboardPage = () => {
         </div>
       </div>
 
-      {/* 3 Bottom Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* =========================================================================
+          3 Bottom Cards Grid: Spaced & Padded for Clean Symmetry
+          ========================================================================= */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7">
 
         {/* Card 1: Active Workflow */}
-        <div className="glass-card flex flex-col justify-between">
+        <div className="glass-card p-6 sm:p-7 flex flex-col justify-between rounded-[24px] shadow-sm">
           <div>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[15px] font-medium text-[#FFFFFF]">Active Workflow</h3>
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h3 className="text-base sm:text-[17px] font-semibold text-slate-900 dark:text-[#FFFFFF]">
+                  Active Workflow
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-[#9E9BB2] mt-0.5">
+                  Real-time recovery execution progress
+                </p>
+              </div>
               <button
                 onClick={() => navigate('/incidents')}
-                className="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-[#9E9BB2] hover:text-[#FFFFFF] transition-colors cursor-pointer"
-                title="Expand"
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:text-[#9E9BB2] dark:hover:text-[#FFFFFF] transition-colors cursor-pointer"
+                title="Expand and inspect incidents"
               >
-                <ArrowUpRight className="w-3.5 h-3.5" />
+                <ArrowUpRight className="w-4 h-4" />
               </button>
             </div>
 
@@ -333,16 +393,18 @@ export const DashboardPage = () => {
               {/* Item 1 */}
               <div
                 onClick={() => navigate('/recovery')}
-                className="cursor-pointer group p-1.5 rounded-xl hover:bg-white/[0.03] transition-colors"
+                className="cursor-pointer group p-3 rounded-xl hover:bg-slate-100/70 dark:hover:bg-white/[0.03] transition-colors"
               >
-                <div className="flex items-center justify-between text-[13px] mb-1.5">
-                  <span className="text-[#FFFFFF] font-normal group-hover:text-purple-300">Customer onboarding</span>
+                <div className="flex items-center justify-between text-[13px] mb-2">
+                  <span className="text-slate-800 dark:text-[#FFFFFF] font-medium group-hover:text-purple-600 dark:group-hover:text-purple-300">
+                    Customer onboarding
+                  </span>
                   <div className="flex items-center gap-2">
-                    <span className="badge-success px-2.5 py-0.5 text-[11px]">Running</span>
-                    <span className="font-mono text-[#9E9BB2] text-[12px]">60%</span>
+                    <span className="badge-success px-2.5 py-0.5 text-[11px] font-medium">Running</span>
+                    <span className="font-mono text-slate-500 dark:text-[#9E9BB2] text-[12px] font-semibold">60%</span>
                   </div>
                 </div>
-                <div className="w-full h-1.5 rounded-full bg-black/40 overflow-hidden">
+                <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-black/40 overflow-hidden border border-slate-200/60 dark:border-white/5">
                   <div className="h-full rounded-full bg-[#34D399] w-[60%]" />
                 </div>
               </div>
@@ -350,16 +412,18 @@ export const DashboardPage = () => {
               {/* Item 2 */}
               <div
                 onClick={() => navigate('/recovery')}
-                className="cursor-pointer group p-1.5 rounded-xl hover:bg-white/[0.03] transition-colors"
+                className="cursor-pointer group p-3 rounded-xl hover:bg-slate-100/70 dark:hover:bg-white/[0.03] transition-colors"
               >
-                <div className="flex items-center justify-between text-[13px] mb-1.5">
-                  <span className="text-[#FFFFFF] font-normal group-hover:text-purple-300">Invoice generation</span>
+                <div className="flex items-center justify-between text-[13px] mb-2">
+                  <span className="text-slate-800 dark:text-[#FFFFFF] font-medium group-hover:text-purple-600 dark:group-hover:text-purple-300">
+                    Invoice generation
+                  </span>
                   <div className="flex items-center gap-2">
-                    <span className="badge-success px-2.5 py-0.5 text-[11px]">Running</span>
-                    <span className="font-mono text-[#9E9BB2] text-[12px]">42%</span>
+                    <span className="badge-success px-2.5 py-0.5 text-[11px] font-medium">Running</span>
+                    <span className="font-mono text-slate-500 dark:text-[#9E9BB2] text-[12px] font-semibold">42%</span>
                   </div>
                 </div>
-                <div className="w-full h-1.5 rounded-full bg-black/40 overflow-hidden">
+                <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-black/40 overflow-hidden border border-slate-200/60 dark:border-white/5">
                   <div className="h-full rounded-full bg-[#34D399] w-[42%]" />
                 </div>
               </div>
@@ -367,27 +431,29 @@ export const DashboardPage = () => {
               {/* Item 3 */}
               <div
                 onClick={() => navigate('/incidents/INC-2026-084')}
-                className="cursor-pointer group p-1.5 rounded-xl hover:bg-white/[0.03] transition-colors"
+                className="cursor-pointer group p-3 rounded-xl hover:bg-slate-100/70 dark:hover:bg-white/[0.03] transition-colors"
               >
-                <div className="flex items-center justify-between text-[13px] mb-1.5">
-                  <span className="text-[#FFFFFF] font-normal group-hover:text-rose-300">Support ticket routing</span>
+                <div className="flex items-center justify-between text-[13px] mb-2">
+                  <span className="text-slate-800 dark:text-[#FFFFFF] font-medium group-hover:text-rose-600 dark:group-hover:text-rose-300">
+                    Support ticket routing
+                  </span>
                   <div className="flex items-center gap-2">
-                    <span className="badge-failed px-2.5 py-0.5 text-[11px]">Warning</span>
-                    <span className="font-mono text-[#9E9BB2] text-[12px]">80%</span>
+                    <span className="badge-failed px-2.5 py-0.5 text-[11px] font-medium">Warning</span>
+                    <span className="font-mono text-slate-500 dark:text-[#9E9BB2] text-[12px] font-semibold">80%</span>
                   </div>
                 </div>
-                <div className="w-full h-1.5 rounded-full bg-black/40 overflow-hidden">
+                <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-black/40 overflow-hidden border border-slate-200/60 dark:border-white/5">
                   <div className="h-full rounded-full bg-[#F87171] w-[80%]" />
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="pt-4 mt-4 border-t border-white/[0.08] flex items-center justify-between text-[12px] text-[#9E9BB2]">
+          <div className="pt-4 mt-5 border-t border-slate-200/80 dark:border-white/[0.08] flex items-center justify-between text-[12px] text-slate-500 dark:text-[#9E9BB2]">
             <span>Plant: App v2.3 UPI Break</span>
             <button
               onClick={() => navigate('/incidents/INC-2026-084')}
-              className="text-[#8B5CF6] font-medium hover:text-[#A855F7] flex items-center gap-1 cursor-pointer"
+              className="text-purple-600 dark:text-[#8B5CF6] font-semibold hover:text-purple-700 dark:hover:text-[#A855F7] flex items-center gap-1 cursor-pointer"
             >
               Inspect Case <ArrowUpRight className="w-3.5 h-3.5" />
             </button>
@@ -395,63 +461,70 @@ export const DashboardPage = () => {
         </div>
 
         {/* Card 2: Pending approvals (Functional with direct approval action) */}
-        <div className="glass-card flex flex-col justify-between">
+        <div className="glass-card p-6 sm:p-7 flex flex-col justify-between rounded-[24px] shadow-sm">
           <div>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[15px] font-medium text-[#FFFFFF]">Pending approvals</h3>
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="text-base sm:text-[17px] font-semibold text-slate-900 dark:text-[#FFFFFF]">
+                  Pending approvals
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-[#9E9BB2] mt-0.5">
+                  Interventions requiring human authorization
+                </p>
+              </div>
               <button
                 onClick={() => navigate('/approvals')}
-                className="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-[#9E9BB2] hover:text-[#FFFFFF] transition-colors cursor-pointer"
-                title="Expand"
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:text-[#9E9BB2] dark:hover:text-[#FFFFFF] transition-colors cursor-pointer"
+                title="Expand Approvals Desk"
               >
-                <ArrowUpRight className="w-3.5 h-3.5" />
+                <ArrowUpRight className="w-4 h-4" />
               </button>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-[13px]">
-                <thead className="text-[12px] text-[#9E9BB2] border-b border-white/[0.08]">
+                <thead className="text-[12px] font-semibold uppercase tracking-wider text-slate-400 dark:text-[#9E9BB2] border-b border-slate-200/80 dark:border-white/[0.08]">
                   <tr>
-                    <th className="pb-2">Request</th>
-                    <th className="pb-2">Department</th>
-                    <th className="pb-2">Owner</th>
-                    <th className="pb-2">Risk</th>
-                    <th className="pb-2 text-right">Action</th>
+                    <th className="pb-3 font-semibold">Request</th>
+                    <th className="pb-3 font-semibold">Department</th>
+                    <th className="pb-3 font-semibold">Owner</th>
+                    <th className="pb-3 font-semibold">Risk</th>
+                    <th className="pb-3 text-right font-semibold">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/[0.04]">
+                <tbody className="divide-y divide-slate-100 dark:divide-white/[0.04]">
                   {pendingApprovals.slice(0, 4).map((rec) => (
                     <tr
                       key={rec.id}
                       onClick={() => navigate('/approvals')}
-                      className="hover:bg-white/[0.02] cursor-pointer"
+                      className="hover:bg-slate-100/60 dark:hover:bg-white/[0.02] cursor-pointer transition-colors"
                     >
-                      <td className="py-2.5 font-normal text-[#FFFFFF] truncate max-w-[120px]">
+                      <td className="py-3 font-medium text-slate-800 dark:text-[#FFFFFF] truncate max-w-[120px]">
                         {rec.title}
                       </td>
-                      <td className="py-2.5 text-[#9E9BB2]">
+                      <td className="py-3 text-slate-500 dark:text-[#9E9BB2]">
                         {rec.targetDepartment || 'Operations'}
                       </td>
-                      <td className="py-2.5 text-[#9E9BB2]">Liam Anderson</td>
-                      <td className="py-2.5">
+                      <td className="py-3 text-slate-500 dark:text-[#9E9BB2]">Liam A.</td>
+                      <td className="py-3">
                         <span
                           className={
                             rec.riskLevel === 'high'
-                              ? 'badge-failed px-2 py-0.5 text-[11px]'
-                              : 'badge-warning px-2 py-0.5 text-[11px]'
+                              ? 'badge-failed px-2 py-0.5 text-[11px] font-medium'
+                              : 'badge-warning px-2 py-0.5 text-[11px] font-medium'
                           }
                         >
                           {rec.riskLevel}
                         </span>
                       </td>
-                      <td className="py-2.5 text-right font-mono text-[#8B5CF6] hover:text-white">
+                      <td className="py-3 text-right font-mono text-purple-600 hover:text-purple-800 dark:text-[#8B5CF6] dark:hover:text-white font-medium">
                         Review →
                       </td>
                     </tr>
                   ))}
                   {pendingApprovals.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="py-4 text-center text-xs text-slate-400">
+                      <td colSpan={5} className="py-6 text-center text-xs text-slate-400">
                         All interventions have been signed off.
                       </td>
                     </tr>
@@ -461,10 +534,10 @@ export const DashboardPage = () => {
             </div>
           </div>
 
-          <div className="pt-3 border-t border-white/[0.08] text-right">
+          <div className="pt-4 mt-5 border-t border-slate-200/80 dark:border-white/[0.08] text-right">
             <button
               onClick={() => navigate('/approvals')}
-              className="text-[12px] font-medium text-[#8B5CF6] hover:text-[#A855F7] inline-flex items-center gap-1 cursor-pointer"
+              className="text-[12px] font-semibold text-purple-600 dark:text-[#8B5CF6] hover:text-purple-700 dark:hover:text-[#A855F7] inline-flex items-center gap-1 cursor-pointer"
             >
               Open Approvals Desk <ArrowUpRight className="w-3.5 h-3.5" />
             </button>
@@ -472,34 +545,41 @@ export const DashboardPage = () => {
         </div>
 
         {/* Card 3: AI recommendations (Clickable directly to incident court / recovery) */}
-        <div className="glass-card flex flex-col justify-between">
+        <div className="glass-card p-6 sm:p-7 flex flex-col justify-between rounded-[24px] shadow-sm">
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[15px] font-medium text-[#FFFFFF]">AI recommendations</h3>
+              <div>
+                <h3 className="text-base sm:text-[17px] font-semibold text-slate-900 dark:text-[#FFFFFF]">
+                  AI recommendations
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-[#9E9BB2] mt-0.5">
+                  Autonomous recovery suggestions
+                </p>
+              </div>
               <button
                 onClick={() => navigate('/incidents/INC-2026-084')}
-                className="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-[#9E9BB2] hover:text-[#FFFFFF] transition-colors cursor-pointer"
-                title="Expand"
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:text-[#9E9BB2] dark:hover:text-[#FFFFFF] transition-colors cursor-pointer"
+                title="Expand AI Recommendations"
               >
-                <ArrowUpRight className="w-3.5 h-3.5" />
+                <ArrowUpRight className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-3.5">
               {/* Alert 1 */}
               <div
                 onClick={() => navigate('/incidents/INC-2026-084')}
-                className="p-3.5 rounded-[12px] glass-panel border border-white/[0.08] flex items-start gap-3 cursor-pointer hover:border-rose-400/50 transition-all"
+                className="p-4 rounded-[16px] glass-panel border border-slate-200/80 dark:border-white/[0.08] flex items-start gap-3.5 cursor-pointer hover:border-rose-400/60 dark:hover:border-rose-400/50 hover:bg-slate-100/70 dark:hover:bg-white/[0.03] transition-all"
               >
-                <div className="w-6 h-6 rounded-full bg-[rgba(239,68,68,0.2)] flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <AlertTriangle className="w-3 h-3 text-[#F87171]" />
+                <div className="w-7 h-7 rounded-full bg-rose-100 dark:bg-[rgba(239,68,68,0.2)] text-rose-600 dark:text-[#F87171] flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <AlertTriangle className="w-3.5 h-3.5" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-[13px] text-[#FFFFFF] leading-snug">
+                  <p className="text-[13px] text-slate-700 dark:text-[#FFFFFF] leading-snug font-normal">
                     Billing workflow is taking 24% longer than usual on Android 14 UPI gateways.
                   </p>
                 </div>
-                <span className="badge-failed px-2.5 py-0.5 text-[11px] font-medium">
+                <span className="badge-failed px-2.5 py-0.5 text-[11px] font-medium flex-shrink-0">
                   High
                 </span>
               </div>
@@ -507,17 +587,17 @@ export const DashboardPage = () => {
               {/* Alert 2 */}
               <div
                 onClick={() => navigate('/approvals')}
-                className="p-3.5 rounded-[12px] glass-panel border border-white/[0.08] flex items-start gap-3 cursor-pointer hover:border-amber-400/50 transition-all"
+                className="p-4 rounded-[16px] glass-panel border border-slate-200/80 dark:border-white/[0.08] flex items-start gap-3.5 cursor-pointer hover:border-amber-400/60 dark:hover:border-amber-400/50 hover:bg-slate-100/70 dark:hover:bg-white/[0.03] transition-all"
               >
-                <div className="w-6 h-6 rounded-full bg-[rgba(245,158,11,0.2)] flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Lightbulb className="w-3 h-3 text-[#FBBF24]" />
+                <div className="w-7 h-7 rounded-full bg-amber-100 dark:bg-[rgba(245,158,11,0.2)] text-amber-600 dark:text-[#FBBF24] flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Lightbulb className="w-3.5 h-3.5" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-[13px] text-[#FFFFFF] leading-snug">
+                  <p className="text-[13px] text-slate-700 dark:text-[#FFFFFF] leading-snug font-normal">
                     12 support tickets can be auto-routed to priority reimbursement queue.
                   </p>
                 </div>
-                <span className="badge-warning px-2.5 py-0.5 text-[11px] font-medium">
+                <span className="badge-warning px-2.5 py-0.5 text-[11px] font-medium flex-shrink-0">
                   Medium
                 </span>
               </div>
@@ -525,27 +605,27 @@ export const DashboardPage = () => {
               {/* Alert 3 */}
               <div
                 onClick={() => navigate('/recovery')}
-                className="p-3.5 rounded-[12px] glass-panel border border-white/[0.08] flex items-start gap-3 cursor-pointer hover:border-purple-400/50 transition-all"
+                className="p-4 rounded-[16px] glass-panel border border-slate-200/80 dark:border-white/[0.08] flex items-start gap-3.5 cursor-pointer hover:border-purple-400/60 dark:hover:border-purple-400/50 hover:bg-slate-100/70 dark:hover:bg-white/[0.03] transition-all"
               >
-                <div className="w-6 h-6 rounded-full bg-[rgba(139,92,246,0.2)] flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <RotateCcw className="w-3 h-3 text-[#8B5CF6]" />
+                <div className="w-7 h-7 rounded-full bg-purple-100 dark:bg-[rgba(139,92,246,0.2)] text-purple-600 dark:text-[#8B5CF6] flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <RotateCcw className="w-3.5 h-3.5" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-[13px] text-[#FFFFFF] leading-snug">
+                  <p className="text-[13px] text-slate-700 dark:text-[#FFFFFF] leading-snug font-normal">
                     Document validation flow has repeat errors in step 3 (rollback recommended).
                   </p>
                 </div>
-                <span className="badge-retried px-2.5 py-0.5 text-[11px] font-medium">
+                <span className="badge-retried px-2.5 py-0.5 text-[11px] font-medium flex-shrink-0">
                   Low
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="pt-3 border-t border-white/[0.08] text-right">
+          <div className="pt-4 mt-5 border-t border-slate-200/80 dark:border-white/[0.08] text-right">
             <button
               onClick={() => navigate('/recovery')}
-              className="text-[12px] font-medium text-[#8B5CF6] hover:text-[#A855F7] inline-flex items-center gap-1 cursor-pointer"
+              className="text-[12px] font-semibold text-purple-600 dark:text-[#8B5CF6] hover:text-purple-700 dark:hover:text-[#A855F7] inline-flex items-center gap-1 cursor-pointer"
             >
               Open Recovery Sandbox <ArrowUpRight className="w-3.5 h-3.5" />
             </button>

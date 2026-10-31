@@ -77,9 +77,9 @@ export const Header = ({ onSearch }) => {
           </div>
         </div>
         <div className="flex items-baseline gap-2">
-          <span className="font-semibold text-[22px] text-[#FFFFFF] tracking-tight">OpsPilot</span>
+          <span className="font-semibold text-[22px] text-slate-900 dark:text-[#FFFFFF] tracking-tight">RecoverIQ</span>
           <span className="text-[10px] font-mono uppercase text-[#A8A3BA] font-medium tracking-wider hidden md:inline">
-            RecoverIQ
+            Autonomous CX
           </span>
         </div>
       </div>
