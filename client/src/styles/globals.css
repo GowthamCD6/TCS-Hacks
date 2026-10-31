@@ -7,6 +7,13 @@
     --border-purple-glow: rgba(168, 85, 247, 0.45);
   }
 
+  html.light {
+    --bg-canvas: #F4F6FB;
+    --border-glass: rgba(203, 213, 225, 0.8);
+    --border-purple-glow: rgba(139, 92, 246, 0.35);
+    color-scheme: light;
+  }
+
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: #080512;
@@ -14,14 +21,20 @@
     background-image: none !important;
     background-attachment: fixed;
     overflow-x: hidden;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  html.light body {
+    background-color: #F4F6FB !important;
+    color: #0F172A !important;
   }
 }
 
 /* =========================================================================
-   #353148 GLASSMORPHISM SYSTEM (Matching exact requested color #353148)
+   DARK MODE GLASSMORPHISM SYSTEM (#353148 base)
    ========================================================================= */
 
-/* Main Cards & Panels with #353148 glass base */
+/* Main Cards & Panels */
 .glass-panel,
 .glass-card {
   background: rgba(53, 49, 72, 0.55) !important;
@@ -34,7 +47,7 @@
   border-radius: 18px !important;
 }
 
-/* Glass Pills (Search, Filters, Header items) with #353148 base */
+/* Glass Pills (Search, Filters, Header items) */
 .glass-pill {
   background: rgba(53, 49, 72, 0.6) !important;
   backdrop-filter: blur(18px) saturate(150%) !important;
@@ -47,7 +60,7 @@
   color: #FFFFFF !important;
 }
 
-/* Active Highlight Pill (e.g. 'Today' button) */
+/* Active Highlight Pill */
 .glass-pill-active {
   background: linear-gradient(135deg, rgba(168, 85, 247, 0.65) 0%, rgba(109, 40, 217, 0.8) 100%) !important;
   backdrop-filter: blur(20px) !important;
@@ -58,7 +71,7 @@
   color: #FFFFFF !important;
 }
 
-/* Floating Icon Buttons with #353148 Glass */
+/* Floating Icon Buttons */
 .glass-dock-icon {
   width: 44px;
   height: 44px;
@@ -142,7 +155,7 @@
   box-shadow: 0 0 10px rgba(251, 191, 36, 0.25) !important;
 }
 
-/* Workflow Custom Nodes with #353148 base */
+/* Workflow Custom Nodes */
 .glass-node-card {
   background: rgba(53, 49, 72, 0.55) !important;
   backdrop-filter: blur(20px) saturate(160%) !important;
@@ -172,7 +185,286 @@
   border-radius: 18px !important;
 }
 
-/* Sleek Scrollbar */
+/* =========================================================================
+   LIGHT MODE GLASSMORPHISM & THEME OVERRIDES (Comprehensive System)
+   ========================================================================= */
+
+/* Light Mode Main Glass Cards & Panels */
+html.light .glass-panel,
+html.light .glass-card {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(20px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+  border: 1px solid rgba(203, 213, 225, 0.75) !important;
+  box-shadow: 
+    0 10px 25px -5px rgba(15, 23, 42, 0.05),
+    0 6px 10px -6px rgba(15, 23, 42, 0.03),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
+  color: #0F172A !important;
+}
+
+/* Light Mode Glass Pills */
+html.light .glass-pill {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(18px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(150%) !important;
+  border: 1px solid rgba(203, 213, 225, 0.85) !important;
+  box-shadow: 
+    0 2px 10px -2px rgba(15, 23, 42, 0.06),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 1) !important;
+  color: #0F172A !important;
+}
+
+/* Light Mode Active Highlight Pill */
+html.light .glass-pill-active {
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%) !important;
+  border: 1px solid rgba(139, 92, 246, 0.6) !important;
+  box-shadow: 
+    0 4px 16px rgba(139, 92, 246, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
+  color: #FFFFFF !important;
+}
+
+/* Light Mode Floating Dock Icons */
+html.light .glass-dock-icon {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(203, 213, 225, 0.85) !important;
+  box-shadow: 
+    0 4px 14px -2px rgba(15, 23, 42, 0.08),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 1) !important;
+  color: #475569 !important;
+}
+
+html.light .glass-dock-icon svg {
+  color: #475569 !important;
+}
+
+html.light .glass-dock-icon:hover {
+  background: #FFFFFF !important;
+  border-color: rgba(139, 92, 246, 0.45) !important;
+  box-shadow: 
+    0 8px 20px -2px rgba(139, 92, 246, 0.22),
+    0 0 12px rgba(139, 92, 246, 0.15) !important;
+  color: #7C3AED !important;
+}
+
+html.light .glass-dock-icon:hover svg {
+  color: #7C3AED !important;
+}
+
+html.light .glass-dock-icon-active {
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  box-shadow: 
+    0 6px 22px rgba(139, 92, 246, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
+  color: #FFFFFF !important;
+}
+
+html.light .glass-dock-icon-active svg {
+  color: #FFFFFF !important;
+}
+
+/* Light Mode Action Controls & Inputs */
+html.light .action-control {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(203, 213, 225, 0.85) !important;
+  color: #0F172A !important;
+}
+
+html.light .action-control:focus {
+  border-color: rgba(139, 92, 246, 0.6) !important;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15) !important;
+}
+
+/* Light Mode Badges with Crisp Contrast */
+html.light .badge-success {
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #047857 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  box-shadow: none !important;
+}
+
+html.light .badge-failed {
+  background: rgba(239, 68, 68, 0.12) !important;
+  color: #DC2626 !important;
+  border: 1px solid rgba(239, 68, 68, 0.35) !important;
+  box-shadow: none !important;
+}
+
+html.light .badge-retried {
+  background: rgba(99, 102, 241, 0.12) !important;
+  color: #4338CA !important;
+  border: 1px solid rgba(99, 102, 241, 0.35) !important;
+  box-shadow: none !important;
+}
+
+html.light .badge-warning {
+  background: rgba(245, 158, 11, 0.14) !important;
+  color: #B45309 !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+  box-shadow: none !important;
+}
+
+/* Light Mode Node Cards */
+html.light .glass-node-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(203, 213, 225, 0.75) !important;
+  box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.06) !important;
+  color: #0F172A !important;
+}
+
+html.light .glass-node-card:hover {
+  border-color: rgba(139, 92, 246, 0.45) !important;
+  box-shadow: 0 10px 24px -4px rgba(139, 92, 246, 0.2) !important;
+}
+
+html.light .glass-node-active {
+  background: linear-gradient(145deg, rgba(238, 242, 255, 0.95) 0%, rgba(245, 243, 255, 0.95) 100%) !important;
+  border: 1px solid rgba(139, 92, 246, 0.5) !important;
+  box-shadow: 0 10px 25px -4px rgba(139, 92, 246, 0.22) !important;
+  color: #0F172A !important;
+}
+
+/* Light Mode Header & Shell */
+html.light .app-header {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8) !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light .app-shell,
+html.light [class*="bg-[#080512]"],
+html.light [class*="bg-[#090614]"] {
+  background-color: #F4F6FB !important;
+}
+
+/* Inner Sub-Card Dark Surfaces Mapped to Crisp Light Cards */
+html.light [class*="bg-[#141220]"],
+html.light [class*="bg-[#181528]"],
+html.light [class*="bg-[#160f2e]"],
+html.light [class*="bg-[#120d22]"],
+html.light [class*="bg-[#120d24]"],
+html.light [class*="bg-[#130d24]"],
+html.light [class*="bg-[#140e26]"],
+html.light [class*="bg-[#150d2c]"],
+html.light [class*="bg-[#150f2b]"],
+html.light [class*="bg-[#201B33]"],
+html.light [class*="bg-[#0c081a]"],
+html.light [class*="bg-[#0d091a]"] {
+  background-color: #FFFFFF !important;
+  border-color: rgba(226, 232, 240, 0.9) !important;
+}
+
+html.light pre[class*="bg-[#090611]"] {
+  background-color: #F1F5F9 !important;
+  color: #334155 !important;
+  border-color: #CBD5E1 !important;
+}
+
+/* Light Mode Typography System */
+html.light .text-\[\#FFFFFF\],
+html.light .text-white {
+  color: #0F172A !important;
+}
+
+html.light .text-\[\#9E9BB2\],
+html.light .text-\[\#A8A3BA\],
+html.light .text-slate-400,
+html.light .text-slate-300 {
+  color: #64748B !important;
+}
+
+html.light .text-\[\#706C82\],
+html.light .text-slate-500 {
+  color: #475569 !important;
+}
+
+/* Exception: Buttons, Gradient Highlights, and Active Elements MUST maintain Crisp White Text */
+html.light .glass-pill-active,
+html.light .glass-pill-active *,
+html.light .glass-dock-icon-active,
+html.light .glass-dock-icon-active *,
+html.light button[class*="from-\[#8B5CF6\]"],
+html.light button[class*="from-\[#8B5CF6\]"] *,
+html.light button[class*="from-purple-"],
+html.light button[class*="from-purple-"] *,
+html.light .badge-active,
+html.light .btn-gradient,
+html.light .text-keep-white,
+html.light .text-white-forced {
+  color: #FFFFFF !important;
+}
+
+/* Light Mode Borders and Dividers */
+html.light [class*="border-white\/"] {
+  border-color: rgba(203, 213, 225, 0.75) !important;
+}
+
+html.light .divide-white\/\[0\.04\] > * + *,
+html.light .divide-white\/5 > * + *,
+html.light .divide-white\/10 > * + * {
+  border-color: #E2E8F0 !important;
+}
+
+/* Light Mode Tables */
+html.light .table-header-strip {
+  background-color: rgba(241, 245, 249, 0.85) !important;
+  color: #475569 !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+}
+
+html.light .table-log-row:hover {
+  background-color: rgba(241, 245, 249, 0.6) !important;
+}
+
+/* Secondary Button / Hover States */
+html.light [class*="bg-white\/5"],
+html.light [class*="bg-white\/10"] {
+  background-color: rgba(241, 245, 249, 0.9) !important;
+}
+
+html.light [class*="hover:bg-white\/"]:hover {
+  background-color: rgba(226, 232, 240, 0.7) !important;
+}
+
+/* Tooltip & Placeholder Styling */
+html.light ::placeholder {
+  color: #94A3B8 !important;
+}
+
+html.light .recharts-default-tooltip {
+  background-color: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #0F172A !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light .recharts-tooltip-item {
+  color: #1E293B !important;
+}
+
+/* React Flow Controls */
+html.light .react-flow__controls {
+  background-color: #FFFFFF !important;
+  border: 1px solid #CBD5E1 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light .react-flow__controls button {
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+  color: #475569 !important;
+  fill: #475569 !important;
+}
+
+html.light .react-flow__controls button:hover {
+  background-color: #F1F5F9 !important;
+}
+
+/* Sleek Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -189,4 +481,17 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(168, 85, 247, 0.5);
+}
+
+html.light ::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+
+html.light ::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
 }
