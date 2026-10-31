@@ -5,17 +5,20 @@ import { Header } from '../navigation/Header';
 
 export const AppLayout = () => {
   return (
-    <div className="min-h-screen bg-[#080512] text-slate-100 flex relative overflow-x-hidden selection:bg-purple-600/30 selection:text-purple-200">
+    <div className="min-h-screen bg-[#080512] text-slate-100 flex flex-col relative overflow-x-hidden selection:bg-purple-600/30 selection:text-purple-200">
       {/* Ambient vertical purple aurora light beam matching the screenshot */}
       <div className="ambient-purple-aurora" />
 
-      {/* Main Left Vertical Icon Dock Sidebar */}
-      <Sidebar />
+      {/* Top Header spanning across the top */}
+      <Header />
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 z-10 relative">
-        <Header />
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-[1600px] w-full mx-auto space-y-6">
+      {/* Main Container with Fixed Centered Sidebar Dock */}
+      <div className="flex-1 flex relative">
+        {/* Fixed, vertically centered sidebar that DOES NOT SCROLL */}
+        <Sidebar />
+
+        {/* Main Content Area with left offset to accommodate the centered dock */}
+        <main className="flex-1 pl-20 sm:pl-28 pr-4 sm:pr-8 py-6 max-w-[1700px] w-full mx-auto space-y-6">
           <Outlet />
         </main>
       </div>
