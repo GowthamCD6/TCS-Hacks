@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { signalsService } from '../services/signals.service';
 import { Skeleton } from '../components/common/LoadingSkeleton';
 import {
-  Sparkles,
-  TrendingUp,
+
+
   ArrowRight,
   HelpCircle,
   AlertTriangle,
   RotateCcw,
   CheckCircle2,
-  ShieldAlert,
+
 } from 'lucide-react';
 
 export const SignalsPage = () => {

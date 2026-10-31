@@ -19,7 +19,7 @@ import { AgentTraceTimeline } from '../components/agent-trace/AgentTraceTimeline
 import { RecommendationsList } from '../components/recommendations/RecommendationsList';
 import { KPIMonitoringView } from '../components/kpis/KPIMonitoringView';
 import {
-  ShieldAlert,
+
   ArrowLeft,
   Layers,
   Scale,

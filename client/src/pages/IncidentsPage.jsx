@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { incidentsService } from '../services/incidents.service';
 import { Skeleton } from '../components/common/LoadingSkeleton';
-import { Search, ArrowUpRight, AlertTriangle, ShieldCheck, CheckCircle2, RotateCcw } from 'lucide-react';
+import { Search, ArrowUpRight, AlertTriangle, CheckCircle2, RotateCcw } from 'lucide-react';
 import { formatCurrency, formatDateTime } from '../utils/formatters';
 
 export const IncidentsPage = () => {

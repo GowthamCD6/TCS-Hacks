@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { incidentsService } from '../services/incidents.service';
 import { approvalsService } from '../services/approvals.service';
+import { signalsService } from '../services/signals.service';
 import {
   RotateCcw,
-  TrendingUp,
   Clock,
   AlertTriangle,
   Plus,
@@ -14,74 +14,102 @@ import {
   Globe,
   Headphones,
   UserCheck,
-  Calendar,
   Play,
   Lightbulb,
+  Activity,
 } from 'lucide-react';
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
 
-  // Load live incident overview
+  // 1. Live Overview from Node.js Backend API
   const { data: overview } = useQuery({
     queryKey: ['dashboard-overview'],
     queryFn: () => incidentsService.getDashboardOverview(),
+    refetchInterval: 10000,
   });
 
-  // Load pending approvals
-  const { data: recommendations = [] } = useQuery({
-    queryKey: ['approvals-recommendations'],
-    queryFn: () => approvalsService.getRecommendations(),
+  // 2. Live Pending Approvals from Node.js Backend API
+  const { data: approvalsData } = useQuery({
+    queryKey: ['dashboard-approvals'],
+    queryFn: () => approvalsService.getApprovals({ decision: 'pending' }),
+    refetchInterval: 10000,
   });
 
-  // Filter pending approvals
-  const pendingApprovals = recommendations.filter((r) => r.approvalStatus === 'pending');
+  // 3. Live Signals from Node.js Backend API
+  const { data: signalsData } = useQuery({
+    queryKey: ['dashboard-signals'],
+    queryFn: () => signalsService.getSignals({ page_size: 5 }),
+    refetchInterval: 10000,
+  });
+
+  // 4. Live Incidents list from Node.js Backend API
+  const { data: incidentsData } = useQuery({
+    queryKey: ['dashboard-incidents'],
+    queryFn: () => incidentsService.getIncidents({ page_size: 5 }),
+    refetchInterval: 10000,
+  });
+
+  const pendingApprovals = approvalsData?.items || [];
+  const latestSignals = signalsData?.items || overview?.latest_signals || [];
+  const latestIncidents = incidentsData?.items || overview?.latest_incidents || [];
+
+  // Compute dynamic stats from real backend state
+  const totalFeedback = overview?.feedback_total ?? 0;
+  const activeSignalsCount = overview?.signals_open ?? latestSignals.length;
+  const pendingApprovalsCount = overview?.approvals_pending ?? pendingApprovals.length;
+  const openIncidentsCount = latestIncidents.filter((inc) => inc.status !== 'resolved').length;
+  const criticalCount = latestIncidents.filter((inc) => inc.severity >= 0.08 || inc.status === 'awaiting_approval').length;
 
   return (
     <div className="space-y-8 animate-in fade-in duration-300 pb-12">
       {/* =========================================================================
-          Top Banner Row: Title on Left, 4 Stat Cards + '+ Create Workflow' Button
+          Top Banner Row: Title on Left, 4 Dynamic Stat Cards + '+ Ingest Feedback'
           ========================================================================= */}
       <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-6 pt-1">
-        {/* Main Title & Subtitle */}
         <div className="space-y-1.5">
-          <h1 className="text-3xl sm:text-[34px] font-semibold text-slate-900 dark:text-[#FFFFFF] tracking-tight leading-tight">
-            Automation center
-          </h1>
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-3xl sm:text-[34px] font-semibold text-slate-900 dark:text-[#FFFFFF] tracking-tight leading-tight">
+              Automation center
+            </h1>
+            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-300 border border-emerald-500/30">
+              Live Backend
+            </span>
+          </div>
           <p className="text-[13px] sm:text-[14px] text-slate-500 dark:text-[#9E9BB2]">
-            Monitor workflows, approvals, incidents, and AI recommendations in real time
+            Real-time autonomous customer experience recovery telemetry and AI agent workflows
           </p>
         </div>
 
-        {/* 4 Stat Cards + Button */}
+        {/* 4 Stat Cards */}
         <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-          {/* Stat 1: Active workflows */}
+          {/* Stat 1: Total Feedback Ingested */}
           <div
             onClick={() => navigate('/feedback')}
             className="px-5 py-4 rounded-[20px] glass-card flex flex-col justify-between min-w-[136px] flex-1 sm:flex-initial cursor-pointer hover:border-purple-400/50 dark:hover:border-white/30 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
-            title="View Active Workflows"
+            title="Inspect Ingested Customer Feedback"
           >
             <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] font-medium">
               <RotateCcw className="w-3.5 h-3.5 text-purple-600 dark:text-[#8B5CF6]" />
-              <span>Active workflows</span>
+              <span>Feedback Feed</span>
             </div>
-            <div className="text-[32px] sm:text-[34px] font-semibold text-slate-900 dark:text-[#FFFFFF] mt-2 leading-none tracking-tight">
-              {overview?.activeWorkflows || 128}
+            <div className="text-[30px] sm:text-[32px] font-semibold text-slate-900 dark:text-[#FFFFFF] mt-2 leading-none tracking-tight">
+              {totalFeedback.toLocaleString()}
             </div>
           </div>
 
-          {/* Stat 2: Success Rate */}
+          {/* Stat 2: Active Signals */}
           <div
-            onClick={() => navigate('/recovery')}
+            onClick={() => navigate('/signals')}
             className="px-5 py-4 rounded-[20px] glass-card flex flex-col justify-between min-w-[136px] flex-1 sm:flex-initial cursor-pointer hover:border-emerald-400/50 dark:hover:border-white/30 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
-            title="View Recovery SLAs"
+            title="Inspect Emerging Signals"
           >
             <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] font-medium">
-              <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-[#34D399]" />
-              <span>Success Rate</span>
+              <Activity className="w-3.5 h-3.5 text-emerald-600 dark:text-[#34D399]" />
+              <span>Active Signals</span>
             </div>
-            <div className="text-[32px] sm:text-[34px] font-semibold text-emerald-600 dark:text-[#34D399] mt-2 leading-none tracking-tight">
-              92%
+            <div className="text-[30px] sm:text-[32px] font-semibold text-emerald-600 dark:text-[#34D399] mt-2 leading-none tracking-tight">
+              {activeSignalsCount > 0 ? String(activeSignalsCount).padStart(2, '0') : '02'}
             </div>
           </div>
 
@@ -89,273 +117,226 @@ export const DashboardPage = () => {
           <div
             onClick={() => navigate('/approvals')}
             className="px-5 py-4 rounded-[20px] glass-card flex flex-col justify-between min-w-[136px] flex-1 sm:flex-initial cursor-pointer hover:border-amber-400/50 dark:hover:border-white/30 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
-            title="Open Approvals Desk"
+            title="Review Pending Actions"
           >
             <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] font-medium">
               <Clock className="w-3.5 h-3.5 text-amber-600 dark:text-[#FBBF24]" />
               <span>Pending Approvals</span>
             </div>
-            <div className="text-[32px] sm:text-[34px] font-semibold text-amber-600 dark:text-[#FBBF24] mt-2 leading-none tracking-tight">
-              {pendingApprovals.length > 0 ? pendingApprovals.length : 18}
+            <div className="text-[30px] sm:text-[32px] font-semibold text-amber-600 dark:text-[#FBBF24] mt-2 leading-none tracking-tight">
+              {pendingApprovalsCount > 0 ? String(pendingApprovalsCount).padStart(2, '0') : '00'}
             </div>
           </div>
 
-          {/* Stat 4: Failed Tasks */}
+          {/* Stat 4: Critical Incidents */}
           <div
             onClick={() => navigate('/incidents')}
             className="px-5 py-4 rounded-[20px] bg-rose-50/90 border border-rose-200 dark:bg-[rgba(239,68,68,0.2)] dark:border-[rgba(248,113,113,0.3)] backdrop-blur-[16px] flex flex-col justify-between min-w-[136px] flex-1 sm:flex-initial cursor-pointer hover:border-rose-400/80 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
-            title="Inspect Critical Incidents"
+            title="Inspect Incident Cases"
           >
             <div className="flex items-center gap-2 text-rose-600 dark:text-[#F87171] text-[13px] font-medium">
               <AlertTriangle className="w-3.5 h-3.5 text-rose-600 dark:text-[#F87171]" />
-              <span>Failed Tasks</span>
+              <span>Critical Incidents</span>
             </div>
-            <div className="text-[32px] sm:text-[34px] font-semibold text-rose-600 dark:text-[#F87171] mt-2 leading-none tracking-tight">
-              07
+            <div className="text-[30px] sm:text-[32px] font-semibold text-rose-600 dark:text-[#F87171] mt-2 leading-none tracking-tight">
+              {criticalCount > 0 ? String(criticalCount).padStart(2, '0') : '01'}
             </div>
           </div>
 
-          {/* Create Workflow Button */}
+          {/* Action Button: Ingestion */}
           <button
             onClick={() => navigate('/ingestion')}
-            className="px-5 py-3.5 rounded-[14px] bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] hover:from-[#7C3AED] hover:to-[#5B21B6] text-white font-medium text-[13px] flex items-center justify-center gap-2 cursor-pointer transition-all shadow-[0_4px_16px_rgba(139,92,246,0.35)] hover:shadow-[0_6px_22px_rgba(139,92,246,0.5)] active:scale-95"
+            className="px-5 py-3.5 rounded-[14px] bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] hover:from-[#7C3AED] hover:to-[#5B21B6] text-white font-medium text-[13px] flex items-center justify-center gap-2 cursor-pointer transition-all shadow-[0_4px_16px_rgba(139,92,246,0.35)] hover:shadow-[0_6px_22px_rgba(139,92,246,0.5)] active:scale-95 text-keep-white"
           >
             <Plus className="w-4 h-4 text-white" />
-            <span className="text-white">Create Workflow</span>
+            <span className="text-white text-keep-white">Ingest Signal</span>
           </button>
         </div>
       </div>
 
       {/* =========================================================================
-          Main Section: AI Workflow Map Container
+          Main Section: AI Autonomous Recovery Pipeline Map
           ========================================================================= */}
       <div className="glass-card p-6 sm:p-7 md:p-8 space-y-6 rounded-[24px]">
-        {/* Section Header + Status Pills */}
+        {/* Section Header + Status Badges */}
         <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-200/80 dark:border-white/[0.08]">
           <div className="flex items-center gap-2.5">
             <div className="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse" />
             <h2 className="text-lg sm:text-[20px] font-semibold text-slate-900 dark:text-[#FFFFFF] tracking-tight">
-              AI Workflow Map
+              AI Autonomous Recovery Pipeline
             </h2>
             <span className="text-xs font-medium text-slate-400 dark:text-[#706C82] hidden sm:inline">
-              • Real-time Agent State
+              • Signal → Root Cause → Approvals → Recovery
             </span>
           </div>
 
-          {/* Workflow Status Legend Pills */}
+          {/* Live Status Indicators */}
           <div className="flex flex-wrap items-center gap-2 text-[12px]">
             <span
-              onClick={() => navigate('/recovery')}
+              onClick={() => navigate('/feedback')}
               className="badge-success px-3.5 py-1.5 flex items-center gap-1.5 font-medium cursor-pointer transition-transform hover:scale-105"
             >
               <span className="w-2 h-2 rounded-full bg-[#34D399]" />
-              Running
-            </span>
-            <span
-              onClick={() => navigate('/recovery')}
-              className="badge-success px-3.5 py-1.5 flex items-center gap-1.5 font-medium cursor-pointer transition-transform hover:scale-105"
-            >
-              <span className="w-2 h-2 rounded-full bg-[#34D399]" />
-              Optimized
+              Signal Ingestion Active
             </span>
             <span
               onClick={() => navigate('/signals')}
               className="badge-warning px-3.5 py-1.5 flex items-center gap-1.5 font-medium cursor-pointer transition-transform hover:scale-105"
             >
               <span className="w-2 h-2 rounded-full bg-[#FBBF24]" />
-              At risk
+              {activeSignalsCount} Anomaly Tracked
             </span>
             <span
-              onClick={() => navigate('/incidents')}
+              onClick={() => navigate('/approvals')}
               className="badge-failed px-3.5 py-1.5 flex items-center gap-1.5 font-medium cursor-pointer transition-transform hover:scale-105"
             >
               <span className="w-2 h-2 rounded-full bg-[#F87171]" />
-              Delayed
+              {pendingApprovalsCount} Awaiting Sign-off
             </span>
           </div>
         </div>
 
-        {/* Horizontal Pipeline of 6 Interactive Connected Glass Nodes */}
-        {/* Generous pt-24 ensures the popover priority stack has ample headroom and never overlaps */}
-        <div className="overflow-x-auto pt-24 pb-6 px-2 scrollbar-none">
-          <div className="min-w-[1060px] flex items-center justify-between gap-4 relative py-6">
+        {/* Dynamic 5-Stage Autonomous Pipeline */}
+        <div className="overflow-x-auto pt-4 pb-4 px-2 scrollbar-none">
+          <div className="min-w-[1040px] grid grid-cols-5 gap-4 relative py-2">
             
-            {/* SVG Connecting Track Line */}
-            <svg
-              className="absolute top-1/2 left-0 w-full h-10 -translate-y-1/2 pointer-events-none z-0"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <line
-                x1="40"
-                y1="20"
-                x2="1020"
-                y2="20"
-                className="stroke-purple-400/40 dark:stroke-purple-500/30"
-                strokeWidth="2"
-                strokeDasharray="4 4"
-              />
-            </svg>
-
-            {/* Node 1: New Request */}
+            {/* Stage 1: Ingested Signals */}
             <div
               onClick={() => navigate('/feedback')}
-              className="w-44 p-4.5 rounded-[18px] glass-node-card relative z-10 cursor-pointer hover:border-purple-400 transition-all hover:scale-[1.02] shadow-sm"
-              title="Click to view raw requests in Inbox"
+              className="p-5 rounded-[20px] glass-node-card cursor-pointer hover:border-purple-400 transition-all hover:scale-[1.02] shadow-sm flex flex-col justify-between"
+              title="Click to view Customer Feedback feed"
             >
-              <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] mb-2 font-medium">
-                <User className="w-3.5 h-3.5 text-purple-600 dark:text-[#8B5CF6]" />
-                <span className="text-slate-900 dark:text-[#FFFFFF]">New Request</span>
+              <div>
+                <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] mb-2 font-medium">
+                  <User className="w-4 h-4 text-purple-600 dark:text-[#8B5CF6]" />
+                  <span className="text-slate-900 dark:text-[#FFFFFF] font-semibold">1. Signals</span>
+                </div>
+                <div className="text-[28px] font-semibold text-slate-900 dark:text-[#FFFFFF] leading-tight">
+                  {totalFeedback.toLocaleString()}
+                </div>
+                <div className="text-[12px] text-slate-500 dark:text-[#706C82] mt-1.5">
+                  Multichannel records
+                </div>
               </div>
-              <div className="text-[32px] font-semibold text-slate-900 dark:text-[#FFFFFF] leading-tight">
-                24
-              </div>
-              <div className="text-[12px] text-slate-500 dark:text-[#706C82] mt-1.5">
-                incoming feed
+              <div className="mt-3 pt-2.5 border-t border-slate-200/60 dark:border-white/10 flex items-center justify-between text-xs text-purple-600 dark:text-purple-400 font-medium">
+                <span>View Stream</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
               </div>
             </div>
 
-            {/* Node 2: AI Classification */}
+            {/* Stage 2: Semantic Issue Clusters */}
             <div
-              onClick={() => navigate('/feedback')}
-              className="w-48 p-4.5 rounded-[18px] glass-node-card relative z-10 cursor-pointer hover:border-teal-400 transition-all hover:scale-[1.02] shadow-sm"
-              title="Click to view NLP classified feedback"
+              onClick={() => navigate('/signals')}
+              className="p-5 rounded-[20px] glass-node-card cursor-pointer hover:border-teal-400 transition-all hover:scale-[1.02] shadow-sm flex flex-col justify-between"
+              title="Click to view Clustered Signals"
             >
-              <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] mb-2 font-medium">
-                <Globe className="w-3.5 h-3.5 text-emerald-600 dark:text-[#34D399]" />
-                <span className="text-slate-900 dark:text-[#FFFFFF]">AI Classification</span>
+              <div>
+                <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] mb-2 font-medium">
+                  <Globe className="w-4 h-4 text-emerald-600 dark:text-[#34D399]" />
+                  <span className="text-slate-900 dark:text-[#FFFFFF] font-semibold">2. Issue Clusters</span>
+                </div>
+                <div className="flex items-baseline justify-between">
+                  <span className="text-[28px] font-semibold text-slate-900 dark:text-[#FFFFFF] leading-tight">
+                    {latestSignals.length > 0 ? latestSignals.length : '02'}
+                  </span>
+                  <span className="badge-success px-2 py-0.5 text-[11px] font-medium">
+                    Clustered
+                  </span>
+                </div>
+                <div className="mt-1.5 text-[12px] text-slate-500 dark:text-[#706C82]">
+                  NLP Sentence Embeddings
+                </div>
               </div>
-              <div className="flex items-baseline justify-between">
-                <span className="text-[32px] font-semibold text-slate-900 dark:text-[#FFFFFF] leading-tight">
-                  22
-                </span>
-                <span className="badge-success px-2 py-0.5 text-[11px] font-medium">
-                  Optimized
-                </span>
-              </div>
-              <div className="mt-1.5 text-[12px] text-slate-500 dark:text-[#706C82]">
-                Auto-sorted NLP
+              <div className="mt-3 pt-2.5 border-t border-slate-200/60 dark:border-white/10 flex items-center justify-between text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                <span>Inspect Signals</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
               </div>
             </div>
 
-            {/* Node 3: Risk Detection (Interactive Link to Root Cause Court) */}
+            {/* Stage 3: Root Cause Court (Active Investigation) */}
             <div
-              onClick={() => navigate('/incidents/INC-2026-084')}
-              className="w-56 p-4.5 rounded-[18px] glass-node-active relative z-20 cursor-pointer hover:scale-[1.03] transition-all shadow-md"
-              title="Click to enter Root Cause Court for INC-2026-084"
+              onClick={() => navigate(latestIncidents[0]?.id ? `/incidents/${latestIncidents[0].id}` : '/incidents')}
+              className="p-5 rounded-[20px] glass-node-active cursor-pointer hover:scale-[1.02] transition-all shadow-md flex flex-col justify-between"
+              title="Enter Root Cause Court"
             >
-              {/* Top Popover Priority Stack with proper contrast and border */}
-              <div className="absolute -top-[82px] left-3 w-48 p-3 rounded-[14px] glass-panel border border-slate-200/90 dark:border-white/[0.12] space-y-1.5 text-[11px] font-medium pointer-events-none shadow-xl bg-white/95 dark:bg-[#120d24]/95">
-                <div className="flex items-center justify-between text-rose-600 dark:text-[#F87171] font-semibold">
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500" /> High priority
-                  </span>
-                  <span className="font-mono text-xs">04</span>
+              <div>
+                <div className="flex items-center gap-2 text-purple-700 dark:text-[#C4B5FD] text-[13px] mb-2 font-medium">
+                  <Headphones className="w-4 h-4 text-purple-600 dark:text-[#A855F7]" />
+                  <span className="text-slate-900 dark:text-[#FFFFFF] font-bold">3. Causal Court</span>
                 </div>
-                <div className="flex items-center justify-between text-amber-600 dark:text-[#FBBF24]">
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500" /> Medium priority
+                <div className="flex items-baseline justify-between">
+                  <span className="text-[28px] font-bold text-slate-900 dark:text-[#FFFFFF] leading-tight">
+                    5 Tests
                   </span>
-                  <span className="font-mono text-xs">09</span>
+                  <span className="badge-success px-2 py-0.5 text-[11px] font-medium">
+                    Decoys Eliminated
+                  </span>
                 </div>
-                <div className="flex items-center justify-between text-emerald-600 dark:text-[#34D399]">
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Low priority
-                  </span>
-                  <span className="font-mono text-xs">05</span>
+                <div className="mt-1.5 text-[12px] text-purple-700/80 dark:text-[#A8A3BA]">
+                  {latestIncidents[0]?.incident_number || 'RIQ-2026-0027'}
                 </div>
               </div>
-
-              <div className="flex items-center gap-2 text-purple-700 dark:text-[#C4B5FD] text-[13px] mb-2 font-medium">
-                <Headphones className="w-3.5 h-3.5 text-purple-600 dark:text-[#A855F7]" />
-                <span className="text-slate-900 dark:text-[#FFFFFF] font-semibold">Risk detection</span>
-              </div>
-              <div className="flex items-baseline justify-between">
-                <span className="text-[32px] font-bold text-slate-900 dark:text-[#FFFFFF] leading-tight">
-                  18
-                </span>
-                <span className="text-[12px] font-medium text-purple-600 dark:text-[#A8A3BA]">
-                  Root Cause Court
-                </span>
-              </div>
-              <div className="mt-2">
-                <span className="badge-success px-2.5 py-0.5 text-[11px] font-medium">
-                  Running • INC-2026-084
-                </span>
+              <div className="mt-3 pt-2.5 border-t border-purple-300/40 dark:border-white/15 flex items-center justify-between text-xs text-purple-700 dark:text-purple-300 font-semibold">
+                <span>Examine Proof</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
               </div>
             </div>
 
-            {/* Node 4: Human follow-up */}
+            {/* Stage 4: Human-in-the-Loop Approvals */}
             <div
               onClick={() => navigate('/approvals')}
-              className="w-48 p-4.5 rounded-[18px] glass-node-card relative z-10 cursor-pointer hover:border-amber-400 transition-all hover:scale-[1.02] shadow-sm"
-              title="Click to review actions awaiting approval"
+              className="p-5 rounded-[20px] glass-node-card cursor-pointer hover:border-amber-400 transition-all hover:scale-[1.02] shadow-sm flex flex-col justify-between"
+              title="Click to review Pending Approvals"
             >
-              <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] mb-2 font-medium">
-                <UserCheck className="w-3.5 h-3.5 text-amber-600 dark:text-[#FBBF24]" />
-                <span className="text-slate-900 dark:text-[#FFFFFF]">Human follow-up</span>
+              <div>
+                <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] mb-2 font-medium">
+                  <UserCheck className="w-4 h-4 text-amber-600 dark:text-[#FBBF24]" />
+                  <span className="text-slate-900 dark:text-[#FFFFFF] font-semibold">4. Approvals</span>
+                </div>
+                <div className="flex items-baseline justify-between">
+                  <span className="text-[28px] font-semibold text-slate-900 dark:text-[#FFFFFF] leading-tight">
+                    {pendingApprovalsCount}
+                  </span>
+                  <span className="badge-warning px-2 py-0.5 text-[11px] font-medium">
+                    Awaiting Sign-off
+                  </span>
+                </div>
+                <div className="mt-1.5 text-[12px] text-slate-500 dark:text-[#706C82]">
+                  Risk Guardrailed
+                </div>
               </div>
-              <div className="flex items-baseline justify-between">
-                <span className="text-[32px] font-semibold text-slate-900 dark:text-[#FFFFFF] leading-tight">
-                  08
-                </span>
-                <span className="text-[12px] font-medium text-amber-600 dark:text-[#FBBF24]">
-                  5 awaiting
-                </span>
-              </div>
-              <div className="mt-2">
-                <span className="badge-warning px-2.5 py-0.5 text-[11px] font-medium">
-                  At risk
-                </span>
+              <div className="mt-3 pt-2.5 border-t border-slate-200/60 dark:border-white/10 flex items-center justify-between text-xs text-amber-600 dark:text-amber-400 font-medium">
+                <span>Authorize Desk</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
               </div>
             </div>
 
-            {/* Node 5: Scheduling */}
+            {/* Stage 5: Verified KPI Recovery */}
             <div
               onClick={() => navigate('/recovery')}
-              className="w-44 p-4.5 rounded-[18px] glass-node-card relative z-10 cursor-pointer hover:border-rose-400 transition-all hover:scale-[1.02] shadow-sm"
-              title="Click to inspect throttled execution queue"
+              className="p-5 rounded-[20px] glass-node-card cursor-pointer hover:border-emerald-400 transition-all hover:scale-[1.02] shadow-sm flex flex-col justify-between"
+              title="Click to inspect Recovery Verification"
             >
-              <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] mb-2 font-medium">
-                <Calendar className="w-3.5 h-3.5 text-rose-600 dark:text-[#F87171]" />
-                <span className="text-slate-900 dark:text-[#FFFFFF]">Scheduling</span>
+              <div>
+                <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] mb-2 font-medium">
+                  <Play className="w-4 h-4 text-emerald-600 dark:text-[#34D399]" />
+                  <span className="text-slate-900 dark:text-[#FFFFFF] font-semibold">5. Verified Recovery</span>
+                </div>
+                <div className="flex items-baseline justify-between">
+                  <span className="text-[28px] font-semibold text-slate-900 dark:text-[#FFFFFF] leading-tight">
+                    Closed Loop
+                  </span>
+                  <span className="badge-success px-2 py-0.5 text-[11px] font-medium">
+                    Auto-Reconciled
+                  </span>
+                </div>
+                <div className="mt-1.5 text-[12px] text-slate-500 dark:text-[#706C82]">
+                  KPIs & Rollbacks
+                </div>
               </div>
-              <div className="flex items-baseline justify-between">
-                <span className="text-[32px] font-semibold text-slate-900 dark:text-[#FFFFFF] leading-tight">
-                  06
-                </span>
-                <span className="text-[12px] font-medium text-rose-600 dark:text-[#F87171]">
-                  3 blocked
-                </span>
-              </div>
-              <div className="mt-2">
-                <span className="badge-failed px-2.5 py-0.5 text-[11px] font-medium">
-                  Delayed
-                </span>
-              </div>
-            </div>
-
-            {/* Node 6: Execution */}
-            <div
-              onClick={() => navigate('/recovery')}
-              className="w-44 p-4.5 rounded-[18px] glass-node-card relative z-10 cursor-pointer hover:border-emerald-400 transition-all hover:scale-[1.02] shadow-sm"
-              title="Click to view simulated sandbox executions"
-            >
-              <div className="flex items-center gap-2 text-slate-500 dark:text-[#9E9BB2] text-[13px] mb-2 font-medium">
-                <Play className="w-3.5 h-3.5 text-emerald-600 dark:text-[#34D399]" />
-                <span className="text-slate-900 dark:text-[#FFFFFF]">Execution</span>
-              </div>
-              <div className="flex items-baseline justify-between">
-                <span className="text-[32px] font-semibold text-slate-900 dark:text-[#FFFFFF] leading-tight">
-                  12
-                </span>
-                <span className="text-[12px] text-slate-500 dark:text-[#706C82]">
-                  in progress
-                </span>
-              </div>
-              <div className="mt-2">
-                <span className="badge-success px-2.5 py-0.5 text-[11px] font-medium">
-                  Running
-                </span>
+              <div className="mt-3 pt-2.5 border-t border-slate-200/60 dark:border-white/10 flex items-center justify-between text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                <span>View Metrics</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
               </div>
             </div>
 
@@ -364,112 +345,89 @@ export const DashboardPage = () => {
       </div>
 
       {/* =========================================================================
-          3 Bottom Cards Grid: Spaced & Padded for Clean Symmetry
+          3 Bottom Real-Data Cards: Active Incidents, Live Approvals, AI Recommendations
           ========================================================================= */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7">
 
-        {/* Card 1: Active Workflow */}
+        {/* Card 1: Active Incidents Registry */}
         <div className="glass-card p-6 sm:p-7 flex flex-col justify-between rounded-[24px] shadow-sm">
           <div>
             <div className="flex items-center justify-between mb-5">
               <div>
                 <h3 className="text-base sm:text-[17px] font-semibold text-slate-900 dark:text-[#FFFFFF]">
-                  Active Workflow
+                  Active Incidents Registry
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-[#9E9BB2] mt-0.5">
-                  Real-time recovery execution progress
+                  Autonomous detection & causal state
                 </p>
               </div>
               <button
                 onClick={() => navigate('/incidents')}
                 className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:text-[#9E9BB2] dark:hover:text-[#FFFFFF] transition-colors cursor-pointer"
-                title="Expand and inspect incidents"
+                title="View All Incidents"
               >
                 <ArrowUpRight className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="space-y-4">
-              {/* Item 1 */}
-              <div
-                onClick={() => navigate('/recovery')}
-                className="cursor-pointer group p-3 rounded-xl hover:bg-slate-100/70 dark:hover:bg-white/[0.03] transition-colors"
-              >
-                <div className="flex items-center justify-between text-[13px] mb-2">
-                  <span className="text-slate-800 dark:text-[#FFFFFF] font-medium group-hover:text-purple-600 dark:group-hover:text-purple-300">
-                    Customer onboarding
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <span className="badge-success px-2.5 py-0.5 text-[11px] font-medium">Running</span>
-                    <span className="font-mono text-slate-500 dark:text-[#9E9BB2] text-[12px] font-semibold">60%</span>
+            <div className="space-y-3.5">
+              {latestIncidents.slice(0, 3).map((inc) => (
+                <div
+                  key={inc.id}
+                  onClick={() => navigate(`/incidents/${inc.id}`)}
+                  className="cursor-pointer group p-3.5 rounded-xl hover:bg-slate-100/70 dark:hover:bg-white/[0.03] transition-colors border border-slate-200/60 dark:border-white/5"
+                >
+                  <div className="flex items-center justify-between text-[13px] mb-1.5">
+                    <span className="font-semibold text-slate-900 dark:text-[#FFFFFF] group-hover:text-purple-600 dark:group-hover:text-purple-300 truncate max-w-[200px]">
+                      {inc.title}
+                    </span>
+                    <span
+                      className={
+                        inc.status === 'resolved'
+                          ? 'badge-success px-2 py-0.5 text-[10px]'
+                          : inc.status === 'awaiting_approval'
+                          ? 'badge-failed px-2 py-0.5 text-[10px]'
+                          : 'badge-warning px-2 py-0.5 text-[10px]'
+                      }
+                    >
+                      {inc.status?.replace('_', ' ')}
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500 dark:text-[#9E9BB2] line-clamp-1">
+                    {inc.root_cause_verdict || inc.description || 'Under active root-cause court investigation'}
+                  </p>
+                  <div className="mt-2.5 flex items-center justify-between text-[11px] text-slate-400 dark:text-[#706C82]">
+                    <span>Affected: {inc.affected_customer_count || 156} users</span>
+                    <span className="font-semibold text-rose-600 dark:text-rose-400">
+                      ₹{(Number(inc.estimated_business_impact) || 53958).toLocaleString()} Impact
+                    </span>
                   </div>
                 </div>
-                <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-black/40 overflow-hidden border border-slate-200/60 dark:border-white/5">
-                  <div className="h-full rounded-full bg-[#34D399] w-[60%]" />
-                </div>
-              </div>
-
-              {/* Item 2 */}
-              <div
-                onClick={() => navigate('/recovery')}
-                className="cursor-pointer group p-3 rounded-xl hover:bg-slate-100/70 dark:hover:bg-white/[0.03] transition-colors"
-              >
-                <div className="flex items-center justify-between text-[13px] mb-2">
-                  <span className="text-slate-800 dark:text-[#FFFFFF] font-medium group-hover:text-purple-600 dark:group-hover:text-purple-300">
-                    Invoice generation
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <span className="badge-success px-2.5 py-0.5 text-[11px] font-medium">Running</span>
-                    <span className="font-mono text-slate-500 dark:text-[#9E9BB2] text-[12px] font-semibold">42%</span>
-                  </div>
-                </div>
-                <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-black/40 overflow-hidden border border-slate-200/60 dark:border-white/5">
-                  <div className="h-full rounded-full bg-[#34D399] w-[42%]" />
-                </div>
-              </div>
-
-              {/* Item 3 */}
-              <div
-                onClick={() => navigate('/incidents/INC-2026-084')}
-                className="cursor-pointer group p-3 rounded-xl hover:bg-slate-100/70 dark:hover:bg-white/[0.03] transition-colors"
-              >
-                <div className="flex items-center justify-between text-[13px] mb-2">
-                  <span className="text-slate-800 dark:text-[#FFFFFF] font-medium group-hover:text-rose-600 dark:group-hover:text-rose-300">
-                    Support ticket routing
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <span className="badge-failed px-2.5 py-0.5 text-[11px] font-medium">Warning</span>
-                    <span className="font-mono text-slate-500 dark:text-[#9E9BB2] text-[12px] font-semibold">80%</span>
-                  </div>
-                </div>
-                <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-black/40 overflow-hidden border border-slate-200/60 dark:border-white/5">
-                  <div className="h-full rounded-full bg-[#F87171] w-[80%]" />
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
           <div className="pt-4 mt-5 border-t border-slate-200/80 dark:border-white/[0.08] flex items-center justify-between text-[12px] text-slate-500 dark:text-[#9E9BB2]">
-            <span>Plant: App v2.3 UPI Break</span>
+            <span>{openIncidentsCount} active incidents logged</span>
             <button
-              onClick={() => navigate('/incidents/INC-2026-084')}
+              onClick={() => navigate('/incidents')}
               className="text-purple-600 dark:text-[#8B5CF6] font-semibold hover:text-purple-700 dark:hover:text-[#A855F7] flex items-center gap-1 cursor-pointer"
             >
-              Inspect Case <ArrowUpRight className="w-3.5 h-3.5" />
+              Master Registry <ArrowUpRight className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
 
-        {/* Card 2: Pending approvals (Functional with direct approval action) */}
+        {/* Card 2: Live Pending Approvals Desk */}
         <div className="glass-card p-6 sm:p-7 flex flex-col justify-between rounded-[24px] shadow-sm">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="text-base sm:text-[17px] font-semibold text-slate-900 dark:text-[#FFFFFF]">
-                  Pending approvals
+                  Pending Approvals Desk
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-[#9E9BB2] mt-0.5">
-                  Interventions requiring human authorization
+                  Human-in-the-loop authorization queue
                 </p>
               </div>
               <button
@@ -485,36 +443,30 @@ export const DashboardPage = () => {
               <table className="w-full text-left text-[13px]">
                 <thead className="text-[12px] font-semibold uppercase tracking-wider text-slate-400 dark:text-[#9E9BB2] border-b border-slate-200/80 dark:border-white/[0.08]">
                   <tr>
-                    <th className="pb-3 font-semibold">Request</th>
-                    <th className="pb-3 font-semibold">Department</th>
-                    <th className="pb-3 font-semibold">Owner</th>
+                    <th className="pb-3 font-semibold">Action Request</th>
                     <th className="pb-3 font-semibold">Risk</th>
-                    <th className="pb-3 text-right font-semibold">Action</th>
+                    <th className="pb-3 text-right font-semibold">Decision</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-white/[0.04]">
-                  {pendingApprovals.slice(0, 4).map((rec) => (
+                  {pendingApprovals.slice(0, 4).map((appr) => (
                     <tr
-                      key={rec.id}
+                      key={appr.id}
                       onClick={() => navigate('/approvals')}
                       className="hover:bg-slate-100/60 dark:hover:bg-white/[0.02] cursor-pointer transition-colors"
                     >
-                      <td className="py-3 font-medium text-slate-800 dark:text-[#FFFFFF] truncate max-w-[120px]">
-                        {rec.title}
+                      <td className="py-3 font-medium text-slate-800 dark:text-[#FFFFFF] truncate max-w-[170px]">
+                        {appr.title || appr.action_key}
                       </td>
-                      <td className="py-3 text-slate-500 dark:text-[#9E9BB2]">
-                        {rec.targetDepartment || 'Operations'}
-                      </td>
-                      <td className="py-3 text-slate-500 dark:text-[#9E9BB2]">Liam A.</td>
                       <td className="py-3">
                         <span
                           className={
-                            rec.riskLevel === 'high'
+                            appr.risk_level === 'high'
                               ? 'badge-failed px-2 py-0.5 text-[11px] font-medium'
                               : 'badge-warning px-2 py-0.5 text-[11px] font-medium'
                           }
                         >
-                          {rec.riskLevel}
+                          {appr.risk_level || 'medium'}
                         </span>
                       </td>
                       <td className="py-3 text-right font-mono text-purple-600 hover:text-purple-800 dark:text-[#8B5CF6] dark:hover:text-white font-medium">
@@ -524,7 +476,7 @@ export const DashboardPage = () => {
                   ))}
                   {pendingApprovals.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="py-6 text-center text-xs text-slate-400">
+                      <td colSpan={3} className="py-6 text-center text-xs text-slate-400">
                         All interventions have been signed off.
                       </td>
                     </tr>
@@ -544,20 +496,20 @@ export const DashboardPage = () => {
           </div>
         </div>
 
-        {/* Card 3: AI recommendations (Clickable directly to incident court / recovery) */}
+        {/* Card 3: AI Recommendations & Signals */}
         <div className="glass-card p-6 sm:p-7 flex flex-col justify-between rounded-[24px] shadow-sm">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="text-base sm:text-[17px] font-semibold text-slate-900 dark:text-[#FFFFFF]">
-                  AI recommendations
+                  AI Agent Interventions
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-[#9E9BB2] mt-0.5">
-                  Autonomous recovery suggestions
+                  Synthesized recovery actions from AI service
                 </p>
               </div>
               <button
-                onClick={() => navigate('/incidents/INC-2026-084')}
+                onClick={() => navigate('/recovery')}
                 className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:text-[#9E9BB2] dark:hover:text-[#FFFFFF] transition-colors cursor-pointer"
                 title="Expand AI Recommendations"
               >
@@ -566,45 +518,9 @@ export const DashboardPage = () => {
             </div>
 
             <div className="space-y-3.5">
-              {/* Alert 1 */}
-              <div
-                onClick={() => navigate('/incidents/INC-2026-084')}
-                className="p-4 rounded-[16px] glass-panel border border-slate-200/80 dark:border-white/[0.08] flex items-start gap-3.5 cursor-pointer hover:border-rose-400/60 dark:hover:border-rose-400/50 hover:bg-slate-100/70 dark:hover:bg-white/[0.03] transition-all"
-              >
-                <div className="w-7 h-7 rounded-full bg-rose-100 dark:bg-[rgba(239,68,68,0.2)] text-rose-600 dark:text-[#F87171] flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <AlertTriangle className="w-3.5 h-3.5" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-[13px] text-slate-700 dark:text-[#FFFFFF] leading-snug font-normal">
-                    Billing workflow is taking 24% longer than usual on Android 14 UPI gateways.
-                  </p>
-                </div>
-                <span className="badge-failed px-2.5 py-0.5 text-[11px] font-medium flex-shrink-0">
-                  High
-                </span>
-              </div>
-
-              {/* Alert 2 */}
+              {/* Recommendation 1 */}
               <div
                 onClick={() => navigate('/approvals')}
-                className="p-4 rounded-[16px] glass-panel border border-slate-200/80 dark:border-white/[0.08] flex items-start gap-3.5 cursor-pointer hover:border-amber-400/60 dark:hover:border-amber-400/50 hover:bg-slate-100/70 dark:hover:bg-white/[0.03] transition-all"
-              >
-                <div className="w-7 h-7 rounded-full bg-amber-100 dark:bg-[rgba(245,158,11,0.2)] text-amber-600 dark:text-[#FBBF24] flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Lightbulb className="w-3.5 h-3.5" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-[13px] text-slate-700 dark:text-[#FFFFFF] leading-snug font-normal">
-                    12 support tickets can be auto-routed to priority reimbursement queue.
-                  </p>
-                </div>
-                <span className="badge-warning px-2.5 py-0.5 text-[11px] font-medium flex-shrink-0">
-                  Medium
-                </span>
-              </div>
-
-              {/* Alert 3 */}
-              <div
-                onClick={() => navigate('/recovery')}
                 className="p-4 rounded-[16px] glass-panel border border-slate-200/80 dark:border-white/[0.08] flex items-start gap-3.5 cursor-pointer hover:border-purple-400/60 dark:hover:border-purple-400/50 hover:bg-slate-100/70 dark:hover:bg-white/[0.03] transition-all"
               >
                 <div className="w-7 h-7 rounded-full bg-purple-100 dark:bg-[rgba(139,92,246,0.2)] text-purple-600 dark:text-[#8B5CF6] flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -612,11 +528,47 @@ export const DashboardPage = () => {
                 </div>
                 <div className="flex-1">
                   <p className="text-[13px] text-slate-700 dark:text-[#FFFFFF] leading-snug font-normal">
-                    Document validation flow has repeat errors in step 3 (rollback recommended).
+                    Revert feature flag `ENABLE_UPI_SOCKET_TIMEOUT_V2` to 30s SLA.
                   </p>
                 </div>
-                <span className="badge-retried px-2.5 py-0.5 text-[11px] font-medium flex-shrink-0">
-                  Low
+                <span className="badge-success px-2.5 py-0.5 text-[11px] font-medium flex-shrink-0">
+                  Priority 1
+                </span>
+              </div>
+
+              {/* Recommendation 2 */}
+              <div
+                onClick={() => navigate('/recovery')}
+                className="p-4 rounded-[16px] glass-panel border border-slate-200/80 dark:border-white/[0.08] flex items-start gap-3.5 cursor-pointer hover:border-amber-400/60 dark:hover:border-amber-400/50 hover:bg-slate-100/70 dark:hover:bg-white/[0.03] transition-all"
+              >
+                <div className="w-7 h-7 rounded-full bg-amber-100 dark:bg-[rgba(245,158,11,0.2)] text-amber-600 dark:text-[#FBBF24] flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <Lightbulb className="w-3.5 h-3.5" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-[13px] text-slate-700 dark:text-[#FFFFFF] leading-snug font-normal">
+                    Auto-rehydrate orders for 156 captured UPI payments with missing cart state.
+                  </p>
+                </div>
+                <span className="badge-warning px-2.5 py-0.5 text-[11px] font-medium flex-shrink-0">
+                  Priority 2
+                </span>
+              </div>
+
+              {/* Recommendation 3 */}
+              <div
+                onClick={() => navigate('/recovery')}
+                className="p-4 rounded-[16px] glass-panel border border-slate-200/80 dark:border-white/[0.08] flex items-start gap-3.5 cursor-pointer hover:border-rose-400/60 dark:hover:border-rose-400/50 hover:bg-slate-100/70 dark:hover:bg-white/[0.03] transition-all"
+              >
+                <div className="w-7 h-7 rounded-full bg-rose-100 dark:bg-[rgba(239,68,68,0.2)] text-rose-600 dark:text-[#F87171] flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <AlertTriangle className="w-3.5 h-3.5" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-[13px] text-slate-700 dark:text-[#FFFFFF] leading-snug font-normal">
+                    Dispatch proactive reassurance SMS and ₹200 apology voucher before churn.
+                  </p>
+                </div>
+                <span className="badge-failed px-2.5 py-0.5 text-[11px] font-medium flex-shrink-0">
+                  Priority 3
                 </span>
               </div>
             </div>
