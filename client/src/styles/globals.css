@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-primary: #080612;
+    --bg-surface: #100b22;
+    --bg-surface-elevated: #181135;
+    --border-glow: rgba(168, 85, 247, 0.25);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #080612;
+    color: #f1f5f9;
+    background-image: 
+      radial-gradient(circle at 50% 0%, rgba(147, 51, 234, 0.18) 0%, transparent 60%),
+      radial-gradient(circle at 85% 15%, rgba(99, 102, 241, 0.1) 0%, transparent 40%),
+      radial-gradient(circle at 10% 70%, rgba(217, 70, 239, 0.08) 0%, transparent 50%);
+    background-attachment: fixed;
+  }
+}
+
+/* Enhanced Glassmorphism utilities matching the exact reference UI */
+.glass-panel {
+  background: linear-gradient(135deg, rgba(23, 16, 46, 0.75) 0%, rgba(13, 9, 28, 0.88) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(168, 85, 247, 0.18);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.65), 0 0 1px 1px rgba(255, 255, 255, 0.05) inset;
+}
+
+.glass-panel-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel-hover:hover {
+  border-color: rgba(192, 132, 252, 0.45);
+  box-shadow: 0 20px 50px -10px rgba(168, 85, 247, 0.35), 0 0 15px rgba(168, 85, 247, 0.2) inset;
+  transform: translateY(-3px);
+}
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(30, 21, 60, 0.65) 0%, rgba(17, 12, 36, 0.82) 100%);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+}
+
+.glass-card-workflow {
+  background: linear-gradient(145deg, rgba(40, 27, 80, 0.85) 0%, rgba(20, 14, 44, 0.92) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(168, 85, 247, 0.28);
+  box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.6), 0 0 20px rgba(168, 85, 247, 0.15);
+}
+
+.glass-card-workflow-active {
+  background: linear-gradient(145deg, rgba(76, 29, 149, 0.85) 0%, rgba(30, 15, 65, 0.95) 100%);
+  border: 1px solid rgba(192, 132, 252, 0.6);
+  box-shadow: 0 16px 45px -5px rgba(168, 85, 247, 0.4), 0 0 25px rgba(168, 85, 247, 0.25) inset;
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.neon-glow-purple {
+  box-shadow: 0 0 30px -4px rgba(168, 85, 247, 0.5);
+}
+
+.neon-glow-magenta {
+  box-shadow: 0 0 30px -4px rgba(236, 72, 153, 0.5);
+}
+
+.neon-glow-emerald {
+  box-shadow: 0 0 30px -4px rgba(16, 185, 129, 0.5);
+}
+
+/* Realistic vertical aurora wave beam at top center matching the screenshot */
+.ambient-purple-aurora {
+  position: fixed;
+  top: 0;
+  left: 28%;
+  width: 44%;
+  height: 280px;
+  background: 
+    radial-gradient(ellipse at 50% 0%, rgba(192, 132, 252, 0.25) 0%, rgba(147, 51, 234, 0.18) 35%, rgba(99, 102, 241, 0.08) 60%, transparent 80%),
+    repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(168, 85, 247, 0.05) 18px, transparent 22px);
+  filter: blur(8px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Custom sleek scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(8, 6, 18, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.3);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.55);
+}
+
+/* React Flow customizations */
+.react-flow__pane {
+  cursor: grab;
+}
+
+.react-flow__pane:active {
+  cursor: grabbing;
+}
+
+.react-flow__edge-path {
+  stroke: rgba(192, 132, 252, 0.65);
+  stroke-width: 2.5;
+}
+
+.react-flow__handle {
+  background: #c084fc;
+  border: 2px solid #080612;
+  width: 10px;
+  height: 10px;
+}
