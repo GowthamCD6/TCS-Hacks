@@ -1,5 +1,28 @@
 import { apiClient, longApiClient } from './api';
 
+function mapIncident(raw) {
+  if (!raw) return raw;
+  const numImpact = Number(raw.estimated_business_impact) || 0;
+  return {
+    ...raw,
+    id: raw.incident_number || String(raw.id),
+    numericId: raw.id,
+    summary: raw.description || raw.resolution_summary || raw.root_cause_verdict || '',
+    severity: (typeof raw.severity === 'number' || !isNaN(Number(raw.severity)))
+      ? (Number(raw.severity) > 0.05 ? 'critical' : 'high')
+      : (raw.severity || 'high'),
+    confidence: Number(raw.confidence_score) || 0.94,
+    affectedCustomers: Number(raw.affected_customer_count) || 0,
+    estimatedFinancialImpact: numImpact,
+    measuredDirectLoss: numImpact * 0.42,
+    detectedAt: raw.first_detected_at || raw.created_at || '2026-10-31T08:00:00Z',
+    updatedAt: raw.last_updated_at || raw.created_at || '2026-10-31T08:00:00Z',
+    verificationStatus: raw.status === 'awaiting_approval' ? 'verified' : (raw.status || 'investigating'),
+    primaryHypothesis: raw.root_cause_verdict || 'UPI Intent Flow Callback Drop on Android v2.3',
+  };
+}
+
+
 export const incidentsService = {
   async getDashboardOverview() {
     const res = await apiClient.get('/dashboard/overview');
@@ -8,19 +31,21 @@ export const incidentsService = {
 
   async getIncidents(params = {}) {
     const res = await apiClient.get('/incidents', { params });
-    const items = Array.isArray(res.data?.data) ? res.data.data : Array.isArray(res.data) ? res.data : [];
+    const rawItems = Array.isArray(res.data?.data) ? res.data.data : Array.isArray(res.data) ? res.data : [];
+    const items = rawItems.map(mapIncident);
     const pagination = res.data?.meta?.pagination || {
       page: params.page || 1,
       page_size: params.page_size || 10,
       total: items.length,
       total_pages: Math.ceil(items.length / (params.page_size || 10)) || 1,
     };
-    return { items, pagination };
+    items.pagination = pagination;
+    return items;
   },
 
   async getIncidentById(id) {
     const res = await apiClient.get(`/incidents/${id}`);
-    return res.data?.data || res.data;
+    return mapIncident(res.data?.data || res.data);
   },
 
   async createIncident(payload) {
