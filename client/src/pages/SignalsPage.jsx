@@ -165,3 +165,4 @@ export const SignalsPage = () => {
   );
 };
 export default SignalsPage;
+

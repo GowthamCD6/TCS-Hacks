@@ -169,3 +169,4 @@ export const IncidentsPage = () => {
   );
 };
 export default IncidentsPage;
+

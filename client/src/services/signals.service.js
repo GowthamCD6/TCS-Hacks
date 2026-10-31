@@ -41,3 +41,4 @@ export const signalsService = {
     return response.data;
   },
 };
+

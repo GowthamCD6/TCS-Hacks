@@ -61,3 +61,4 @@ export const WorkflowNode = ({ data, selected }) => {
     </div>
   );
 };
+

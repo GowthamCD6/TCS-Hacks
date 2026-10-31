@@ -169,3 +169,4 @@ export const KPIMonitoringView = ({ kpis = [], onRefresh }) => {
     </div>
   );
 };
+

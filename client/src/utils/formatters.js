@@ -65,3 +65,4 @@ export function getStatusBadgeClass(status) {
       return 'bg-slate-500/15 text-slate-300 border border-slate-500/30';
   }
 }
+

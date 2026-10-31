@@ -181,3 +181,4 @@ export const incidentsService = {
     return response.data;
   },
 };
+

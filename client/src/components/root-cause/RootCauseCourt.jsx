@@ -173,3 +173,4 @@ export const RootCauseCourt = ({ hypotheses = [] }) => {
     </div>
   );
 };
+

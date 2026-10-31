@@ -44,3 +44,4 @@ export const SelfEvaluationScorecard = ({ tests = [] }) => {
     </div>
   );
 };
+

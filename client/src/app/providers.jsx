@@ -18,3 +18,4 @@ export const AppProviders = ({ children }) => {
     </QueryClientProvider>
   );
 };
+

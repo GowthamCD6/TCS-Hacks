@@ -103,3 +103,4 @@ export const BusinessImpactView = ({ impact }) => {
     </div>
   );
 };
+
