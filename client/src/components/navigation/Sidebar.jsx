@@ -70,9 +70,9 @@ const navItems = [
 
 export const Sidebar = () => {
   return (
-    /* Fixed vertically centered dock on the left: width 84px, Icons centered vertically */
-    <aside className="fixed left-4 sm:left-6 top-1/2 -translate-y-1/2 z-50 w-[84px] flex flex-col items-center py-3 px-2 glass-dock shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
-      <nav className="flex flex-col items-center gap-2.5 w-full">
+    /* Floating individual icon buttons - outer dock container removed as requested */
+    <aside className="fixed left-3 sm:left-5 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center">
+      <nav className="flex flex-col items-center gap-3">
         {navItems.map((item) => {
           const Icon = item.icon;
           return (
@@ -84,7 +84,7 @@ export const Sidebar = () => {
                   'relative w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200 group cursor-pointer',
                   isActive
                     ? 'glass-dock-icon-active'
-                    : 'glass-dock-icon text-[#9E9BB2] hover:text-[#FFFFFF]'
+                    : 'glass-dock-icon text-[#FFFFFF]'
                 )
               }
             >
@@ -93,7 +93,7 @@ export const Sidebar = () => {
                   <Icon
                     className={cn(
                       'w-5 h-5 transition-transform duration-200 group-hover:scale-105',
-                      isActive ? 'text-white' : 'text-[#9E9BB2] group-hover:text-white'
+                      isActive ? 'text-white' : 'text-[#FFFFFF] group-hover:text-white'
                     )}
                   />
 
@@ -101,7 +101,7 @@ export const Sidebar = () => {
                   {item.badge && (
                     <span
                       className={cn(
-                        'absolute -top-1 -right-1 text-[9px] font-mono font-bold w-4 h-4 rounded-full flex items-center justify-center border border-[#0B0B12] shadow-sm',
+                        'absolute -top-1 -right-1 text-[9px] font-mono font-bold w-4 h-4 rounded-full flex items-center justify-center border border-[#080512] shadow-sm',
                         item.badgeVariant === 'purple' &&
                           'bg-[#8B5CF6] text-white',
                         item.badgeVariant === 'amber' &&
@@ -113,7 +113,7 @@ export const Sidebar = () => {
                   )}
 
                   {/* Tooltip on hover */}
-                  <div className="absolute left-14 px-3 py-1.5 rounded-xl bg-[#141220] border border-white/10 text-white text-[12px] whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50 shadow-lg backdrop-blur-md">
+                  <div className="absolute left-16 px-3 py-1.5 rounded-xl glass-panel text-white text-[12px] whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50 shadow-lg backdrop-blur-md">
                     {item.tooltip}
                   </div>
                 </>
@@ -123,17 +123,17 @@ export const Sidebar = () => {
         })}
 
         {/* Delicate Divider */}
-        <div className="w-6 h-[1px] bg-white/10 my-0.5" />
+        <div className="w-5 h-[1px] bg-white/15 my-0.5" />
 
         {/* Bottom Circular Logout Button */}
         <button
           type="button"
-          className="w-11 h-11 rounded-full flex items-center justify-center text-[#9E9BB2] hover:text-[#F87171] hover:bg-white/5 transition-all duration-200 group relative cursor-pointer"
+          className="glass-dock-icon text-white/80 hover:text-[#F87171] transition-all duration-200 group relative cursor-pointer"
           title="Exit Session"
           onClick={() => window.location.reload()}
         >
           <LogOut className="w-5 h-5 transition-transform duration-200 group-hover:scale-105" />
-          <div className="absolute left-14 px-3 py-1.5 rounded-xl bg-[#141220] border border-white/10 text-white text-[12px] whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50 shadow-lg backdrop-blur-md">
+          <div className="absolute left-16 px-3 py-1.5 rounded-xl glass-panel text-white text-[12px] whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50 shadow-lg backdrop-blur-md">
             Logout / Reset
           </div>
         </button>

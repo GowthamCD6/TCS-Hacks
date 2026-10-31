@@ -12,12 +12,12 @@ export const Header = ({ onSearch }) => {
   };
 
   return (
-    <header className="h-[68px] px-6 sm:px-10 flex items-center justify-between sticky top-0 z-40 bg-[#0B0B12]/80 backdrop-blur-[16px] border-b border-white/[0.08]">
-      {/* Left: Brand Aperture Logo & OpsPilot text */}
+    <header className="h-[68px] px-6 sm:px-10 flex items-center justify-between sticky top-0 z-40 bg-[#080512]/80 backdrop-blur-[24px] border-b border-white/[0.12]">
+      {/* Left: Brand Aperture Logo & OpsPilot text in White */}
       <div className="flex items-center gap-3 flex-shrink-0">
-        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#8B5CF6] to-[#6D28D9] p-[1.5px] shadow-[0_0_14px_rgba(139,92,246,0.4)] flex items-center justify-center">
-          <div className="w-full h-full rounded-full bg-[#0E0C17] flex items-center justify-center">
-            <div className="w-4 h-4 rounded-full border border-[#8B5CF6] flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#8B5CF6] to-[#6D28D9] p-[1.5px] shadow-[0_0_14px_rgba(139,92,246,0.5)] flex items-center justify-center">
+          <div className="w-full h-full rounded-full bg-[#080512] flex items-center justify-center">
+            <div className="w-4 h-4 rounded-full border border-white/60 flex items-center justify-center">
               <div className="w-1.5 h-1.5 rounded-full bg-[#FFFFFF]" />
             </div>
           </div>
@@ -30,7 +30,7 @@ export const Header = ({ onSearch }) => {
         </div>
       </div>
 
-      {/* Center: Search Capsule + Time Filter Tabs */}
+      {/* Center: Search Capsule + Time Filter Tabs with matching White Glass Pill */}
       <div className="flex items-center gap-3 sm:gap-4 mx-auto">
         {/* Search Capsule Glass Pill */}
         <div className="relative w-48 sm:w-64 md:w-80">
@@ -39,15 +39,15 @@ export const Header = ({ onSearch }) => {
             value={searchValue}
             onChange={handleSearchChange}
             placeholder="Search"
-            className="w-full pl-4 pr-10 py-2 text-[13px] bg-[rgba(32,27,51,0.65)] border border-white/[0.08] rounded-full text-[#FFFFFF] placeholder-[#706C82] focus:outline-none focus:border-[rgba(168,85,247,0.35)] backdrop-blur-[16px] transition-all"
+            className="w-full pl-5 pr-10 py-2 text-[13px] glass-pill text-[#FFFFFF] placeholder-[#9E9BB2] focus:outline-none focus:border-white/40 transition-all"
           />
-          <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-[#9E9BB2]">
-            <Search className="w-4 h-4 text-[#A8A3BA]" />
+          <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-white/70">
+            <Search className="w-4 h-4 text-white/80" />
           </div>
         </div>
 
         {/* Time Filter Capsule Glass Pill */}
-        <div className="hidden sm:flex items-center p-1 rounded-full bg-[rgba(32,27,51,0.65)] border border-white/[0.08] backdrop-blur-[16px] text-[13px]">
+        <div className="hidden sm:flex items-center p-1 rounded-full glass-pill text-[13px]">
           {['today', '7days', '30days', 'custom'].map((filter) => (
             <button
               type="button"
@@ -57,7 +57,7 @@ export const Header = ({ onSearch }) => {
                 'px-4 py-1 rounded-full transition-all duration-200 capitalize cursor-pointer text-[13px]',
                 timeFilter === filter
                   ? 'glass-pill-active font-medium'
-                  : 'text-[#9E9BB2] hover:text-[#FFFFFF]'
+                  : 'text-white/70 hover:text-[#FFFFFF]'
               )}
             >
               {filter === 'today' ? 'Today' : filter === '7days' ? '7 Days' : filter === '30days' ? '30 Days' : 'Custom'}
@@ -66,16 +66,16 @@ export const Header = ({ onSearch }) => {
         </div>
       </div>
 
-      {/* Right: Notifications, Clock & User Profile matching screenshot */}
+      {/* Right: Notifications, Clock & User Profile matching White Glass style */}
       <div className="flex items-center gap-3 flex-shrink-0">
         {/* Notifications Button with '03' badge */}
         <button
           type="button"
-          className="relative w-9 h-9 rounded-full bg-[rgba(32,27,51,0.65)] border border-white/[0.08] hover:bg-white/[0.08] text-[#9E9BB2] hover:text-[#FFFFFF] transition-all flex items-center justify-center backdrop-blur-[16px] cursor-pointer"
+          className="relative w-9 h-9 rounded-full glass-pill text-[#FFFFFF] hover:bg-white/20 transition-all flex items-center justify-center cursor-pointer"
           title="3 Unresolved Alerts"
         >
-          <Bell className="w-4 h-4 text-[#A8A3BA]" />
-          <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#8B5CF6] text-[9px] font-bold text-[#FFFFFF] flex items-center justify-center border border-[#0B0B12]">
+          <Bell className="w-4 h-4 text-[#FFFFFF]" />
+          <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#8B5CF6] text-[9px] font-bold text-[#FFFFFF] flex items-center justify-center border border-[#080512]">
             03
           </span>
         </button>
@@ -83,26 +83,26 @@ export const Header = ({ onSearch }) => {
         {/* Clock/History Button */}
         <button
           type="button"
-          className="w-9 h-9 rounded-full bg-[rgba(32,27,51,0.65)] border border-white/[0.08] hover:bg-white/[0.08] text-[#9E9BB2] hover:text-[#FFFFFF] transition-all hidden sm:flex items-center justify-center backdrop-blur-[16px] cursor-pointer"
+          className="w-9 h-9 rounded-full glass-pill text-[#FFFFFF] hover:bg-white/20 transition-all hidden sm:flex items-center justify-center cursor-pointer"
           title="Recent Logs"
         >
-          <Clock className="w-4 h-4 text-[#A8A3BA]" />
+          <Clock className="w-4 h-4 text-[#FFFFFF]" />
         </button>
 
         {/* User profile capsule pill */}
-        <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[rgba(32,27,51,0.65)] border border-white/[0.08] hover:border-[rgba(168,85,247,0.35)] transition-all cursor-pointer backdrop-blur-[16px] group">
+        <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-full glass-pill hover:border-white/40 transition-all cursor-pointer group">
           <img
             src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces"
             alt="Liam Anderson"
-            className="w-7 h-7 object-cover rounded-full border border-white/10"
+            className="w-7 h-7 object-cover rounded-full border border-white/30 shadow-sm"
           />
           <div className="hidden lg:block text-left pr-1">
-            <p className="text-[13px] font-medium text-[#FFFFFF] group-hover:text-[#A855F7] transition-colors leading-tight">
+            <p className="text-[13px] font-medium text-[#FFFFFF] group-hover:text-purple-200 transition-colors leading-tight">
               Liam Anderson
             </p>
-            <p className="text-[11px] text-[#706C82] leading-tight">Operations Manager</p>
+            <p className="text-[11px] text-[#A8A3BA] leading-tight">Operations Manager</p>
           </div>
-          <ChevronDown className="w-3.5 h-3.5 text-[#9E9BB2] group-hover:text-[#FFFFFF] transition-colors" />
+          <ChevronDown className="w-3.5 h-3.5 text-white/70 group-hover:text-[#FFFFFF] transition-colors" />
         </div>
       </div>
     </header>
