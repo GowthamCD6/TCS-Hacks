@@ -159,8 +159,8 @@ export const DashboardPage = () => {
         </div>
 
         {/* Horizontal Pipeline of 6 Interactive Connected Glass Nodes */}
-        <div className="overflow-x-auto pb-4 scrollbar-none">
-          <div className="min-w-[1040px] flex items-center justify-between gap-3 relative py-6">
+        <div className="overflow-x-auto pb-4 pt-6 scrollbar-none">
+          <div className="min-w-[1040px] flex items-center justify-between gap-3 relative py-4">
             
             {/* SVG Connecting Track Line */}
             <svg
@@ -217,17 +217,10 @@ export const DashboardPage = () => {
               className="w-56 p-4 rounded-[16px] glass-node-active relative z-20 cursor-pointer hover:scale-[1.02] transition-transform"
               title="Click to enter Root Cause Court for INC-2026-084"
             >
-              {/* Top Popover Priority Stack */}
-              <div className="absolute -top-20 left-4 w-44 p-2.5 rounded-[12px] glass-panel border border-white/[0.12] space-y-1 text-[11px] font-medium pointer-events-none shadow-xl">
-                <div className="flex items-center text-[#F87171] gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#F87171]" /> High priority (04)
-                </div>
-                <div className="flex items-center text-[#FBBF24] gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#FBBF24]" /> Medium priority (09)
-                </div>
-                <div className="flex items-center text-[#34D399] gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#34D399]" /> Low priority (05)
-                </div>
+              {/* Top Priority Tag - perfectly seated and not clipped */}
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full glass-card border border-emerald-500/40 text-[10px] font-semibold flex items-center gap-1.5 whitespace-nowrap shadow-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#34D399]" />
+                <span>Low priority (05)</span>
               </div>
 
               <div className="flex items-center gap-2 text-[#C4B5FD] text-[13px] mb-2 font-medium">
@@ -316,7 +309,7 @@ export const DashboardPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         {/* Card 1: Active Workflow */}
-        <div className="glass-card flex flex-col justify-between">
+        <div className="glass-card flex flex-col justify-between min-h-[300px]">
           <div>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-[15px] font-medium text-[#FFFFFF]">Active Workflow</h3>
@@ -342,7 +335,7 @@ export const DashboardPage = () => {
                     <span className="font-mono text-[#9E9BB2] text-[12px]">60%</span>
                   </div>
                 </div>
-                <div className="w-full h-1.5 rounded-full bg-black/40 overflow-hidden">
+                <div className="w-full h-1.5 rounded-full bg-slate-200 dark:bg-black/40 overflow-hidden">
                   <div className="h-full rounded-full bg-[#34D399] w-[60%]" />
                 </div>
               </div>
@@ -359,7 +352,7 @@ export const DashboardPage = () => {
                     <span className="font-mono text-[#9E9BB2] text-[12px]">42%</span>
                   </div>
                 </div>
-                <div className="w-full h-1.5 rounded-full bg-black/40 overflow-hidden">
+                <div className="w-full h-1.5 rounded-full bg-slate-200 dark:bg-black/40 overflow-hidden">
                   <div className="h-full rounded-full bg-[#34D399] w-[42%]" />
                 </div>
               </div>
@@ -376,7 +369,7 @@ export const DashboardPage = () => {
                     <span className="font-mono text-[#9E9BB2] text-[12px]">80%</span>
                   </div>
                 </div>
-                <div className="w-full h-1.5 rounded-full bg-black/40 overflow-hidden">
+                <div className="w-full h-1.5 rounded-full bg-slate-200 dark:bg-black/40 overflow-hidden">
                   <div className="h-full rounded-full bg-[#F87171] w-[80%]" />
                 </div>
               </div>
@@ -395,7 +388,7 @@ export const DashboardPage = () => {
         </div>
 
         {/* Card 2: Pending approvals (Functional with direct approval action) */}
-        <div className="glass-card flex flex-col justify-between">
+        <div className="glass-card flex flex-col justify-between min-h-[300px]">
           <div>
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-[15px] font-medium text-[#FFFFFF]">Pending approvals</h3>
@@ -451,8 +444,12 @@ export const DashboardPage = () => {
                   ))}
                   {pendingApprovals.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="py-4 text-center text-xs text-slate-400">
-                        All interventions have been signed off.
+                      <td colSpan={5} className="py-8 text-center text-xs text-slate-400">
+                        <div className="flex flex-col items-center justify-center py-2">
+                          <CheckCircle2 className="w-5 h-5 text-emerald-400 mb-1" />
+                          <p className="font-medium text-slate-700 dark:text-slate-300">All interventions signed off</p>
+                          <p className="text-[11px] text-slate-400 mt-0.5">No pending approvals required</p>
+                        </div>
                       </td>
                     </tr>
                   )}
@@ -472,7 +469,7 @@ export const DashboardPage = () => {
         </div>
 
         {/* Card 3: AI recommendations (Clickable directly to incident court / recovery) */}
-        <div className="glass-card flex flex-col justify-between">
+        <div className="glass-card flex flex-col justify-between min-h-[300px]">
           <div>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-[15px] font-medium text-[#FFFFFF]">AI recommendations</h3>

@@ -225,6 +225,15 @@ html.light .glass-pill-active {
   color: #FFFFFF !important;
 }
 
+/* Light Mode unselected buttons inside glass-pill */
+html.light .glass-pill button:not(.glass-pill-active) {
+  color: #475569 !important;
+}
+
+html.light .glass-pill button:not(.glass-pill-active):hover {
+  color: #0F172A !important;
+}
+
 /* Light Mode Floating Dock Icons */
 html.light .glass-dock-icon {
   background: rgba(255, 255, 255, 0.92) !important;
