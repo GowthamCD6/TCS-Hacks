@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Shield, KeyRound, Mail, ArrowRight, AlertCircle, CheckCircle2, Sun, Moon } from 'lucide-react';
 import { authService } from '../services/auth.service';
 import { useTheme } from '../context/ThemeContext';
+import logoLight from '../assets/recoveriq-logo-light.png';
+import logoDark from '../assets/recoveriq-logo-dark.png';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -59,14 +61,13 @@ export const LoginPage = () => {
       <div className="w-full max-w-md rounded-2xl glass-card p-8 border border-white/10 shadow-2xl relative z-10 space-y-6">
         {/* Brand header */}
         <div className="flex flex-col items-center text-center space-y-2">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#8B5CF6] to-[#6D28D9] p-[2px] shadow-[0_0_24px_rgba(139,92,246,0.6)] flex items-center justify-center">
-            <div className="w-full h-full rounded-full bg-[#080512] flex items-center justify-center">
-              <Shield className="w-6 h-6 text-[#A855F7]" />
-            </div>
-          </div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">RecoverIQ</h1>
-          <p className="text-[13px] text-[#9E9BB2]">
-            Autonomous CX Recovery • Approver Portal
+          <img
+            src={theme === 'light' ? logoLight : logoDark}
+            alt="RecoverIQ Logo"
+            className="h-12 w-auto object-contain"
+          />
+          <p className="text-[12px] text-[#9E9BB2]">
+            Approver Portal
           </p>
         </div>
 

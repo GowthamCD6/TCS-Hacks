@@ -19,6 +19,8 @@ import { incidentsService } from '../../services/incidents.service';
 import { formatDateTime } from '../../utils/formatters';
 import { useTheme } from '../../context/ThemeContext';
 import { cn } from '../../utils/cn';
+import logoLight from '../../assets/recoveriq-logo-light.png';
+import logoDark from '../../assets/recoveriq-logo-dark.png';
 
 export const Header = ({ onSearch }) => {
   const navigate = useNavigate();
@@ -64,24 +66,16 @@ export const Header = ({ onSearch }) => {
   return (
     /* Top Bar: Fixed at top, does NOT scroll with page, NO divider border line below */
     <header className="fixed top-0 left-0 right-0 h-[72px] px-4 sm:px-8 md:px-10 flex items-center justify-between z-50 bg-[#080512]/90 backdrop-blur-2xl app-header">
-      {/* Left: Brand Aperture Logo & OpsPilot text */}
+      {/* Left: Brand RecoverIQ Logo */}
       <div
         onClick={() => navigate('/')}
-        className="flex items-center gap-3.5 flex-shrink-0 cursor-pointer group select-none"
+        className="flex items-center flex-shrink-0 cursor-pointer group select-none py-1"
       >
-        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#8B5CF6] to-[#6D28D9] p-[1.5px] shadow-[0_0_16px_rgba(139,92,246,0.6)] flex items-center justify-center">
-          <div className="w-full h-full rounded-full bg-[#080512] flex items-center justify-center">
-            <div className="w-4 h-4 rounded-full border border-purple-400 flex items-center justify-center">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#FFFFFF]" />
-            </div>
-          </div>
-        </div>
-        <div className="flex items-baseline gap-2">
-          <span className="font-semibold text-[22px] text-slate-900 dark:text-[#FFFFFF] tracking-tight">RecoverIQ</span>
-          <span className="text-[10px] font-mono uppercase text-[#A8A3BA] font-medium tracking-wider hidden md:inline">
-            Autonomous CX
-          </span>
-        </div>
+        <img
+          src={theme === 'light' ? logoLight : logoDark}
+          alt="RecoverIQ Logo"
+          className="h-8 sm:h-9 w-auto object-contain transition-transform group-hover:scale-105 duration-200"
+        />
       </div>
 
       {/* Center: Search Capsule + Time Filter Tabs */}
