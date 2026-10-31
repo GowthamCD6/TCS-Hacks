@@ -1,5 +1,25 @@
 import { apiClient, longApiClient } from './api';
 
+function mapApproval(raw) {
+  if (!raw) return raw;
+  const rationale = (raw.rationale && typeof raw.rationale === 'object') ? JSON.stringify(raw.rationale) : (raw.rationale || '');
+  return {
+    ...raw,
+    id: raw.id,
+    approvalStatus: raw.decision || raw.approval_decision || 'pending',
+    title: raw.title || ('Recovery Action #' + raw.id),
+    actionType: raw.action_type || raw.action_key || 'simulate_refund',
+    riskLevel: raw.risk_level || 'medium',
+    expectedCustomerBenefit: raw.expected_customer_benefit || (raw.action_key === 'disable_feature_flag' ? 'Immediate error rate drop (<1%)' : 'Reconciliation & 100% funds restored'),
+    estimatedCost: Number(raw.estimated_cost) || 0,
+    implementationTimeMinutes: Number(raw.implementation_time_minutes) || 5,
+    rationale: raw.comments || rationale || 'Automated multi-agent recovery intervention requiring human sign-off.',
+    rejectionReason: raw.rejection_reason || '',
+    alternativeAction: raw.alternative_action || '',
+  };
+}
+
+
 export const approvalsService = {
   async getApprovals(params = {}) {
     const res = await apiClient.get('/approvals', { params });
@@ -10,7 +30,8 @@ export const approvalsService = {
       total: items.length,
       total_pages: Math.ceil(items.length / (params.page_size || 10)) || 1,
     };
-    return { items, pagination };
+    items.pagination = pagination;
+    return items;
   },
 
   async approve(approvalId, comments = '') {
@@ -44,12 +65,7 @@ export const approvalsService = {
       }));
     }
     const { items } = await this.getApprovals({ decision: 'pending' });
-    return items.map((a) => ({
-      ...a,
-      approvalStatus: a.decision,
-      riskLevel: a.risk_level,
-      actionType: a.action_type,
-    }));
+    return items.map(mapApproval);
   },
 
   async getExecutedActions(incidentId) {

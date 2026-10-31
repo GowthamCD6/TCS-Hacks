@@ -106,7 +106,7 @@ export const FeedbackPage = () => {
       </div>
 
       {/* Main Table Container: Execution Logs Card */}
-      <div className="glass-card space-y-5">
+      <div className="glass-card p-6 sm:p-7 space-y-6">
         {/* Table Header and Filter Row */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-3 border-b border-white/[0.08]">
           <h2 className="text-[20px] font-medium text-[#FFFFFF] tracking-tight">
@@ -188,18 +188,18 @@ export const FeedbackPage = () => {
               <table className="w-full text-left">
                 <thead className="table-header-strip text-[12px] font-medium text-[#9E9BB2] border-b border-white/[0.08]">
                   <tr>
-                    <th className="py-3 px-4">Execution ID</th>
-                    <th className="py-3 px-4">Workflow Name</th>
-                    <th className="py-3 px-4">Triggered By</th>
-                    <th className="py-3 px-4">Start Time</th>
-                    <th className="py-3 px-4">Duration</th>
-                    <th className="py-3 px-4">Status</th>
-                    <th className="py-3 px-4 text-right">Details</th>
+                    <th className="py-3.5 px-5">Execution ID</th>
+                    <th className="py-3.5 px-5">Workflow Name</th>
+                    <th className="py-3.5 px-5">Triggered By</th>
+                    <th className="py-3.5 px-5">Start Time</th>
+                    <th className="py-3.5 px-5">Duration</th>
+                    <th className="py-3.5 px-5">Status</th>
+                    <th className="py-3.5 px-5 text-right">Details</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/[0.04]">
                   {feedbackList.map((item, idx) => {
-                    const executionId = `0072033${item.id?.replace(/\D/g, '').padEnd(4, '0').slice(0, 4) || (6300 + idx)}`;
+                    const executionId = `0072033${String(item.id || '').replace(/\D/g, '').padEnd(4, '0').slice(0, 4) || (6300 + idx)}`;
                     const isSuccess = item.sentiment === 'positive';
                     const isFailed = item.sentiment === 'critical';
                     const isRetried = item.sentiment === 'negative';
@@ -211,22 +211,22 @@ export const FeedbackPage = () => {
                         onClick={() => setSelectedItem(item)}
                         className="table-log-row hover:bg-white/[0.03] transition-colors cursor-pointer text-[13px]"
                       >
-                        <td className="py-3.5 px-4 font-mono text-[#706C82]">
+                        <td className="py-4 px-5 font-mono text-[#706C82]">
                           {executionId}
                         </td>
-                        <td className="py-3.5 px-4 font-normal text-[#FFFFFF]">
+                        <td className="py-4 px-5 font-normal text-[#FFFFFF]">
                           {item.category || 'Invoice generation'}
                         </td>
-                        <td className="py-3.5 px-4 text-[#9E9BB2]">
+                        <td className="py-4 px-5 text-[#9E9BB2]">
                           {item.channel === 'mobile_app' ? 'API Trigger' : item.channel === 'support_ticket' ? 'Liam Anderson' : 'Schedule'}
                         </td>
-                        <td className="py-3.5 px-4 font-mono text-[#706C82] whitespace-nowrap">
+                        <td className="py-4 px-5 font-mono text-[#706C82] whitespace-nowrap">
                           {formatDateTime(item.timestamp)}
                         </td>
-                        <td className="py-3.5 px-4 font-mono text-[#9E9BB2]">
+                        <td className="py-4 px-5 font-mono text-[#9E9BB2]">
                           {idx % 3 === 0 ? '2m 12s' : idx % 2 === 0 ? '4m 06s' : '3h 15m'}
                         </td>
-                        <td className="py-3.5 px-4">
+                        <td className="py-4 px-5">
                           {isSuccess && (
                             <span className="badge-success px-3 py-0.5 text-[12px] font-medium">
                               Success
@@ -248,7 +248,7 @@ export const FeedbackPage = () => {
                             </span>
                           )}
                         </td>
-                        <td className="py-3.5 px-4 text-right">
+                        <td className="py-4 px-5 text-right">
                           <button className="px-3 py-1 rounded-[10px] action-control text-[#FFFFFF] text-[12px] hover:border-[rgba(168,85,247,0.35)] transition-all">
                             {isFailed ? 'Debug' : isRetried ? 'Restart' : 'View Data'}
                           </button>
@@ -262,7 +262,7 @@ export const FeedbackPage = () => {
           </div>
 
           {/* Right Column: Failure Analysis Card */}
-          <div className="xl:col-span-1 rounded-[16px] bg-[#141220] border border-white/[0.08] p-5 flex flex-col justify-between">
+          <div className="xl:col-span-1 rounded-[20px] bg-[#141220]/80 border border-white/[0.1] p-6 flex flex-col justify-between shadow-xl">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-[15px] font-medium text-[#FFFFFF]">Failure Analysis</h3>
