@@ -64,11 +64,11 @@
 
 /* Active Highlight Pill */
 .glass-pill-active {
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.65) 0%, rgba(109, 40, 217, 0.8) 100%) !important;
+  background: rgba(139, 92, 246, 0.22) !important;
   backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.45) !important;
-  box-shadow: 
-    0 0 25px rgba(168, 85, 247, 0.5),
+  border: 1px solid rgba(168, 85, 247, 0.5) !important;
+  box-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.35),
     inset 0 1px 1px 0 rgba(255, 255, 255, 0.5) !important;
   color: #FFFFFF !important;
 }
@@ -103,10 +103,10 @@
 }
 
 .glass-dock-icon-active {
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.75) 0%, rgba(109, 40, 217, 0.9) 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.45) !important;
-  box-shadow: 
-    0 0 24px rgba(168, 85, 247, 0.65),
+  background: rgba(139, 92, 246, 0.28) !important;
+  border: 1px solid rgba(168, 85, 247, 0.55) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.4),
     inset 0 1px 1px rgba(255, 255, 255, 0.5) !important;
   color: #FFFFFF !important;
 }
@@ -179,10 +179,11 @@
 }
 
 .glass-node-active {
-  background: linear-gradient(145deg, rgba(168, 85, 247, 0.6) 0%, rgba(53, 49, 72, 0.8) 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.35) !important;
-  box-shadow: 
-    0 0 40px rgba(168, 85, 247, 0.5),
+  background: rgba(53, 49, 72, 0.65) !important;
+  border: 1.5px solid rgba(168, 85, 247, 0.65) !important;
+  box-shadow:
+    0 16px 40px -8px rgba(0, 0, 0, 0.65),
+    0 0 20px -2px rgba(168, 85, 247, 0.3),
     inset 0 1px 2px rgba(255, 255, 255, 0.45) !important;
   border-radius: 18px !important;
 }
@@ -219,8 +220,8 @@ html.light .glass-pill {
 
 /* Light Mode Active Highlight Pill */
 html.light .glass-pill-active {
-  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%) !important;
-  border: 1px solid rgba(139, 92, 246, 0.6) !important;
+  background: #8B5CF6 !important;
+  border: 1px solid #7C3AED !important;
   box-shadow: 
     0 4px 16px rgba(139, 92, 246, 0.35),
     inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
@@ -255,8 +256,8 @@ html.light .glass-dock-icon:hover svg {
 }
 
 html.light .glass-dock-icon-active {
-  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  background: #8B5CF6 !important;
+  border: 1px solid #7C3AED !important;
   box-shadow: 
     0 6px 22px rgba(139, 92, 246, 0.45),
     inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
@@ -322,9 +323,9 @@ html.light .glass-node-card:hover {
 }
 
 html.light .glass-node-active {
-  background: linear-gradient(145deg, rgba(238, 242, 255, 0.95) 0%, rgba(245, 243, 255, 0.95) 100%) !important;
-  border: 1px solid rgba(139, 92, 246, 0.5) !important;
-  box-shadow: 0 10px 25px -4px rgba(139, 92, 246, 0.22) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1.5px solid rgba(139, 92, 246, 0.6) !important;
+  box-shadow: 0 10px 25px -4px rgba(139, 92, 246, 0.15) !important;
   color: #0F172A !important;
 }
 

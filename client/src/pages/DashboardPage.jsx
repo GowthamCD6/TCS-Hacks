@@ -131,7 +131,7 @@ export const DashboardPage = () => {
           {/* Stat 4: Critical Incidents */}
           <div
             onClick={() => navigate('/incidents')}
-            className="px-5 py-4 rounded-[20px] bg-rose-50/90 border border-rose-200 dark:bg-[rgba(239,68,68,0.2)] dark:border-[rgba(248,113,113,0.3)] backdrop-blur-[16px] flex flex-col justify-between min-w-[136px] flex-1 sm:flex-initial cursor-pointer hover:border-rose-400/80 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
+            className="px-5 py-4 rounded-[20px] glass-card flex flex-col justify-between min-w-[136px] flex-1 sm:flex-initial cursor-pointer hover:border-rose-400/60 dark:hover:border-rose-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
             title="Inspect Incident Cases"
           >
             <div className="flex items-center gap-2 text-rose-600 dark:text-[#F87171] text-[13px] font-medium">
@@ -146,7 +146,7 @@ export const DashboardPage = () => {
           {/* Action Button: Ingestion */}
           <button
             onClick={() => navigate('/ingestion')}
-            className="px-5 py-3.5 rounded-[14px] bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] hover:from-[#7C3AED] hover:to-[#5B21B6] text-white font-medium text-[13px] flex items-center justify-center gap-2 cursor-pointer transition-all shadow-[0_4px_16px_rgba(139,92,246,0.35)] hover:shadow-[0_6px_22px_rgba(139,92,246,0.5)] active:scale-95 text-keep-white"
+            className="px-5 py-3.5 rounded-[14px] bg-[#7C3AED] hover:bg-[#6D28D9] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] text-white font-medium text-[13px] flex items-center justify-center gap-2 cursor-pointer transition-all shadow-md hover:shadow-lg active:scale-95 text-keep-white"
           >
             <Plus className="w-4 h-4 text-white" />
             <span className="text-white text-keep-white">Ingest Signal</span>
